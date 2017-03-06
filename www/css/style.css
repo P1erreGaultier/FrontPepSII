@@ -1,0 +1,10 @@
+/* Empty. Add your own CSS if you like */
+
+html *
+{
+	font-family: papyrus !important;
+}
+
+#map{
+	height: 500px;
+}
