@@ -28,7 +28,7 @@ script:
 - cordova platform add android
 - cordova platform add ios
 - ionic build android
-- ionic build ios
+- ionic build ios --release
 after_success:
 - sh set_tags.sh
 deploy:
