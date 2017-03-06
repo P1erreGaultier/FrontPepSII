@@ -32,7 +32,7 @@ deploy:
   provider: releases
   api_key:
     secure: ELN6OQu7hv3/WUXjJYKhLnjW7xScw9oI896Di1y0Y2KaNCoNo6ZYndaumnOClM7yEJx+S3Y/1TCylE+/Wzh59cLquO64j5FWtYqb1w8DjR1OksN2NPhyOEu/1bcYsqp1RJy6u/e91oB1A+odpXAgJfROFIIATCE1JG/PnlPmF5FnItGEOGjv3Eitp6NCHC66eQ6m6C41M7l9GoPSKg+NV2mpYvk+Q+OXE/ZitHFlD1EM8WeeczxCNiJCG5NVTKlWKRbwn2GW7Gwkge9fI4wdBCA1zR7Yr+9ZPA+Xedm9a1/4Wb0C5rIRhKUdvWmgIFqNAXzIzKTDIExj4A14FwHR+khuZtBNi5TRtw/GDEz1X0rd6elgA/XrfEi+VkSyYZaqfxw+rDQcVRtQLq1NMzMgez2JI2GinvunebMVsFtFcneYYlp6P3pm6AfAZdGPaRBLSaXYrFWjyKeJArteMju0zI4y0r83FMEwS+wC7R2gx8ygUBrILbKUah5j7egqZXn6uKakgDwIeUltXgZR1c/6wkbyTOZdsdSdE/jwQW7nBpQwSAwIpkufxHzDGZYfdVyclWVpT/SpVbnebephf0J1qmOZA+ipHuM9alENL0k7Hpd9cwkob9WNnmXe+2uiBbMrzDGqWplYFOcc6w1W42XFMWSLsxigN6zBxYN/Z9CVZg8=
-  file: "/home/travis/build/TraineeSIIp/PepSIIrup-2017/Mobile-Ionic/platforms/android/build/outputs/apk/android-debug.apk"
+  file: "/home/travis/build/TraineeSIIp/FrontPepSII/platforms/android/build/outputs/apk/android-debug.apk"
   file_glob: "true"
   skip_cleanup: true
   on:
