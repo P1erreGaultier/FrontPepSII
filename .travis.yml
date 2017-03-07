@@ -5,6 +5,7 @@ dist: trusty
 node_js:
 - '7.5'
 before_install:
+- chmod +x scripts/travis/package-and-upload.sh
 - npm install -g npm@2.14.5
 - npm install -g cordova ionic
 script:
