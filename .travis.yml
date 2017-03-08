@@ -10,7 +10,6 @@ before_install:
 - npm install -g cordova ionic
 script:
 - npm install
-- npm test
 - chmod +x hooks/after_prepare/010_add_platform_class.js
 - cordova platform add android
 - cordova platform add ios
