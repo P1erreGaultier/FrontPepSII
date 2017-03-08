@@ -1,8 +1,4 @@
 #!/bin/sh
-if [[ "$TRAVIS_BRANCH" != "$APPLE_TESTFLIGHT_UPLOAD_BRANCH" ]]; then  
-  echo "This is not a deployment branch, skipping IPA build and upload."
-  exit 0
-fi
 
 #####################
 # Make the ipa file #
