@@ -3,7 +3,7 @@
 #####################
 # Make the ipa file #
 #####################
-OUTPUTDIR="$PWD/release/Ios"
+OUTPUTDIR="$PWD/platforms/ios/build/device"
 
 xcrun -log -sdk iphoneos PackageApplication -v "$OUTPUTDIR/$APP_NAME.app" -o "$OUTPUTDIR/$APP_NAME.ipa"
 
