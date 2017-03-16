@@ -13,7 +13,7 @@
         <input type="search" placeholder="">
       </label>
       <div class="spacer" style="height: 30px;"></div>
-      <ion-item class="item-thumbnail-left" id="accueil-list-item11" ui-sref="menu.afterwork">
+      <!--<ion-item class="item-thumbnail-left" id="accueil-list-item11" ui-sref="menu.afterwork">
         <img src="img/afterwork-sympa.jpg">
         <h2>AfterWork</h2>
         <p style="white-space:normal;">Afterwork de l'agence au bar "Le Rond point" </p>
@@ -23,7 +23,17 @@
         <h2>Foot en salle</h2>
         <p style="white-space:normal;">Foot en salle à Saint Sebastien "Urban Soccer"</p>
       </ion-item>
-      <div id="accueil-container3" class="creator-container"></div>
+      <div id="accueil-container3" class="creator-container"></div>-->
+        <ul>
+          <li ng-repeat="event in ListEvent">
+            <ion-item class="item-thumbnail-left" id="accueil-list-item{{event.id}}" ui-sref="menu.detailsEvent({id: '{{event.id}}', Name: '{{event.Name}}', Datestart: '{{event.Datestart}}', Dateend: '{{event.Dateend}}', PlaceId: '{{event.PlaceId}}', Description: '{{event.Description}}', Image: '{{event.Image}}', Iscanceled: '{{event.Iscanceled}}', Owner: '{{event.Owner}}'})">
+              <img src="img/defaultImage.jpg">
+              <h2>{{event.Name}}</h2>
+              <p style="white-space:normal;">{{event.Description}}</p>
+            </ion-item>
+          </li>
+        </ul>
+        <div id="oui"></div>
     </form>
   </ion-content>
 </ion-view>
