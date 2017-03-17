@@ -5,7 +5,6 @@ dist: trusty
 node_js:
 - '7.5'
 before_install:
-- chmod +x scripts/package-and-upload.sh
 - npm install -g npm@2.14.5
 - npm install -g cordova ionic
 before_script:
@@ -24,19 +23,14 @@ before_script:
 - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 script:
 - npm install
+- npm test
 - chmod +x hooks/after_prepare/010_add_platform_class.js
 - cordova platform add android
 - cordova platform add ios
 - ionic build android
 - ionic build ios --release
-- ionic build ios --release
 after_success:
-- ./scripts/package-and-upload.sh
-env:
-  global:
-  - APP_NAME="PepSII"
-  - DELIVER_WHAT_TO_TEST="Initial Front"
-  - HOCKEYAPP_UPLOAD_BRANCH="master"
+- sh set_tags.sh
 deploy:
   provider: releases
   api_key:
