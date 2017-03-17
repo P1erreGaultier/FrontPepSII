@@ -23,7 +23,6 @@ before_script:
 - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 script:
 - npm install
-- npm test
 - chmod +x hooks/after_prepare/010_add_platform_class.js
 - cordova platform add android
 - cordova platform add ios
