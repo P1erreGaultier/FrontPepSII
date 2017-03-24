@@ -31,13 +31,13 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('carteCtrl', ['$scope', '$stateParams', '$http',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('carteCtrl', ['$scope', '$stateParams', '$http','$compile','CustomFactory','$window',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $http) {
+function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 
-	$scope.addMarker = function (texte, numero){
-		var mark = new google.maps.Marker({position:new google.maps.LatLng(Math.random()+47, Math.random()-1.8)});
+	$scope.addMarker = function (pos, texte, numero){
+		var mark = new google.maps.Marker({position:pos});
 		mark.setMap($scope.map);
 		var infoEvent = new google.maps.InfoWindow({
 			content: "<div style=\"display:inline-block\"><img src=\"img/logo.png\"style=\"display:inline;width:50px;height:50px;\"></div>" +
@@ -48,6 +48,10 @@ function ($scope, $stateParams, $http) {
 		})
 	}
 
+	$scope.getDetailsEvent = function(event){
+		CustomFactory.saveEvent(event);
+		$window.location.href="/#/side-menu21/page13"
+	}
 
 	$http({
 		method: 'GET',
@@ -63,22 +67,42 @@ function ($scope, $stateParams, $http) {
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 		$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-		for (var i=0; i<$scope.ListEvent.length; i++){
-			$scope.addMarker($scope.ListEvent[i].Name, i);
+		var infowindow = new google.maps.InfoWindow();
+		google.maps.event.addListener($scope.map, 'click', function(evt) {
+	    evt.stop()
+	    console.log(evt.placeId);
+			if (evt.placeId != null){
+	    infowindow.setContent(evt.placeId+"<button type='button'>Creer un évenement</button>");
+	    infowindow.setPosition(evt.latLng);
+	    infowindow.open($scope.map);
 		}
+	  });
 
-		var marker = new google.maps.Marker({position:new google.maps.LatLng(47.2112216, -1.5570168)});
-		marker.setMap($scope.map);
-		var infowindow = new google.maps.InfoWindow({
-			content: "<div style=\"display:inline-block\"><img src=\"img/logo.png\"style=\"display:inline;width:50px;height:50px;\"></div>" +
-					"<div style=\"display:inline-block\"><p>22 rue oui</p><p>***</p></div>"
-		});
+		var service = new google.maps.places.PlacesService($scope.map);
 
-		marker.addListener('click', function() {
-			infowindow.open($scope.map, marker);
+		$scope.addMarker = function (place,marker,i){
+			marker.addListener('click', function() {
+				var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.icon+' \"style=\"display:inline;width:50px;height:50px;\"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> ------------------------------------------------------------------------------------------------ </p>';
+				var contentEvent = '<div style=\"display:inline-block\"><img src=\"http://www.peniche-marcounet.fr/wp-content/uploads/2016/03/afterwork-sympa.jpg\"style=\"display:inline;width:50px;height:50px;\"><div ui-sref=\"menu.detailsEvent()\" style=\"display:inline-block\"><p><b>'+ $scope.ListEvent[i-1].Name +'</b></p> <p>'+ $scope.ListEvent[i-1].Description +'</p> <p>'+ 'Du ' + $scope.ListEvent[i-1].Datestart + ' au ' + $scope.ListEvent[i-1].Dateend +'</p> <button type="button" onclick="getDetailsEvent('+ $scope.ListEvent[i-1] +')">Voir l evenement</button></div>';
+				var compileEvent = $compile(contentEvent)($scope);
+				infowindow.setContent(contentPlace + contentEvent);
+				infowindow.open(map, this);
 			});
-
+		}
+		for ( var identDorian=0; identDorian<$scope.ListEvent.length; identDorian++){
+			service.getDetails({
+				 placeId: $scope.ListEvent[identDorian].Placeid
+			 }, function(place, status) {
+				 if (status === google.maps.places.PlacesServiceStatus.OK) {
+					 var marker = new google.maps.Marker({
+						 map: $scope.map,
+						 position: place.geometry.location
+					 });
+					 console.log(identDorian);
+					 $scope.addMarker(place,marker,identDorian);
+				 }
+			 });
+		}
 	}, function erroCallabck(response) {
 		console.log("Il y a eu des erreurs dans la map!")
 	});
