@@ -8,3 +8,9 @@ html *
 #map{
 	height: 500px;
 }
+
+.createEventLabel {
+	display: flex;
+	width: 100%;
+	margin-top: 2%;
+}
