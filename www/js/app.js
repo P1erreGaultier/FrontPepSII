@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives','app.services',])
+angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives','app.services','ngCordova',])
 
 .config(function($ionicConfigProvider, $sceDelegateProvider){
 
@@ -28,6 +28,18 @@ angular.module('app', ['ionic', 'app.controllers', 'app.routes', 'app.directives
     }
   });
 })
+
+/*.run(function($rootScope, $http){
+  $rootScope.connectedUser = "oui le user";
+  $http({
+    method: 'GET',
+    url: 'http://NANTES-0156.sii.fr:4444/' + '/getPerson?id=1'
+  }).then(function successCallback(response) {
+    $rootScope.connectedUser = response.data;
+  }, function erroCallabck(response) {
+    console.log("Il y a eu des erreurs!")
+  });
+})*/
 
 /*
   This directive is used to disable the "drag to open" functionality of the Side-Menu

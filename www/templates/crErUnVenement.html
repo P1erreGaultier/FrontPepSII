@@ -4,27 +4,28 @@
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <form id="crErUnVenement-form6" class="list">
-      <label class="item item-input" id="crErUnVenement-input10">
-        <span class="input-label">Date</span>
-        <input type="text" placeholder="">
-      </label>
-      <label class="item item-input" id="crErUnVenement-input13">
-        <span class="input-label">Horaire début</span>
-        <input type="text" placeholder="">
-      </label>
-      <label class="item item-input" id="crErUnVenement-input14">
-        <span class="input-label">Horaire fin</span>
-        <input type="text" placeholder="">
-      </label>
-      <label class="item item-input" id="crErUnVenement-input11">
-        <span class="input-label">Lieu</span>
-        <input type="text" placeholder="">
-      </label>
-      <label class="item item-input" id="crErUnVenement-input12">
-        <span class="input-label">Photo</span>
-        <input type="text" placeholder="">
-      </label>
+      <div style="display:inline-block;width:100%">
+        <div class="createEventLabel">Nom de l'évènement<p style="color:red"> {{erreurNom}}</p></div>
+        <input id="nomEvenement" border-radiustype="text" placeholder="">
+        <div class="createEventLabel">Description</div>
+        <textarea id="description" style="width:15%;height:100px;background-color:aliceblue;" placeholder=""></textarea>
+        <div class="createEventLabel">Date <p style="color:red"> {{erreurDate}}</p></div>
+        <datepicker style="height:auto;" date-format="dd/MM/yyyy" button-prev="<" button-next=">" class="ng-isolate-scope" date-set="true">
+          <input id="selectedDate" ng-model="date" type="text" placeholder="Selectionnez une date" readonly="true"/>
+        </datepicker>
+        <div class="createEventLabel">Horaire début<p style="color:red"> {{erreurHoraireDebut}}</p></div>
+        <input id="horaireDebut" border-radiustype="text" placeholder="00:00">
+        <div class="createEventLabel">Horaire fin<p style="color:red"> {{erreurHoraireFin}}</p></div>
+        <input id="horaireFin" border-radiustype="text" placeholder="00:00">
+        <div class="createEventLabel">Lieu<p style="color:red"> {{erreurLieu}}</p></div>
+        <input id="lieu" border-radiustype="text" placeholder="">
+        <div class="createEventLabel">Image</div>
+        <input id="image" border-radiustype="text" placeholder="">
+        <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="saveEvent()" />
+      </div>
     </form>
-    <a ui-sref="menu.accueil" id="crErUnVenement-button25" class="button button-positive  button-block">Valider</a>
+    <!--<a ui-sref="menu.accueil" id="crErUnVenement-button25" class="button button-positive  button-block">Valider</a>-->
+
   </ion-content>
+
 </ion-view>

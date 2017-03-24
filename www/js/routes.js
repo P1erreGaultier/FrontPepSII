@@ -123,17 +123,6 @@ angular.module('app.routes', [])
         templateUrl: 'templates/detailsEvent.html',
         controller: 'detailsEventCtrl'
       }
-    },
-    params: {
-      id: 0,
-      Name: "name",
-      Datestart: "1444",
-      Dateend: "14445",
-      PlaceId: "placeid",
-      Description: "description",
-      Image: "image",
-      Iscanceled: "0",
-      Owner: "owner"
     }
   })
 

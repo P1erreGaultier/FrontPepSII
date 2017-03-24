@@ -17,32 +17,25 @@
     <div class="spacer" style="width: 300px; height: 6px;"></div>
     <div id="footEnSalle-markdown2" class="show-list-numbers-and-dots">
       <p style="color:#000000;">
-        <strong>8</strong> personnes y participent</p>
+        <strong>{{nbParticipants}}</strong> personnes y participent
+      <button ng-click="detailsParticipant()" id="detailParticipant" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Participant</button>
+      <div id="participantDiv" style="display:none;">
+        <ion-list ng-repeat="participant in ListParticipant">
+          <ion-item class="item-avatar">
+            <img src="img/defaultUser.jpg">
+            <h2>{{participant.Pseudo}}</h2>
+          </ion-item>
+        </ion-list>
+      </div>
+    </p>
     </div>
-    <!--<ion-list id="footEnSalle-list6">
-      <ion-item class="item-avatar" id="footEnSalle-list-item12">
-        <img src="img/pierreg.png">
-        <h2>Pierre</h2>
-        <p style="white-space:normal;">Venez au foot en salle les autres stagiaires!</p>
-      </ion-item>
-      <ion-item class="item-avatar" id="footEnSalle-list-item24">
-        <img src="img/dodo.png">
-        <h2>Dorian</h2>
-        <p style="white-space:normal;">Non, je prefere aller faire les biceps à la salle!</p>
-      </ion-item>
-      <ion-item class="item-avatar" id="footEnSalle-list-item25">
-        <img src="img/pierreg.png">
-        <h2>Pierre</h2>
-        <p>Allez, go venir!</p>
-      </ion-item>
-    </ion-list>-->
     <ion-list ng-repeat="comment in ListComment">
         <div ng-style="{'margin-left': getCommentMargin({{comment.ResponseTo}})}">
           <ion-item class="item-avatar">
             <img src="img/defaultUser.jpg">
-            <h2>{{comment.PersonId}}</h2>
+            <h2>{{comment.Person.Pseudo}}</h2>
             <p>{{comment.Text}}</p>
-            <p style="text-align:right;font-style:italic;">{{comment.DatePost | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+            <p style="text-align:right;font-style:italic;padding-right:1%;">{{comment.DatePost | date:'dd/MM/yyyy HH:mm:ss'}}</p>
           </ion-item>
         </div>
     </ion-list>
