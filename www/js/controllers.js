@@ -48,10 +48,7 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 		})
 	}
 
-	$scope.getDetailsEvent = function(event){
-		CustomFactory.saveEvent(event);
-		$window.location.href="/#/side-menu21/page13"
-	}
+
 
 	$http({
 		method: 'GET',
@@ -68,40 +65,59 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 			};
 		$scope.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 		var infowindow = new google.maps.InfoWindow();
-		google.maps.event.addListener($scope.map, 'click', function(evt) {
-	    evt.stop()
-	    console.log(evt.placeId);
-			if (evt.placeId != null){
-	    infowindow.setContent(evt.placeId+"<button type='button'>Creer un évenement</button>");
-	    infowindow.setPosition(evt.latLng);
-	    infowindow.open($scope.map);
-		}
-	  });
-
 		var service = new google.maps.places.PlacesService($scope.map);
 
-		$scope.addMarker = function (place,marker,i){
+		google.maps.event.addListener($scope.map, 'click', function(evt) {
+	    evt.stop();
+			if (evt.placeId != null){
+			service.getDetails({
+				 placeId: evt.placeId
+			 }, function(place, status) {
+				 if (status === google.maps.places.PlacesServiceStatus.OK) {
+					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> <button type=\"button\" onclick=\'CustomFactory.saveEvent('+ JSON.stringify(event) +'); $window.location.href=\"/#/side-menu21/page13\";\'>Creer un évenement</button> </p>';
+					var compilePlace = $compile(contentPlace)($scope);
+					infowindow.setContent(contentPlace);
+	      	infowindow.setPosition(evt.latLng);
+	      	infowindow.open($scope.map);
+				}
+	   	});
+	 	}
+	});
+
+		$scope.addMarker = function (place,marker){
 			marker.addListener('click', function() {
-				var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.icon+' \"style=\"display:inline;width:50px;height:50px;\"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> ------------------------------------------------------------------------------------------------ </p>';
-				var contentEvent = '<div style=\"display:inline-block\"><img src=\"http://www.peniche-marcounet.fr/wp-content/uploads/2016/03/afterwork-sympa.jpg\"style=\"display:inline;width:50px;height:50px;\"><div ui-sref=\"menu.detailsEvent()\" style=\"display:inline-block\"><p><b>'+ $scope.ListEvent[i-1].Name +'</b></p> <p>'+ $scope.ListEvent[i-1].Description +'</p> <p>'+ 'Du ' + $scope.ListEvent[i-1].Datestart + ' au ' + $scope.ListEvent[i-1].Dateend +'</p> <button type="button" onclick="getDetailsEvent('+ $scope.ListEvent[i-1] +')">Voir l evenement</button></div>';
-				var compileEvent = $compile(contentEvent)($scope);
-				infowindow.setContent(contentPlace + contentEvent);
+				//var event =  $scope.hashTable[place.place_id];
+				var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> ------------------------------------------------------------------------------------------------ </p>';
+				var contentEvent= "";
+				for (var key in $scope.hashTable[place.place_id]){
+					event = $scope.hashTable[place.place_id][key];
+					contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ event.Name +'</b></p> <p>'+ event.Description +'</p> <p>'+ 'Du ' + event.Datestart + ' au ' + event.Dateend +'</p> <button type=\'button\' onclick=\'CustomFactory.saveEvent('+ JSON.stringify(event) +'); $window.location.href=\"/#/side-menu21/page13\";\'>Voir l\'évenement</button></div></div>';
+				}
+				var content = contentPlace + contentEvent
+				var compileEvent = $compile(content)($scope);
+				infowindow.setContent(content);
 				infowindow.open(map, this);
 			});
 		}
-		for ( var identDorian=0; identDorian<$scope.ListEvent.length; identDorian++){
+
+		$scope.hashTable = {};
+		for ( $scope.i=0; $scope.i<$scope.ListEvent.length; $scope.i++){
+			if ($scope.hashTable[$scope.ListEvent[$scope.i].Placeid] == null){
+				$scope.hashTable[$scope.ListEvent[$scope.i].Placeid] = [];
+			}
+			$scope.hashTable[$scope.ListEvent[$scope.i].Placeid].push($scope.ListEvent[$scope.i]);
 			service.getDetails({
-				 placeId: $scope.ListEvent[identDorian].Placeid
+				 placeId: $scope.ListEvent[$scope.i].Placeid
 			 }, function(place, status) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
 					 var marker = new google.maps.Marker({
 						 map: $scope.map,
 						 position: place.geometry.location
 					 });
-					 console.log(identDorian);
-					 $scope.addMarker(place,marker,identDorian);
+					 $scope.addMarker(place,marker);
 				 }
 			 });
+
 		}
 	}, function erroCallabck(response) {
 		console.log("Il y a eu des erreurs dans la map!")
