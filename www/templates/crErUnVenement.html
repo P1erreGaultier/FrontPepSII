@@ -1,6 +1,12 @@
 <ion-view title="Créer un évenement" id="page8">
   <ion-nav-buttons side="right" class="has-header">
-    <button class="button icon No Icon"> Connection</button>
+    <div ng-controller="menuConnnectionCtrl" ng-switch="{{isConnected}}">
+      <button ng-switch-when="false"class="button icon No Icon" ui-sref="menu.connection()"> Connexion</button>
+      <div ng-switch-when="true" style="height:100%">
+        <p style="margin-bottom:0%">{{connectedUser}}</p>
+        <a style="color:blue;" ng-click="logOut()"> Deconnexion</a>
+      </div>
+    </div>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <form id="crErUnVenement-form6" class="list">
@@ -10,7 +16,7 @@
         <div class="createEventLabel">Description</div>
         <textarea id="description" style="width:15%;height:100px;background-color:aliceblue;" placeholder=""></textarea>
         <div class="createEventLabel">Date <p style="color:red"> {{erreurDate}}</p></div>
-        <datepicker style="height:auto;" date-format="dd/MM/yyyy" button-prev="<" button-next=">" class="ng-isolate-scope" date-set="true">
+        <datepicker style="height:auto;" date-min-limit="{{minDate}}" date-format="dd/MM/yyyy" button-prev="<" button-next=">" class="ng-isolate-scope" date-set="true">
           <input id="selectedDate" ng-model="date" type="text" placeholder="Selectionnez une date" readonly="true"/>
         </datepicker>
         <div class="createEventLabel">Horaire début<p style="color:red"> {{erreurHoraireDebut}}</p></div>

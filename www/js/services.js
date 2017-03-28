@@ -20,6 +20,8 @@ angular.module('app.services', [])
 
 .service('ConnectedUserService', [function(){
   var connectedUser;
+  var connected = "false";
+
   return {
     setConnectedUser: function(user) {
       connectedUser = user;
@@ -27,6 +29,14 @@ angular.module('app.services', [])
 
     getConnectedUser: function() {
       return connectedUser;
+    },
+
+    setConnected: function(connect) {
+      connected = connect;
+    },
+
+    IsConnected: function() {
+      return connected;
     }
   }
 }])

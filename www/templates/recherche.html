@@ -1,6 +1,12 @@
 <ion-view title="Recherche" id="page2">
   <ion-nav-buttons side="right" class="has-header">
-    <button class="button icon No Icon"> Connection</button>
+    <div ng-controller="menuConnnectionCtrl" ng-switch="{{isConnected}}">
+      <button ng-switch-when="false"class="button icon No Icon" ui-sref="menu.connection()"> Connexion</button>
+      <div ng-switch-when="true" style="height:100%">
+        <p style="margin-bottom:0%">{{connectedUser}}</p>
+        <a style="color:blue;" ng-click="logOut()"> Deconnexion</a>
+      </div>
+    </div>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <form id="recherche-form2" class="list">

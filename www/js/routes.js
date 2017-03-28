@@ -126,6 +126,16 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('menu.connection', {
+    url: '/page14',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/connection.html',
+        controller: 'connectionCtrl'
+      }
+    }
+  })
+
 $urlRouterProvider.otherwise('/side-menu21/page1')
 
 
