@@ -1,6 +1,30 @@
 <ion-view title="Accueil" id="page1">
   <ion-nav-buttons side="right" class="has-header">
-    <button class="button icon No Icon"> Connection</button>
+    <div ng-controller="menuConnnectionCtrl" ng-switch="{{isConnected}}">
+      <div ng-switch-when="false">
+        <!--<button ng-switch-when="false"class="button icon No Icon" ui-sref="menu.connection()"> Connexion</button>-->
+        <div style="display:block;">
+          <p>oui</p>
+          <p>non</p>
+          <p>peut-être</p>
+        </div>
+      <div ng-switch-when="true" style="height:100%">
+        <!--<md-menu>
+            <md-button ng-click="$mdMenu.open()" style="margin-bottom:0%">{{connectedUser}}</p>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet 2</md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>-->
+
+
+        <!--<a style="color:blue;" ng-click="logOut()"> Deconnexion</a>-->
+      </div>
+    </div>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <div>
@@ -30,6 +54,7 @@
               <img src="img/defaultImage.jpg">
               <h2>{{event.Name}}</h2>
               <p style="white-space:normal;">{{event.Description}}</p>
+              <p style="white-space:normal;">Le {{event.Datestart | date:'dd/MM/yyyy'}} à {{event.Datestart | date:'HH:mm'}}</p>
             </ion-item>
           </li>
         </ul>
