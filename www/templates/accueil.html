@@ -1,10 +1,28 @@
 <ion-view title="Accueil" id="page1">
   <ion-nav-buttons side="right" class="has-header">
     <div ng-controller="menuConnnectionCtrl" ng-switch="{{isConnected}}">
-      <button ng-switch-when="false"class="button icon No Icon" ui-sref="menu.connection()"> Connexion</button>
+      <div ng-switch-when="false">
+        <!--<button ng-switch-when="false"class="button icon No Icon" ui-sref="menu.connection()"> Connexion</button>-->
+        <div style="display:block;">
+          <p>oui</p>
+          <p>non</p>
+          <p>peut-être</p>
+        </div>
       <div ng-switch-when="true" style="height:100%">
-        <p style="margin-bottom:0%">{{connectedUser}}</p>
-        <a style="color:blue;" ng-click="logOut()"> Deconnexion</a>
+        <!--<md-menu>
+            <md-button ng-click="$mdMenu.open()" style="margin-bottom:0%">{{connectedUser}}</p>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet 2</md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>-->
+
+
+        <!--<a style="color:blue;" ng-click="logOut()"> Deconnexion</a>-->
       </div>
     </div>
   </ion-nav-buttons>
