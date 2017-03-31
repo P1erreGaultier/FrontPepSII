@@ -1,18 +1,31 @@
 angular.module('app.controllers', ['ngCordova','720kb.datepicker',])
 
-.controller('menuConnnectionCtrl', ['$scope', '$stateParams', 'ConnectedUserService', '$window', '$location',
-function ($scope, $stateParams, ConnectedUserService, $window, $location) {
+.controller('menuConnnectionCtrl', ['$scope', '$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory',
+function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHistory) {
 		$scope.isConnected = ConnectedUserService.IsConnected();
 		if (ConnectedUserService.getConnectedUser() != null){
-			$scope.connectedUser = ConnectedUserService.getConnectedUser().pseudo;
+			$scope.connected = ConnectedUserService.getConnectedUser().pseudo;
+		}
+
+		$scope.showNavMenu = function() {
+			var div = document.getElementById("navMenu");
+			if (div.style.display == 'none'){
+				div.style.display = 'block';
+			}else{
+				div.style.display = 'none';
+			}
 		}
 
 		$scope.logOut = function(){
 			ConnectedUserService.setConnected("false");
 			ConnectedUserService.setConnectedUser(null);
 			$scope.isConnected = ConnectedUserService.IsConnected();
-			$location.path('/#/side-menu21/page1');
-			$window.location.reload();
+			$ionicHistory.nextViewOptions({
+				disableBack: true
+			});
+			$state.go('menu.accueil', {}, {location: 'replace'/*, reload: true*/})
+			//$location.path('/#/side-menu21/page1').replace();
+			//$window.location.reload();
 		}
 
 }])
@@ -25,10 +38,11 @@ function ($scope, $stateParams, $http, CustomFactory, BlankService) {
 		BlankService.sendMessage();
 		$http({
   	method: 'GET',
-  	url: 'http://NANTES-0156.sii.fr:4444/' + 'getAllEvent'
+  	//url: 'http://10.10.2.25/' + 'getAllEvent'
+		url: 'http://NANTES-0156.sii.fr:4444/' + 'getAllEvent'
 	}).then(function successCallback(response) {
 		console.log(response);
-		$scope.ListEvent = response.data.ArrayList;
+		$scope.ListEvent = response.data;
 
 		for(i=0; i<$scope.ListEvent.length; i++){
 			$scope.ListEvent[i].Datestart = Date.parse($scope.ListEvent[i].Datestart);
@@ -39,9 +53,82 @@ function ($scope, $stateParams, $http, CustomFactory, BlankService) {
 		}
 		console.log( $scope.ListEvent);
 	}, function erroCallabck(response) {
-		console.log("Il y a eu des erreurs");
+		console.log("Il y a eu des erreurs sur l'accueil");
 		console.log(response);
 		});
+
+}])
+
+
+.controller('profilCtrl', ['$scope', '$stateParams','ConnectedUserService','$http',
+function ($scope, $stateParams, ConnectedUserService, $http) {
+	var user = ConnectedUserService.getConnectedUser();
+	$scope.personID = user.personID;
+	$scope.pseudo = user.pseudo;
+	$scope.lastName = user.lastName;
+	$scope.firstName = user.firstName;
+	$scope.job = user.job;
+	$scope.canModifiy = "false";
+
+	$scope.saveProfil = function(){
+		var save = true;
+		if (document.getElementById("pseudoInput").value.trim() == ""){
+			document.getElementById("pseudo").innerText = "Votre pseudo ne peut pas être vide: ";
+			save = false;
+		}else{
+			document.getElementById("pseudo").innerText = "Pseudo: ";
+		}
+		if (document.getElementById("firstNameInput").value.trim() == ""){
+			document.getElementById("firstName").innerText = "Votre prenom ne peut pas être vide: ";
+			save = false;
+		}else{
+			document.getElementById("firstName").innerText = "Prenom: ";
+		}
+		if (document.getElementById("lastNameInput").value.trim() == ""){
+			document.getElementById("lastName").innerText = "Votre nom ne peut pas être vide: ";
+			save = false;
+		}else{
+			document.getElementById("lastName").innerText = "Nom: ";
+		}
+		if (save){
+
+			$http({
+				method: 'POST',
+				url: 'http://NANTES-0156.sii.fr:4444/addPerson',
+				data: {
+					personID: $scope.personID,
+					pseudo: document.getElementById("pseudoInput").value,
+					lastName: document.getElementById("lastNameInput").value,
+					firstName: document.getElementById("firstNameInput").value,
+					job: document.getElementById("jobInput").value
+				}
+			}).then(function successCallback(response) {
+				console.log("message send");
+				console.log(user.personID);
+				console.log(response);
+				var userResponse = response.data;
+				$scope.personID = userResponse.personID;
+				$scope.pseudo = userResponse.pseudo;
+				$scope.lastName = userResponse.lastName;
+				$scope.firstName = userResponse.firstName;
+				$scope.job = userResponse.job;
+				ConnectedUserService.setConnectedUser(userResponse);
+				$scope.canModifiy = "false";
+				alert("Modification enregistrées");
+			}, function erroCallabck(response) {
+				console.log(response);
+				console.log("Envoi formulaire creation d'evenement: Il y a eu des erreurs!");
+			});
+		}
+	}
+
+	$scope.modify = function(){
+		$scope.canModifiy = "true";
+	}
+
+	$scope.modifyBack = function(){
+		$scope.canModifiy = "false";
+	}
 
 }])
 
@@ -74,6 +161,7 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 
 	$http({
 		method: 'GET',
+		//url: 'http://10.10.2.25/' + 'getAllEvent'
 		url: 'http://NANTES-0156.sii.fr:4444/' + 'getAllEvent'
 	}).then(function successCallback(response) {
 		$scope.ListEvent = response.data.ArrayList;
@@ -229,7 +317,7 @@ function ($scope, $stateParams, $window, $cordovaDatePicker, $http, CustomFactor
 			console.log(ownerToSend);
 			$http({
 				method: 'POST',
-				url: 'http://localhost:4444/saveEvent',
+				url: 'http://10.10.2.25/saveEvent',
 				data: {
 					Name: document.getElementById("nomEvenement").value,
 					Datestart: document.getElementById("selectedDate").value + " " + document.getElementById("horaireDebut").value,
@@ -276,6 +364,18 @@ function ($scope, $stateParams) {
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams, $window, $http, CustomFactory) {
 
+	$scope.getBase64Image = function(img) {
+		var canvas = document.createElement("canvas");
+	  canvas.width = img.width;
+	  canvas.height = img.height;
+	  var ctx = canvas.getContext("2d");
+	  ctx.drawImage(img, 0, 0);
+	  var dataURL = canvas.toDataURL("image/png");
+	  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+	}
+
+
+
 	var event = CustomFactory.getEvent();
 	$scope.getCommentMargin = function(owner){
 		if (owner == null){
@@ -293,13 +393,13 @@ function ($scope, $stateParams, $window, $http, CustomFactory) {
 		}
 	}
 	$scope.TitleEvent = event.Name;
-	$scope.sourceImgEvent = "img/defaultImage.jpg";
+	$scope.sourceImgEvent = event.Image;
 	$scope.descriptionEvent = event.Description;
 	$scope.dateStartEvent = event.Datestart;
 
 	/*$http({
 		method: 'GET',
-		url: 'http://NANTES-0156.sii.fr:4444/' + 'getCommentByEvent?id=' + $stateParams.id
+		url: 'http://10.10.2.25/' + 'getCommentByEvent?id=' + $stateParams.id
 	}).then(function successCallback(response) {
 		$scope.ListComment = response.data;
 	}, function erroCallabck(response) {
@@ -308,7 +408,7 @@ function ($scope, $stateParams, $window, $http, CustomFactory) {
 
 	$http({
 		method: 'GET',
-		url: 'http://localhost:4444/getAllParticipantById?id=' + $stateParams.id
+		url: 'http://10.10.2.25/getAllParticipantById?id=' + $stateParams.id
 	}).then(function successCallback(response) {
 		$scope.ListParticipant = response.data;
 		$scope.nbParticipants = $scope.ListParticipant.length;
@@ -326,6 +426,7 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService) {
 	$scope.connection = function(){
 		$http({
 			method: 'GET',
+			//url: 'http://10.10.2.25/' + '/getPerson?id=' + document.getElementById("connction").value
 			url: 'http://NANTES-0156.sii.fr:4444/' + '/getPerson?id=' + document.getElementById("connction").value
 		}).then(function successCallback(response) {
 			ConnectedUserService.setConnectedUser(response.data.Person);
@@ -339,4 +440,17 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService) {
 		});
 	}
 
+}])
+
+
+.controller('mainCtrl', ['$scope',
+function($scope) {
+	$scope.view={
+		name: ''
+	};
+	$scope.modify = function(val){
+		$scope.view={
+			name: val
+		};
+	}
 }])

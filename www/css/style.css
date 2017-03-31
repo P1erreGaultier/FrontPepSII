@@ -14,3 +14,52 @@ html *
 	width: 100%;
 	margin-top: 2%;
 }
+
+#menuList {
+	margin-top: 5%;
+}
+
+#menuList, #menuList ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	line-height: 21px;
+	text-align: center;
+}
+
+#menuList a {
+	display: block;
+	padding: 0;
+	background: #000;
+	color: #fff;
+	text-decoration: none;
+	width: 100%;
+	font-size: 30px;
+	margin-right: 5%;
+	height: 30px;
+}
+
+#menuList li {
+	float: left;
+	border-right: 1px solid #fff;
+}
+
+#menuList li ul {
+	position: absolute;
+	width: 144px;
+	left: -999em;
+}
+
+#menuList a:hover {
+	color: #000;
+	background: #fff;
+}
+
+#menuList li:hover ul ul {
+	left: -999em;
+}
+
+#menuList li:hover ul, #menuList li li:hover ul {
+	left:auto;
+	min-height: 0;
+}
