@@ -1,0 +1,48 @@
+<ion-view title="Profil" id="pageProfil">
+  <ion-nav-buttons side="right" class="has-header">
+  </ion-nav-buttons>
+  <ion-content padding="true" class="has-header">
+    <!--<div ng-switch on="{{modifiy}}">
+      <img src="img/defaultUser2.jpg" style="height:500px;width:auto;">
+      <div ng-switch-when="false">
+        <p >Pseudo: <input id="Pseudo" value="{{pseudo}}"></p>
+        <p>Nom: <input id="LastName" value="{{lastName}}"></p>
+        <p>Prenom: <input id="LastName" value="{{firstName}}"></p>
+        <p>Poste: <input id="Job" value="{{job}}"></p>
+        <div style="display:flex;">
+          <a href="javascript:void(0)" ng-click="saveProfil()" class="button button-positive  button-block" style="width:45%;margin-right:10%;">Sauvegarder</a>
+          <a href="javascript:void(0)" ng-click="back()" class="button button-positive  button-block" style="width:45%;">Retour</a>
+        </div>
+      </div>
+      <div ng-switch-when="true">
+        <p >Pseudo: {{pseudo}}</p>
+        <p>Nom: {{lastName}}</p>
+        <p>Prenom: {{firstName}}</p>
+        <p>Poste: {{job}}</p>
+        <a href="javascript:void(0)" ng-click="modifyProfil()" class="button button-positive  button-block">Modifier</a>
+      </div>
+    </div>-->
+
+    <div ng-switch on="canModifiy" >
+      <img src="img/defaultUser2.jpg" style="height:500px;width:auto;">
+  <div ng-switch-when="true" >
+    <label id="pseudo">Pseudo:</label> <input id="pseudoInput" value="{{pseudo}}" style="margin-bottom:15px;"></br>
+    <label id="lastName">Nom:</label> <input id="lastNameInput" value="{{lastName}}" style="margin-bottom:15px;"></br>
+    <label id="firstName">Prenom:</label> <input id="firstNameInput" value="{{firstName}}" style="margin-bottom:15px;"></br>
+    <label>Poste:</label> <input id="jobInput" value="{{job}}" style="margin-bottom:15px;">
+    <div style="display:flex;">
+      <a href="javascript:void(0)" ng-click="saveProfil()" class="button button-positive  button-block" style="width:45%;margin-right:10%;">Sauvegarder</a>
+      <a href="javascript:void(0)" ng-click="modifyBack()" class="button button-positive  button-block" style="width:45%;">Retour</a>
+    </div>
+  </div>
+  <div ng-switch-when="false">
+    <p >Pseudo: {{pseudo}}</p>
+    <p>Nom: {{lastName}}</p>
+    <p>Prenom: {{firstName}}</p>
+    <p>Poste: {{job}}</p>
+    <a href="javascript:void(0)" ng-click="modify()" class="button button-positive  button-block">Modifier</a>
+  </div>
+</div>
+
+  </ion-content>
+</ion-view>

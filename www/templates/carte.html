@@ -1,13 +1,20 @@
 <ion-view title="Carte" id="page3">
 	<ion-nav-buttons side="right" class="has-header">
-		<div ng-controller="menuConnnectionCtrl" ng-switch="{{isConnected}}">
-			<button ng-switch-when="false"class="button icon No Icon" ui-sref="menu.connection()"> Connexion</button>
-			<div ng-switch-when="true" style="height:100%">
-				<p style="margin-bottom:0%">{{connectedUser}}</p>
-				<a style="color:blue;" ng-click="logOut()"> Deconnexion</a>
-			</div>
-		</div>
-	</ion-nav-buttons>
+    <div ng-controller="menuConnnectionCtrl" ng-switch="{{isConnected}}">
+      <button ng-switch-when="false"class="button icon No Icon" ui-sref="menu.connection()"> Connexion</button>
+      <div ng-switch-when="true" style="height:100%">
+        <ul id="menuList">
+          <li>
+            <a class="lienMenu" style="margin-bottom:0%;width:inherit;">connected v</a>
+            <ul id="menuList" style="width:inherit;">
+              <li style="width:100%;"><a ui-sref="menu.profil()">Mon profil</a></li>
+              <li style="width:100%;"><a ng-click="logOut()">Deconnexion</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </ion-nav-buttons>
 	<ion-content>
 		<div id="map" data-tap-diseable="true" ></div>
 	</ion-content>

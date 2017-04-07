@@ -1,22 +1,5 @@
 angular.module('app.controllers', ['ngCordova','720kb.datepicker',])
 
-.controller('menuConnnectionCtrl', ['$scope', '$stateParams', 'ConnectedUserService', '$window', '$location',
-function ($scope, $stateParams, ConnectedUserService, $window, $location) {
-		$scope.isConnected = ConnectedUserService.IsConnected();
-		if (ConnectedUserService.getConnectedUser() != null){
-			$scope.connectedUser = ConnectedUserService.getConnectedUser().pseudo;
-		}
-
-		$scope.logOut = function(){
-			ConnectedUserService.setConnected("false");
-			ConnectedUserService.setConnectedUser(null);
-			$scope.isConnected = ConnectedUserService.IsConnected();
-			$location.path('/#/side-menu21/page1');
-			$window.location.reload();
-		}
-
-}])
-
 .controller('accueilCtrl', ['$scope', '$stateParams', '$http', 'CustomFactory', 'BlankService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
@@ -25,10 +8,11 @@ function ($scope, $stateParams, $http, CustomFactory, BlankService) {
 		BlankService.sendMessage();
 		$http({
   	method: 'GET',
-  	url: 'http://NANTES-0156.sii.fr:4444/' + 'getAllEvent'
+  	url: 'http://webapp8.nantes.sii.fr/' + 'getAllEvent'
+		//url: 'http://NANTES-0156.sii.fr:4444/' + 'getAllEvent'
 	}).then(function successCallback(response) {
 		console.log(response);
-		$scope.ListEvent = response.data.ArrayList;
+		$scope.ListEvent = response.data;
 
 		for(i=0; i<$scope.ListEvent.length; i++){
 			$scope.ListEvent[i].Datestart = Date.parse($scope.ListEvent[i].Datestart);
@@ -39,13 +23,13 @@ function ($scope, $stateParams, $http, CustomFactory, BlankService) {
 		}
 		console.log( $scope.ListEvent);
 	}, function erroCallabck(response) {
-		console.log("Il y a eu des erreurs");
+		console.log("Il y a eu des erreurs sur l'accueil");
 		console.log(response);
-		});
+	});
 
 }])
 
-.controller('rechercheCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('menuCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams) {
@@ -74,9 +58,10 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 
 	$http({
 		method: 'GET',
-		url: 'http://NANTES-0156.sii.fr:4444/' + 'getAllEvent'
+		url: 'http://webapp8.nantes.sii.fr/' + 'getAllEvent'
+		//url: 'http://NANTES-0156.sii.fr:4444/' + 'getAllEvent'
 	}).then(function successCallback(response) {
-		$scope.ListEvent = response.data.ArrayList;
+		$scope.ListEvent = response.data;
 
 		var options = {timeout: 10000, enableHighAccuracy: true};
 		var latLng = new google.maps.LatLng(47.2112216, -1.5570168);
@@ -147,46 +132,67 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 
 }])
 
-.controller('footEnSalleCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('connectionCtrl', ['$scope', '$stateParams', '$window', '$http', 'ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+function ($scope, $stateParams, $window, $http, ConnectedUserService) {
+	function onSuccess(googleUser) {
+		console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+		console.log(googleUser);
+		console.log(googleUser.getBasicProfile());
+	}
+	function onFailure(error) {
+		console.log(error);
+	}
 
-  //sum to test jasmine/karma
-  $scope.sum = function() {
-   $scope.z = $scope.x + $scope.y;
-  };
+		gapi.signin2.render('my-signin2', {
+			'redirect_uri': 'http://localhost:8100',
+			'scope': 'openid',
+			'width': 240,
+			'height': 50,
+			'longtitle': true,
+			'theme': 'dark',
+			'onsuccess': onSuccess,
+			'onfailure': onFailure
+		});
+	/*$scope.login=function() {
+		var client_id="929890661942-49n2pcequcmns19fe1omff72tqcips1v.apps.googleusercontent.com";
+		$cordovaOauth.google(client_id, ["https://www.googleapis.com/auth/urlshortener", "https://www.googleapis.com/auth/userinfo.email"]).then(function(result){
+			alert(JSON.stringify(result));
+			console.log(result);
+		}, function(error){
+			alert('error');
+		});
+		var scope="openid";
+		var redirect_uri="http://localhost:8100/";
+		var response_type="token";
+		var url="https://accounts.google.com/o/oauth2/auth?scope="+scope+"&client_id="+client_id+"&redirect_uri="+redirect_uri+
+		"&response_type="+response_type;
+		window.location.replace(url);
 
-}])
-
-.controller('afterworkCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
+	};*/
 
 
-}])
+	$scope.connection = function(){
 
-.controller('dejTechCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
-
-
-}])
-
-.controller('menuCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
-
-
-}])
-
-.controller('mesVenementsCtrl', ['$scope', '$stateParams', '$cordovaDatePicker',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $cordovaDatePicker) {
+		$http({
+			method: 'GET',
+			url: 'http://webapp8.nantes.sii.fr/' + '/getPerson?id=' + document.getElementById("connction").value
+			//url: 'http://NANTES-0156.sii.fr:4444/' + '/getPerson?id=' + document.getElementById("connction").value
+		}).then(function successCallback(response) {
+			console.log(response);
+			ConnectedUserService.setConnectedUser(response.data);
+			ConnectedUserService.setConnected("true");
+			console.log("Connecté en tant que: ");
+			console.log(ConnectedUserService.getConnectedUser());
+			$window.history.back();
+			//$window.location.href = '/#/side-menu21/page1';
+		}, function erroCallabck(response) {
+			alert('impossible de récupérer cette personne');
+			alert('status: ' + response.status + ' / statusText: ' + response.statusText);
+			console.log("Il y a eu des erreurs!");
+		});
+	}
 
 }])
 
@@ -229,7 +235,7 @@ function ($scope, $stateParams, $window, $cordovaDatePicker, $http, CustomFactor
 			console.log(ownerToSend);
 			$http({
 				method: 'POST',
-				url: 'http://localhost:4444/saveEvent',
+				url: 'http://webapp8.nantes.sii.fr/saveEvent',
 				data: {
 					Name: document.getElementById("nomEvenement").value,
 					Datestart: document.getElementById("selectedDate").value + " " + document.getElementById("horaireDebut").value,
@@ -255,26 +261,22 @@ function ($scope, $stateParams, $window, $cordovaDatePicker, $http, CustomFactor
 
 }])
 
-
-.controller('suggestionCtrl', ['$scope', '$stateParams','$http','ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $http, ConnectedUserService) {
-
-}])
-
-.controller('evaluerEvenementCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
-// You can include any angular dependencies as parameters for this function
-// TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
-
-
-}])
-
 .controller('detailsEventCtrl', ['$scope', '$stateParams', '$window', '$http','CustomFactory',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams, $window, $http, CustomFactory) {
+
+	$scope.getBase64Image = function(img) {
+		var canvas = document.createElement("canvas");
+	  canvas.width = img.width;
+	  canvas.height = img.height;
+	  var ctx = canvas.getContext("2d");
+	  ctx.drawImage(img, 0, 0);
+	  var dataURL = canvas.toDataURL("image/png");
+	  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+	}
+
+
 
 	var event = CustomFactory.getEvent();
 	$scope.getCommentMargin = function(owner){
@@ -293,50 +295,211 @@ function ($scope, $stateParams, $window, $http, CustomFactory) {
 		}
 	}
 	$scope.TitleEvent = event.Name;
-	$scope.sourceImgEvent = "img/defaultImage.jpg";
+	$scope.sourceImgEvent = event.Image;
 	$scope.descriptionEvent = event.Description;
 	$scope.dateStartEvent = event.Datestart;
 
-	/*$http({
+	$http({
 		method: 'GET',
-		url: 'http://NANTES-0156.sii.fr:4444/' + 'getCommentByEvent?id=' + $stateParams.id
+		url: 'http://webapp8.nantes.sii.fr/' + 'getCommentByEvent?id=' + $stateParams.id
 	}).then(function successCallback(response) {
 		$scope.ListComment = response.data;
 	}, function erroCallabck(response) {
 		console.log("Il y a eu des erreurs!")
+		console.log(response);
 	});
 
 	$http({
 		method: 'GET',
-		url: 'http://localhost:4444/getAllParticipantById?id=' + $stateParams.id
+		url: 'http://webapp8.nantes.sii.fr/getAllParticipantById?id=' + $stateParams.id
 	}).then(function successCallback(response) {
 		$scope.ListParticipant = response.data;
 		$scope.nbParticipants = $scope.ListParticipant.length;
 	}, function erroCallabck(response) {
 		console.log("Participant: Il y a eu des erreurs!")
-	});*/
+		console.log(response);
+	});
 	/*console.log($stateParams.event)
 	console.log($stateParams.event.Name)*/
 }])
 
-.controller('connectionCtrl', ['$scope', '$stateParams', '$window', '$http', 'ConnectedUserService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('evaluerEvenementCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $window, $http, ConnectedUserService) {
-	$scope.connection = function(){
-		$http({
-			method: 'GET',
-			url: 'http://NANTES-0156.sii.fr:4444/' + '/getPerson?id=' + document.getElementById("connction").value
-		}).then(function successCallback(response) {
-			ConnectedUserService.setConnectedUser(response.data.Person);
-			ConnectedUserService.setConnected("true");
-			console.log("Connecté en tant que: ");
-			console.log(ConnectedUserService.getConnectedUser());
-			$window.history.back();
-			//$window.location.href = '/#/side-menu21/page1';
-		}, function erroCallabck(response) {
-			console.log("Il y a eu des erreurs!")
-		});
+function ($scope, $stateParams) {
+
+
+}])
+
+.controller('menuConnnectionCtrl', ['$scope', '$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory',
+function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHistory) {
+		$scope.isConnected = ConnectedUserService.IsConnected();
+		if (ConnectedUserService.getConnectedUser() != null){
+			$scope.connected = ConnectedUserService.getConnectedUser().pseudo;
+		}
+
+		$scope.showNavMenu = function() {
+			var div = document.getElementById("navMenu");
+			if (div.style.display == 'none'){
+				div.style.display = 'block';
+			}else{
+				div.style.display = 'none';
+			}
+		}
+
+		$scope.logOut = function(){
+			ConnectedUserService.setConnected("false");
+			ConnectedUserService.setConnectedUser(null);
+			$scope.isConnected = ConnectedUserService.IsConnected();
+			$ionicHistory.nextViewOptions({
+				disableBack: true
+			});
+			$state.go('menu.accueil', {}, {location: 'replace', reload: true})
+			//$location.path('/#/side-menu21/page1').replace();
+			//$window.location.reload();
+		}
+
+}])
+
+.controller('mesVenementsCtrl', ['$scope', '$stateParams', '$cordovaDatePicker',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams, $cordovaDatePicker) {
+
+}])
+
+.controller('footEnSalleCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams) {
+
+  //sum to test jasmine/karma
+  $scope.sum = function() {
+   $scope.z = $scope.x + $scope.y;
+  };
+
+}])
+
+.controller('afterworkCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams) {
+
+
+}])
+
+.controller('dejTechCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams) {
+
+
+}])
+
+.controller('mainCtrl', ['$scope',
+function($scope) {
+	$scope.view={
+		name: ''
+	};
+	$scope.modify = function(val){
+		$scope.view={
+			name: val
+		};
 	}
+}])
+
+.controller('profilCtrl', ['$scope', '$stateParams','ConnectedUserService','$http',
+function ($scope, $stateParams, ConnectedUserService, $http) {
+	var user = ConnectedUserService.getConnectedUser();
+	$scope.personID = user.personID;
+	$scope.pseudo = user.pseudo;
+	$scope.lastName = user.lastName;
+	$scope.firstName = user.firstName;
+	$scope.job = user.job;
+	$scope.canModifiy = "false";
+
+	$scope.saveProfil = function(){
+		var save = true;
+		if (document.getElementById("pseudoInput").value.trim() == ""){
+			document.getElementById("pseudo").innerText = "Votre pseudo ne peut pas être vide: ";
+			save = false;
+		}else{
+			document.getElementById("pseudo").innerText = "Pseudo: ";
+		}
+		if (document.getElementById("firstNameInput").value.trim() == ""){
+			document.getElementById("firstName").innerText = "Votre prenom ne peut pas être vide: ";
+			save = false;
+		}else{
+			document.getElementById("firstName").innerText = "Prenom: ";
+		}
+		if (document.getElementById("lastNameInput").value.trim() == ""){
+			document.getElementById("lastName").innerText = "Votre nom ne peut pas être vide: ";
+			save = false;
+		}else{
+			document.getElementById("lastName").innerText = "Nom: ";
+		}
+		if (save){
+
+			$http({
+				method: 'POST',
+				url : 'http://webapp8.nantes.sii.fr/addPerson',
+				//url: 'http://NANTES-0156.sii.fr:4444/addPerson',
+				data: {
+					personID: $scope.personID,
+					pseudo: document.getElementById("pseudoInput").value,
+					lastName: document.getElementById("lastNameInput").value,
+					firstName: document.getElementById("firstNameInput").value,
+					job: document.getElementById("jobInput").value
+				}
+			}).then(function successCallback(response) {
+				console.log("message send");
+				console.log(user.personID);
+				console.log(response);
+				var userResponse = response.data;
+				$scope.personID = userResponse.personID;
+				$scope.pseudo = userResponse.pseudo;
+				$scope.lastName = userResponse.lastName;
+				$scope.firstName = userResponse.firstName;
+				$scope.job = userResponse.job;
+				ConnectedUserService.setConnectedUser(userResponse);
+				$scope.canModifiy = "false";
+				alert("Modification enregistrées");
+			}, function erroCallabck(response) {
+				console.log(response);
+				console.log("Envoi formulaire creation d'evenement: Il y a eu des erreurs!");
+			});
+		}
+	}
+
+	$scope.modify = function(){
+		$scope.canModifiy = "true";
+	}
+
+	$scope.modifyBack = function(){
+		$scope.canModifiy = "false";
+	}
+
+}])
+
+.controller('rechercheCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams) {
+
+
+}])
+
+.controller('suggestionCtrl', ['$scope', '$stateParams','$http','ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams, $http, ConnectedUserService) {
+
+}])
+
+.controller('menuCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams) {
+
 
 }])

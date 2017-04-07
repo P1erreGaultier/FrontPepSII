@@ -136,6 +136,16 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('menu.profil', {
+    url: '/profil',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/profil.html',
+        controller: 'profilCtrl'
+      }
+    }
+  })
+
 $urlRouterProvider.otherwise('/side-menu21/page1')
 
 

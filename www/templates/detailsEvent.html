@@ -3,15 +3,22 @@
     <div ng-controller="menuConnnectionCtrl" ng-switch="{{isConnected}}">
       <button ng-switch-when="false"class="button icon No Icon" ui-sref="menu.connection()"> Connexion</button>
       <div ng-switch-when="true" style="height:100%">
-        <p style="margin-bottom:0%">{{connectedUser}}</p>
-        <a style="color:blue;" ng-click="logOut()"> Deconnexion</a>
+        <ul id="menuList">
+          <li>
+            <a class="lienMenu" style="margin-bottom:0%;width:inherit;">connected v</a>
+            <ul id="menuList" style="width:inherit;">
+              <li style="width:100%;"><a ui-sref="menu.profil()">Mon profil</a></li>
+              <li style="width:100%;"><a ng-click="logOut()">Deconnexion</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
     <h1 id="heading1" style="color:#000000;"></h1>
     <div>
-      <img src="{{sourceImgEvent}}" style="display:block;width:40%;height:auto;">
+      <img id="imageEvent" src="data:image/png;base64,{{sourceImgEvent}}" style="display:block;width:40%;height:auto;">
     </div>
     <div id="footEnSalle-markdown1" class="show-list-numbers-and-dots">
       <p style="color:#000000;">{{descriptionEvent}}</p>
