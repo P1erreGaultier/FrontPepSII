@@ -26,6 +26,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-safari-launcher": "^1.0.0",
+    "ng-cordova-oauth": "^0.3.0",
     "phantomjs-prebuilt": "^2.1.4",
     "shelljs": "^0.3.0"
   },
