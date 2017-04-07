@@ -27,7 +27,7 @@ ionic build ios
 Install the apk/ipa on your phone and launch it
 
 # License
-[MIT License](https://github.com/TraineeSIIp/FrontPepSII/LICENSE)
+[MIT License](https://github.com/TraineeSIIp/FrontPepSII/blob/master/LICENSE)
 
 # Authors
 Dorian Coqueron, Pierre Gaultier
