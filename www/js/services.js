@@ -18,6 +18,29 @@ angular.module('app.services', [])
   };
 }])
 
+.service('EventService', [function(){
+  var event;
+  var events;
+
+  return {
+    saveEvent : function(eventToSave) {
+      event = eventToSave;
+    },
+
+    getEvent : function() {
+      return event;
+    },
+
+    saveEvents : function(eventsToSave) {
+      events = eventsToSave;
+    },
+
+    getEvents : function() {
+      return events;
+    }
+  };
+}])
+
 .service('ConnectedUserService', [function(){
   var connectedUser;
   var connected = "false";
