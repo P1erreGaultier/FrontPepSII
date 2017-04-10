@@ -64,11 +64,15 @@ angular.module('app.services', [])
   }
 }])
 
-.service('BlankService', [function(){
+.service('GoogleService', [function(){
+  var gu;
   return {
-    sendMessage : function (){
-      console.log("test")
-      return "test";
+    saveGU : function(guToSave) {
+      gu = guToSave;
+    },
+
+    getGU : function(){
+      return gu;
     }
   }
 }]);
