@@ -129,17 +129,32 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams, $window, $http, ConnectedUserService) {
+	var id = "";
 	function onSuccess(googleUser) {
 		console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 		console.log(googleUser);
 		console.log(googleUser.getBasicProfile());
+		id = googleUser.getAuthResponse().id_token;
+		/*$http({
+			method: 'POST',
+			url: 'http://10.10.1.155/testToken',
+			data: googleUser.getAuthResponse().id_token
+
+		}).then(function successCallback(response) {
+			console.log("message send");
+			console.log(response);
+		}, function erroCallabck(response) {
+			console.log(response);
+			console.log("Envoi token: Il y a eu des erreurs!");
+		});*/
 	}
 	function onFailure(error) {
 		console.log(error);
 	}
 
+		alert(gapi.signin2.render);
 		gapi.signin2.render('my-signin2', {
-			'redirect_uri': 'http://localhost:8100',
+			'redirect_uri': 'http://localhost/callback',
 			'scope': 'openid',
 			'width': 240,
 			'height': 50,
@@ -153,8 +168,24 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService) {
 			var auth2 = gapi.auth2.getAuthInstance();
 			auth2.signOut().then(function () {
 				console.log('User signed out.');
+				alert('User signed out');
 			});
 		}
+
+			$scope.testConnect = function(){
+				$http({
+					method: 'POST',
+					url: 'http://10.10.1.155/connect',
+					data: id
+				}).then(function successCallback(response) {
+					console.log("message send");
+					console.log(response);
+				}, function erroCallabck(response) {
+					console.log(response);
+					console.log("Envoi token: Il y a eu des erreurs!");
+				});
+			}
+
 	/*$scope.login=function() {
 		var client_id="929890661942-49n2pcequcmns19fe1omff72tqcips1v.apps.googleusercontent.com";
 		$cordovaOauth.google(client_id, ["https://www.googleapis.com/auth/urlshortener", "https://www.googleapis.com/auth/userinfo.email"]).then(function(result){
