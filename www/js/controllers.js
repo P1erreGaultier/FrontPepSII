@@ -1,11 +1,9 @@
 angular.module('app.controllers', ['ngCordova','720kb.datepicker',])
 
-.controller('accueilCtrl', ['$scope', '$stateParams', '$http', 'EventService', 'BlankService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('accueilCtrl', ['$scope', '$stateParams', '$http', 'EventService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $http, EventService, BlankService) {
-		console.log("coucou");
-		BlankService.sendMessage();
+function ($scope, $stateParams, $http, EventService) {
 		$http({
   	method: 'GET',
   	url: 'http://webapp8.nantes.sii.fr/' + 'getAllEvent'
@@ -125,16 +123,17 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 
 }])
 
-.controller('connectionCtrl', ['$scope', '$stateParams', '$window', '$http', 'ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('connectionCtrl', ['$scope', '$stateParams', '$window', '$http', 'ConnectedUserService','GoogleService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $window, $http, ConnectedUserService) {
+function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleService) {
 	var id = "";
 	function onSuccess(googleUser) {
 		console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 		console.log(googleUser);
 		console.log(googleUser.getBasicProfile());
 		id = googleUser.getAuthResponse().id_token;
+		GoogleService.saveGU(googleUser);
 		/*$http({
 			method: 'POST',
 			url: 'http://10.10.1.155/testToken',
@@ -554,6 +553,36 @@ function ($scope, $stateParams, $http, ConnectedUserService) {
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams) {
+
+
+}])
+
+.controller('inscriptionCtrl', ['$scope', '$stateParams','$http','GoogleService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams,$http,GoogleService) {
+
+$scope.inscription= function(){
+	console.log(GoogleService.getGU());
+		$http({
+			method: 'POST',
+			url: 'http://10.10.1.155/registerPerson?id=' + GoogleService.getGU().getAuthResponse().id_token,
+			data: {
+				pseudo: document.getElementById("pseudo").value,
+				lastName: GoogleService.getGU().getBasicProfile().getFamilyName(),
+				firstName: GoogleService.getGU().getBasicProfile().getName(),
+				job: document.getElementById("job").value,
+				personEmail: GoogleService.getGU().getBasicProfile().getEmail()
+			}
+		}).then(function successCallback(response) {
+			console.log("message send");
+			console.log(response);
+		}, function erroCallabck(response) {
+			console.log(response);
+			console.log("Envoi token: Il y a eu des erreurs!");
+		});
+}
+
 
 
 }])
