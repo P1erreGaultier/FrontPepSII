@@ -4,6 +4,7 @@ angular.module('app.controllers', ['ngCordova','720kb.datepicker',])
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams, $window, $http, ConnectedUserService) {
+
 	function onSuccess(googleUser) {
 		console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 		console.log(googleUser);

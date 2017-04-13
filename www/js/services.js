@@ -44,6 +44,7 @@ angular.module('app.services', [])
 .service('ConnectedUserService', [function(){
   var connectedUser;
   var connected = "false";
+  var googleId;
 
   return {
     setConnectedUser: function(user) {
@@ -58,8 +59,16 @@ angular.module('app.services', [])
       connected = connect;
     },
 
-    IsConnected: function() {
+    isConnected: function() {
       return connected;
+    },
+
+    setGoogleId: function(id) {
+      googleId = id;
+    },
+
+    getGoogleId: function() {
+      return googleId;
     }
   }
 }])
