@@ -1,11 +1,9 @@
 angular.module('app.controllers', ['ngCordova','720kb.datepicker',])
 
-.controller('accueilCtrl', ['$scope', '$stateParams', '$http', 'EventService', 'BlankService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('accueilCtrl', ['$scope', '$stateParams', '$http', 'EventService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $http, EventService, BlankService) {
-		console.log("coucou");
-		BlankService.sendMessage();
+function ($scope, $stateParams, $http, EventService) {
 		$http({
   	method: 'GET',
   	url: 'http://webapp8.nantes.sii.fr/' + 'getAllEvent'
@@ -53,8 +51,6 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 		})
 	}
 
-
-
 		$scope.ListEvent = EventService.getEvents();
 		console.log($scope.ListEvent);
 		var options = {timeout: 10000, enableHighAccuracy: true};
@@ -68,6 +64,9 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 		var infowindow = new google.maps.InfoWindow();
 		var service = new google.maps.places.PlacesService($scope.map);
 
+		//var contentPlace = "<button type=\"button\" ui-sref=\"menu.inscription\">Creer un évenement</button>";
+
+
 		google.maps.event.addListener($scope.map, 'click', function(evt) {
 	    evt.stop();
 			if (evt.placeId != null){
@@ -75,8 +74,7 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 				 placeId: evt.placeId
 			 }, function(place, status) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
-					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> <button type=\"button\" onclick=\'EventService.saveEvent('+ JSON.stringify(event) +'); $window.location.href=\"/#/side-menu21/page13\";\'>Creer un évenement</button> </p>';
-					var compilePlace = $compile(contentPlace)($scope);
+					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <a href=\"/#/side-menu21/page8\">Creer un évenement</a>';
 					infowindow.setContent(contentPlace);
 	      	infowindow.setPosition(evt.latLng);
 	      	infowindow.open($scope.map);
@@ -93,7 +91,7 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 				for (i = 0; i<$scope.ListEvent.length; i++){
 					event = $scope.ListEvent[i];
 					if (place.place_id == event.Placeid){
-					contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ event.Name +'</b></p> <p>'+ event.Description +'</p> <p>'+ 'Du ' + $filter('date')(event.Datestart, "dd/MM/yyyy HH:mm") + ' au ' + event.Dateend +'</p> <button type=\'button\' onclick=\'EventService.saveEvent('+ JSON.stringify(event) +'); $window.location.href=\"/#/side-menu21/page13\";\'>Voir l\'évenement</button></div></div>';
+					contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ event.Name +'</b></p> <p>'+ event.Description +'</p> <p>'+ 'Du ' + $filter('date')(event.Datestart, "dd/MM/yyyy HH:mm") + ' au ' + event.Dateend +'</p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>';
 				}
 				}
 				var content = contentPlace + contentEvent
@@ -159,11 +157,18 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService) {
 	}
 
 	/*function onSuccess(googleUser) {
+.controller('connectionCtrl', ['$scope', '$stateParams', '$window', '$http', 'ConnectedUserService','GoogleService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleService) {
+	var id = "";
+	function onSuccess(googleUser) {
 		console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
 		console.log(googleUser);
 		console.log(googleUser.getBasicProfile());
 		id = googleUser.getAuthResponse().id_token;
 		ConnectedUserService.setGoogleId(id);
+		GoogleService.saveGU(googleUser);
 		/*$http({
 			method: 'POST',
 			url: 'http://10.10.1.155/testToken',
@@ -581,4 +586,32 @@ function ($scope, $stateParams, $ionicHistory, $state, ConnectedUserService) {
 			$state.go('menu.mesVenements', {}, {location: 'replace', reload: true});
 		}
 	}
+}])
+
+.controller('inscriptionCtrl', ['$scope', '$stateParams','$http','GoogleService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams,$http,GoogleService) {
+
+$scope.inscription= function(){
+	console.log(GoogleService.getGU());
+		$http({
+			method: 'POST',
+			url: 'http://10.10.1.155/registerPerson?id=' + GoogleService.getGU().getAuthResponse().id_token,
+			data: {
+				pseudo: document.getElementById("pseudo").value,
+				lastName: GoogleService.getGU().getBasicProfile().getFamilyName(),
+				firstName: GoogleService.getGU().getBasicProfile().getGivenName(),
+				job: document.getElementById("job").value,
+				personEmail: GoogleService.getGU().getBasicProfile().getEmail()
+			}
+		}).then(function successCallback(response) {
+			console.log("message send");
+			console.log(response);
+		}, function erroCallabck(response) {
+			console.log(response);
+			console.log("Envoi token: Il y a eu des erreurs!");
+		});
+}
+
 }])
