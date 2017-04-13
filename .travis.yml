@@ -25,9 +25,7 @@ script:
 - npm install
 - chmod +x hooks/after_prepare/010_add_platform_class.js
 - cordova platform add android
-- cordova platform add ios
 - ionic build android
-- ionic build ios --release
 after_success:
 - sh set_tags.sh
 deploy:

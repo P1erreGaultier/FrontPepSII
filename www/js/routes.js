@@ -136,6 +136,16 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('menu.inscription', {
+    url: '/page15',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/inscription.html',
+        controller: 'inscriptionCtrl'
+      }
+    }
+  })
+
   .state('menu.profil', {
     url: '/profil',
     views: {
