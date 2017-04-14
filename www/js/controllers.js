@@ -123,6 +123,40 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 
 }])
 
+.controller('connectionCtrl', ['$scope', '$stateParams', '$window', '$http', 'ConnectedUserService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+// You can include any angular dependencies as parameters for this function
+// TIP: Access Route Parameters for your page via $stateParams.parameterName
+function ($scope, $stateParams, $window, $http, ConnectedUserService) {
+	var id = "hrjkeghrhgkd";
+
+	$scope.googlePlus = function() {
+		window.plugins.googleplus.login(
+		{'webClientId': '784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com',},
+		function (responseGoogle) {
+			$http({
+				method: 'POST',
+				url: 'http://webapp8.nantes.sii.fr/connect',
+				data: responseGoogle.idToken
+			}).then(function successCallback(response) {
+				alert(JSON.stringify(response));
+				ConnectedUserService.setConnectedUser(response.data);
+				ConnectedUserService.setConnected("true");
+				$window.history.back();
+			}, function erroCallabck(response) {
+				alert("Erreur");
+				alert(JSON.stringify(response));
+			});
+		},
+		function (error) {
+			alert("erreur: " + error);
+		});
+	}
+
+	$scope.googlePlusLogOut = function() {
+		window.plugins.googleplus.logout();
+	}
+
+	/*function onSuccess(googleUser) {
 .controller('connectionCtrl', ['$scope', '$stateParams', '$window', '$http', 'ConnectedUserService','GoogleService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
@@ -133,6 +167,7 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleServi
 		console.log(googleUser);
 		console.log(googleUser.getBasicProfile());
 		id = googleUser.getAuthResponse().id_token;
+		ConnectedUserService.setGoogleId(id);
 		GoogleService.saveGU(googleUser);
 		/*$http({
 			method: 'POST',
@@ -146,12 +181,11 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleServi
 			console.log(response);
 			console.log("Envoi token: Il y a eu des erreurs!");
 		});*/
-	}
+	/*}
 	function onFailure(error) {
 		console.log(error);
 	}
 
-		alert(gapi.signin2.render);
 		gapi.signin2.render('my-signin2', {
 			'redirect_uri': 'http://localhost/callback',
 			'scope': 'openid',
@@ -161,13 +195,12 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleServi
 			'theme': 'dark',
 			'onsuccess': onSuccess,
 			'onfailure': onFailure
-		});
+		});*/
 
 		$scope.signOut = function() {
 			var auth2 = gapi.auth2.getAuthInstance();
 			auth2.signOut().then(function () {
 				console.log('User signed out.');
-				alert('User signed out');
 			});
 		}
 
@@ -184,6 +217,7 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleServi
 			    },
 					//data: {tokenid: id, person: "{\"personID\":1,\"pseudo\":\"Pierre le stagiaire\",\"lastName\":\"Gaultier\",\"firstName\":\"Pierre\",\"job\":\"Stagiaire\",\"personEmail\":\"p.g@gmail.com\"}"}
 					data: {tokenid: id}
+
 				}).then(function successCallback(response) {
 					console.log("message send");
 					console.log(response);
@@ -193,29 +227,12 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleServi
 				});
 			}
 
-	/*$scope.login=function() {
-		var client_id="929890661942-49n2pcequcmns19fe1omff72tqcips1v.apps.googleusercontent.com";
-		$cordovaOauth.google(client_id, ["https://www.googleapis.com/auth/urlshortener", "https://www.googleapis.com/auth/userinfo.email"]).then(function(result){
-			alert(JSON.stringify(result));
-			console.log(result);
-		}, function(error){
-			alert('error');
-		});
-		var scope="openid";
-		var redirect_uri="http://localhost:8100/";
-		var response_type="token";
-		var url="https://accounts.google.com/o/oauth2/auth?scope="+scope+"&client_id="+client_id+"&redirect_uri="+redirect_uri+
-		"&response_type="+response_type;
-		window.location.replace(url);
-
-	};*/
-
 
 	$scope.connection = function(){
 
 		$http({
 			method: 'GET',
-			url: 'http://webapp8.nantes.sii.fr/' + '/getPerson?id=' + document.getElementById("connction").value
+			url: 'http://webapp8.nantes.sii.fr/' + '/getPersonById?id=' + document.getElementById("connection").value
 			//url: 'http://NANTES-0156.sii.fr:4444/' + '/getPerson?id=' + document.getElementById("connction").value
 		}).then(function successCallback(response) {
 			console.log(response);
@@ -303,7 +320,6 @@ function ($scope, $stateParams, $window, $cordovaDatePicker, $http, EventService
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams, $window, $http, EventService) {
-
 	$scope.getBase64Image = function(img) {
 		var canvas = document.createElement("canvas");
 	  canvas.width = img.width;
@@ -394,7 +410,7 @@ function ($scope, $stateParams) {
 
 .controller('menuConnnectionCtrl', ['$scope', '$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory',
 function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHistory) {
-		$scope.isConnected = ConnectedUserService.IsConnected();
+		$scope.isConnected = ConnectedUserService.isConnected();
 		if (ConnectedUserService.getConnectedUser() != null){
 			$scope.connected = ConnectedUserService.getConnectedUser().pseudo;
 		}
@@ -411,7 +427,7 @@ function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHis
 		$scope.logOut = function(){
 			ConnectedUserService.setConnected("false");
 			ConnectedUserService.setConnectedUser(null);
-			$scope.isConnected = ConnectedUserService.IsConnected();
+			window.plugins.googleplus.logout();
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});
@@ -422,10 +438,10 @@ function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHis
 
 }])
 
-.controller('mesVenementsCtrl', ['$scope', '$stateParams', '$cordovaDatePicker',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('mesVenementsCtrl', ['$scope', '$stateParams', '$cordovaDatePicker', 'ConnectedUserService', '$location', '$state', '$ionicHistory',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $cordovaDatePicker) {
+function ($scope, $stateParams, $cordovaDatePicker, ConnectedUserService, $location, $state, $ionicHistory) {
 
 }])
 
@@ -478,6 +494,7 @@ function ($scope, $stateParams, ConnectedUserService, $http) {
 	$scope.firstName = user.firstName;
 	$scope.job = user.job;
 	$scope.canModifiy = "false";
+	console.log(ConnectedUserService.getConnectedUser());
 
 	$scope.saveProfil = function(){
 		var save = true;
@@ -503,15 +520,16 @@ function ($scope, $stateParams, ConnectedUserService, $http) {
 
 			$http({
 				method: 'POST',
-				url : 'http://webapp8.nantes.sii.fr/addPerson',
+				url : 'http://webapp8.nantes.sii.fr/registerPerson?id=' + ConnectedUserService.getGoogleId(),
 				//url: 'http://NANTES-0156.sii.fr:4444/addPerson',
 				data: {
 					personID: $scope.personID,
 					pseudo: document.getElementById("pseudoInput").value,
 					lastName: document.getElementById("lastNameInput").value,
 					firstName: document.getElementById("firstNameInput").value,
-					job: document.getElementById("jobInput").value
-				}
+					job: document.getElementById("jobInput").value,
+					personEmail: ConnectedUserService.getConnectedUser().personEmail
+				},
 			}).then(function successCallback(response) {
 				console.log("message send");
 				console.log(user.personID);
@@ -525,9 +543,11 @@ function ($scope, $stateParams, ConnectedUserService, $http) {
 				ConnectedUserService.setConnectedUser(userResponse);
 				$scope.canModifiy = "false";
 				alert("Modification enregistrées");
+				alert(JSON.stringify(response));
 			}, function erroCallabck(response) {
 				console.log(response);
 				console.log("Envoi formulaire creation d'evenement: Il y a eu des erreurs!");
+				alert(JSON.stringify(response));
 			});
 		}
 	}
@@ -557,12 +577,24 @@ function ($scope, $stateParams, $http, ConnectedUserService) {
 
 }])
 
-.controller('menuCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('menuCtrl', ['$scope', '$stateParams', '$ionicHistory', '$state', 'ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams) {
-
-
+function ($scope, $stateParams, $ionicHistory, $state, ConnectedUserService) {
+	$scope.checkUser = function() {
+		console.log("checkUser");
+		if (ConnectedUserService.isConnected() != "true"){
+			//$state.go('menu.connection', {}, {location: 'replace', reload: true})
+			/*$location.path('/#/side-menu21/page14');
+			$window.location.reload();*/
+			$ionicHistory.nextViewOptions({
+				disableBack: true
+			});
+			$state.go('menu.connection', {}, {location: 'replace', reload: true});
+		}else {
+			$state.go('menu.mesVenements', {}, {location: 'replace', reload: true});
+		}
+	}
 }])
 
 .controller('inscriptionCtrl', ['$scope', '$stateParams','$http','GoogleService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
