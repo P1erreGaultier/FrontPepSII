@@ -174,8 +174,16 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleServi
 			$scope.testConnect = function(){
 				$http({
 					method: 'POST',
-					url: 'http://10.10.1.155/connect',
-					data: id
+					url: 'http://webapp8.nantes.sii.fr/connect',
+					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+					transformRequest: function(obj) {
+			        var str = [];
+			        for(var p in obj)
+			        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+			        return str.join("&");
+			    },
+					//data: {tokenid: id, person: "{\"personID\":1,\"pseudo\":\"Pierre le stagiaire\",\"lastName\":\"Gaultier\",\"firstName\":\"Pierre\",\"job\":\"Stagiaire\",\"personEmail\":\"p.g@gmail.com\"}"}
+					data: {tokenid: id}
 				}).then(function successCallback(response) {
 					console.log("message send");
 					console.log(response);
