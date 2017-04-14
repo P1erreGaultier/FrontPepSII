@@ -123,10 +123,10 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 
 }])
 
-.controller('connectionCtrl', ['$scope', '$stateParams', '$window', '$http', 'ConnectedUserService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('connectionCtrl', ['$scope', '$stateParams', '$window', '$http', 'ConnectedUserService', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $window, $http, ConnectedUserService) {
+function ($scope, $stateParams, $window, $http, ConnectedUserService, $state) {
 	var id = "hrjkeghrhgkd";
 
 	$scope.googlePlus = function() {
@@ -136,12 +136,24 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService) {
 			$http({
 				method: 'POST',
 				url: 'http://webapp8.nantes.sii.fr/connect',
-				data: responseGoogle.idToken
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				transformRequest: function(obj) {
+				var str = [];
+				for(var p in obj)
+				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+				},
+				data: {tokenid: responseGoogle.idToken}
 			}).then(function successCallback(response) {
 				alert(JSON.stringify(response));
-				ConnectedUserService.setConnectedUser(response.data);
-				ConnectedUserService.setConnected("true");
-				$window.history.back();
+				if (response.data == null){
+					ConnectedUserService.setResponseGoogle(responseGoogle);
+					$state.go('menu.inscription');
+				}else{
+					ConnectedUserService.setConnectedUser(response.data);
+					ConnectedUserService.setConnected("true");
+					$window.history.back();
+				}
 			}, function erroCallabck(response) {
 				alert("Erreur");
 				alert(JSON.stringify(response));
@@ -205,17 +217,25 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleServi
 		}
 
 			$scope.testConnect = function(){
-				$http({
+				$state.go('menu.inscription');
+				/*$http({
 					method: 'POST',
 					url: 'http://webapp8.nantes.sii.fr/connect',
-					data: id
+					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+					transformRequest: function(obj) {
+					var str = [];
+					for(var p in obj)
+					str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					return str.join("&");
+					},
+					data: {tokenid: id}
 				}).then(function successCallback(response) {
 					console.log("message send");
 					console.log(response);
 				}, function erroCallabck(response) {
 					console.log(response);
 					console.log("Envoi token: Il y a eu des erreurs!");
-				});
+				});*/
 			}
 
 
@@ -588,29 +608,40 @@ function ($scope, $stateParams, $ionicHistory, $state, ConnectedUserService) {
 	}
 }])
 
-.controller('inscriptionCtrl', ['$scope', '$stateParams','$http','GoogleService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('inscriptionCtrl', ['$scope', '$stateParams','$http','ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams,$http,GoogleService) {
-
+function ($scope, $stateParams,$http,ConnectedUserService) {
+alert(JSON.stringify(ConnectedUserService.getResponseGoogle()));
 $scope.inscription= function(){
-	console.log(GoogleService.getGU());
+		var responseGoogle = ConnectedUserService.getResponseGoogle();
+		var personToSend = {
+			"Pseudo" : document.getElementById("pseudo").value,
+			"LastName" : responseGoogle.familyName,
+			"FirstName" : responseGoogle.givenName,
+			"Job" : document.getElementById("job").value,
+			"PersonEmail" : responseGoogle.email
+		};
+		alert(JSON.stringify(personToSend));
 		$http({
 			method: 'POST',
-			url: 'http://10.10.1.155/registerPerson?id=' + GoogleService.getGU().getAuthResponse().id_token,
-			data: {
-				pseudo: document.getElementById("pseudo").value,
-				lastName: GoogleService.getGU().getBasicProfile().getFamilyName(),
-				firstName: GoogleService.getGU().getBasicProfile().getGivenName(),
-				job: document.getElementById("job").value,
-				personEmail: GoogleService.getGU().getBasicProfile().getEmail()
-			}
+			url: 'http://webapp8.nantes.sii.fr/registerPerson',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+				var str = [];
+				for(var p in obj)
+				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+			},
+			data: {tokenid: responseGoogle.idToken, person: JSON.stringify(personToSend)}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
+			alert(JSON.stringify(response));
 		}, function erroCallabck(response) {
 			console.log(response);
 			console.log("Envoi token: Il y a eu des erreurs!");
+			alert(JSON.stringify(response));
 		});
 }
 
