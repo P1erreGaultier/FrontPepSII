@@ -13,9 +13,8 @@ function ($scope, $stateParams, $http, EventService) {
 		$scope.ListEvent = response.data;
 		EventService.saveEvents($scope.ListEvent);
 		for(i=0; i<$scope.ListEvent.length; i++){
-			$scope.ListEvent[i].Datestart = Date.parse($scope.ListEvent[i].Datestart);
+			$scope.ListEvent[i].DateStart = Date.parse($scope.ListEvent[i].DateStart);
 		}
-
 		$scope.passEvent = function (event){
 			EventService.saveEvent(event);
 		}
@@ -85,13 +84,13 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 
 		$scope.addMarker = function (place,marker){
 			marker.addListener('click', function() {
-				//var event =  $scope.hashTable[place.place_id];
+				console.log(place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}));
 				var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> ------------------------------------------------------------------------------------------------ </p>';
 				var contentEvent= "";
 				for (i = 0; i<$scope.ListEvent.length; i++){
 					event = $scope.ListEvent[i];
-					if (place.place_id == event.Placeid){
-					contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ event.Name +'</b></p> <p>'+ event.Description +'</p> <p>'+ 'Du ' + $filter('date')(event.Datestart, "dd/MM/yyyy HH:mm") + ' au ' + event.Dateend +'</p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>';
+					if (place.place_id == event.PlaceId){
+					contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ event.Name +'</b></p> <p>'+ event.Description +'</p> <p>'+ 'Du ' + $filter('date')(event.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + event.DateEnd +'</p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>';
 				}
 				}
 				var content = contentPlace + contentEvent
@@ -108,7 +107,7 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 			}
 			$scope.hashTable[$scope.ListEvent[$scope.i].Placeid].push($scope.ListEvent[$scope.i]);*/
 			service.getDetails({
-				 placeId: $scope.ListEvent[$scope.i].Placeid
+				 placeId: $scope.ListEvent[$scope.i].PlaceId
 			 }, function(place, status) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
 					 var marker = new google.maps.Marker({
