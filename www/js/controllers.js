@@ -13,9 +13,8 @@ function ($scope, $stateParams, $http, EventService) {
 		$scope.ListEvent = response.data;
 		EventService.saveEvents($scope.ListEvent);
 		for(i=0; i<$scope.ListEvent.length; i++){
-			$scope.ListEvent[i].Datestart = Date.parse($scope.ListEvent[i].Datestart);
+			$scope.ListEvent[i].DateStart = Date.parse($scope.ListEvent[i].DateStart);
 		}
-
 		$scope.passEvent = function (event){
 			EventService.saveEvent(event);
 		}
@@ -85,13 +84,13 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 
 		$scope.addMarker = function (place,marker){
 			marker.addListener('click', function() {
-				//var event =  $scope.hashTable[place.place_id];
+				console.log(place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}));
 				var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> ------------------------------------------------------------------------------------------------ </p>';
 				var contentEvent= "";
 				for (i = 0; i<$scope.ListEvent.length; i++){
 					event = $scope.ListEvent[i];
-					if (place.place_id == event.Placeid){
-					contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ event.Name +'</b></p> <p>'+ event.Description +'</p> <p>'+ 'Du ' + $filter('date')(event.Datestart, "dd/MM/yyyy HH:mm") + ' au ' + event.Dateend +'</p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>';
+					if (place.place_id == event.PlaceId){
+					contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ event.Name +'</b></p> <p>'+ event.Description +'</p> <p>'+ 'Du ' + $filter('date')(event.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + event.DateEnd +'</p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>';
 				}
 				}
 				var content = contentPlace + contentEvent
@@ -108,7 +107,7 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 			}
 			$scope.hashTable[$scope.ListEvent[$scope.i].Placeid].push($scope.ListEvent[$scope.i]);*/
 			service.getDetails({
-				 placeId: $scope.ListEvent[$scope.i].Placeid
+				 placeId: $scope.ListEvent[$scope.i].PlaceId
 			 }, function(place, status) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
 					 var marker = new google.maps.Marker({
@@ -223,6 +222,14 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService,GoogleServi
 					url: 'http://webapp8.nantes.sii.fr/connect',
 					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 					transformRequest: function(obj) {
+			        var str = [];
+			        for(var p in obj)
+			        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+			        return str.join("&");
+			    },
+					//data: {tokenid: id, person: "{\"personID\":1,\"pseudo\":\"Pierre le stagiaire\",\"lastName\":\"Gaultier\",\"firstName\":\"Pierre\",\"job\":\"Stagiaire\",\"personEmail\":\"p.g@gmail.com\"}"}
+					data: {tokenid: id}
+
 					var str = [];
 					for(var p in obj)
 					str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
@@ -297,6 +304,7 @@ function ($scope, $stateParams, $window, $cordovaDatePicker, $http, EventService
 		}
 
 		if (send){
+			/*
 			var ownerToSend = ConnectedUserService.getConnectedUser();
 			console.log(ownerToSend);
 			$http({
@@ -320,6 +328,41 @@ function ($scope, $stateParams, $window, $cordovaDatePicker, $http, EventService
 			}, function erroCallabck(response) {
 				console.log(response);
 				console.log("Envoi formulaire creation d'evenement: Il y a eu des erreurs!");
+			});
+			*/
+
+			var ownerToSend = ConnectedUserService.getConnectedUser();
+			var responseGoogle = ConnectedUserService.getResponseGoogle();
+			var eventToSend = {
+				"Name" : document.getElementById("nomEvenement").value,
+				"DateStart" : document.getElementById("selectedDate").value + " " + document.getElementById("horaireDebut").value,
+				"DateEnd" : document.getElementById("selectedDate").value + " " + document.getElementById("horaireFin").value,
+				"PlaceId" : document.getElementById("lieu").value,
+				"Description": document.getElementById("description").value,
+				"Image" : document.getElementById("image").value,
+				"IsCanceled" : 0,
+				"Owner" : ownerToSend
+			};
+			alert(JSON.stringify(eventToSend));
+			$http({
+				method: 'POST',
+				url: 'http://webapp8.nantes.sii.fr/saveEvent',
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				transformRequest: function(obj) {
+					var str = [];
+					for(var p in obj)
+					str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					return str.join("&");
+				},
+				data: {tokenid: responseGoogle.idToken, event: JSON.stringify(eventToSend)}
+			}).then(function successCallback(response) {
+				console.log("message send");
+				console.log(response);
+				alert(JSON.stringify(response));
+			}, function erroCallabck(response) {
+				console.log(response);
+				console.log("Envoi token: Il y a eu des erreurs!");
+				alert(JSON.stringify(response));
 			});
 		}
 
@@ -423,7 +466,7 @@ function ($scope, $stateParams) {
 function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHistory) {
 		$scope.isConnected = ConnectedUserService.isConnected();
 		if (ConnectedUserService.getConnectedUser() != null){
-			$scope.connected = ConnectedUserService.getConnectedUser().pseudo;
+			$scope.connected = ConnectedUserService.getConnectedUser().Pseudo;
 		}
 
 		$scope.showNavMenu = function() {
@@ -499,11 +542,11 @@ function($scope) {
 .controller('profilCtrl', ['$scope', '$stateParams','ConnectedUserService','$http',
 function ($scope, $stateParams, ConnectedUserService, $http) {
 	var user = ConnectedUserService.getConnectedUser();
-	$scope.personID = user.personID;
-	$scope.pseudo = user.pseudo;
-	$scope.lastName = user.lastName;
-	$scope.firstName = user.firstName;
-	$scope.job = user.job;
+	$scope.personID = user.PersonID;
+	$scope.pseudo = user.Pseudo;
+	$scope.lastName = user.LastName;
+	$scope.firstName = user.FirstName;
+	$scope.job = user.Job;
 	$scope.canModifiy = "false";
 	console.log(ConnectedUserService.getConnectedUser());
 
@@ -546,11 +589,11 @@ function ($scope, $stateParams, ConnectedUserService, $http) {
 				console.log(user.personID);
 				console.log(response);
 				var userResponse = response.data;
-				$scope.personID = userResponse.personID;
-				$scope.pseudo = userResponse.pseudo;
-				$scope.lastName = userResponse.lastName;
-				$scope.firstName = userResponse.firstName;
-				$scope.job = userResponse.job;
+				$scope.personID = userResponse.PersonID;
+				$scope.pseudo = userResponse.Pseudo;
+				$scope.lastName = userResponse.LastName;
+				$scope.firstName = userResponse.FirstName;
+				$scope.job = userResponse.Job;
 				ConnectedUserService.setConnectedUser(userResponse);
 				$scope.canModifiy = "false";
 				alert("Modification enregistrées");
@@ -585,7 +628,36 @@ function ($scope, $stateParams) {
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams, $http, ConnectedUserService) {
+$scope.suggestion= function(){
+	console.log(ConnectedUserService.getConnectedUser());
+	var responseGoogle = ConnectedUserService.getResponseGoogle();
+	var personToSend = {
+		"Text" : document.getElementById("text").value,
+		"Job" : ConnectedUserService.getConnectedUser().Job,
+		"Date" : (new Date(), 'dd/MM/yyyy')
+	};
 
+	$http({
+		method: 'POST',
+		url: 'http://webapp8.nantes.sii.fr/saveSuggestion',
+		headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+		transformRequest: function(obj) {
+			var str = [];
+			for(var p in obj)
+			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+			return str.join("&");
+		},
+		data: {tokenid: responseGoogle.idToken, suggestion: JSON.stringify(suggestionToSend)}
+	}).then(function successCallback(response) {
+		console.log("message send");
+		console.log(response);
+		alert(JSON.stringify(response));
+	}, function erroCallabck(response) {
+		console.log(response);
+		console.log("Envoi token: Il y a eu des erreurs!");
+		alert(JSON.stringify(response));
+	});
+}
 }])
 
 .controller('menuCtrl', ['$scope', '$stateParams', '$ionicHistory', '$state', 'ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
