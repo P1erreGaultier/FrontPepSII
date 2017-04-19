@@ -39,7 +39,7 @@ function ($scope, $stateParams, $window, $http, EventService) {
 
 	$http({
 		method: 'GET',
-		url: 'http://webapp8.nantes.sii.fr/' + 'getCommentByEvent?id=' + $stateParams.id
+		url: 'http://webapp8.nantes.sii.fr/' + 'getCommentByEvent?id=' + event.EventId
 	}).then(function successCallback(response) {
 		$scope.ListComment = response.data;
 	}, function erroCallabck(response) {
@@ -49,7 +49,7 @@ function ($scope, $stateParams, $window, $http, EventService) {
 
 	$http({
 		method: 'GET',
-		url: 'http://webapp8.nantes.sii.fr/getAllParticipantById?id=' + $stateParams.id
+		url: 'http://webapp8.nantes.sii.fr/getAllParticipantById?id=' + event.EventId
 	}).then(function successCallback(response) {
 		$scope.ListParticipant = response.data;
 		$scope.nbParticipants = $scope.ListParticipant.length;
