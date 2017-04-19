@@ -150,6 +150,7 @@ function ($scope, $stateParams, $window, $http, ConnectedUserService, $state) {
 					$state.go('menu.inscription');
 				}else{
 					ConnectedUserService.setConnectedUser(response.data);
+					ConnectedUserService.setResponseGoogle(responseGoogle);
 					ConnectedUserService.setConnected("true");
 					$window.history.back();
 				}
@@ -337,7 +338,7 @@ function ($scope, $stateParams, $window, $cordovaDatePicker, $http, EventService
 				"Name" : document.getElementById("nomEvenement").value,
 				"DateStart" : document.getElementById("selectedDate").value + " " + document.getElementById("horaireDebut").value,
 				"DateEnd" : document.getElementById("selectedDate").value + " " + document.getElementById("horaireFin").value,
-				"PlaceId" : document.getElementById("lieu").value,
+				"PlaceId" : "ChIJy6rbS_brBUgRXzWPvQ0FDXg",
 				"Description": document.getElementById("description").value,
 				"Image" : document.getElementById("image").value,
 				"IsCanceled" : 0,
@@ -405,7 +406,7 @@ function ($scope, $stateParams, $window, $http, EventService) {
 	$scope.TitleEvent = event.Name;
 	$scope.sourceImgEvent = event.Image;
 	$scope.descriptionEvent = event.Description;
-	$scope.dateStartEvent = event.Datestart;
+	$scope.dateStartEvent = event.DateStart;
 
 	$http({
 		method: 'GET',
@@ -624,17 +625,19 @@ function ($scope, $stateParams) {
 
 }])
 
-.controller('suggestionCtrl', ['$scope', '$stateParams','$http','ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('suggestionCtrl', ['$scope', '$stateParams','$http','ConnectedUserService', '$filter', '$ionicHistory', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $http, ConnectedUserService) {
+function ($scope, $stateParams, $http, ConnectedUserService, $filter, $ionicHistory, $state) {
 $scope.suggestion= function(){
-	console.log(ConnectedUserService.getConnectedUser());
+	var date = $filter('date')(new Date(), 'dd/MM/yyyy')
 	var responseGoogle = ConnectedUserService.getResponseGoogle();
-	var personToSend = {
+	alert(JSON.stringify(responseGoogle));
+	alert(responseGoogle.idToken);
+	var suggestionToSend = {
 		"Text" : document.getElementById("text").value,
 		"Job" : ConnectedUserService.getConnectedUser().Job,
-		"Date" : (new Date(), 'dd/MM/yyyy')
+		"Date" : date
 	};
 
 	$http({
@@ -647,11 +650,15 @@ $scope.suggestion= function(){
 			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 			return str.join("&");
 		},
-		data: {tokenid: responseGoogle.idToken, suggestion: JSON.stringify(suggestionToSend)}
+		data: {tokenid:responseGoogle.idToken, suggestion: JSON.stringify(suggestionToSend)}
 	}).then(function successCallback(response) {
 		console.log("message send");
 		console.log(response);
 		alert(JSON.stringify(response));
+		$ionicHistory.nextViewOptions({
+			disableBack: true
+		});
+		$state.go('menu.accueil', {}, {location: 'replace', reload: true})
 	}, function erroCallabck(response) {
 		console.log(response);
 		console.log("Envoi token: Il y a eu des erreurs!");
