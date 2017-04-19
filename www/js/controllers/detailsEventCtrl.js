@@ -1,20 +1,34 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$scope', '$stateParams', '$window', '$http','EventService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$scope', '$stateParams', '$window', '$http','EventService','ConnectedUserService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $window, $http, EventService) {
-	$scope.getBase64Image = function(img) {
-		var canvas = document.createElement("canvas");
-	  canvas.width = img.width;
-	  canvas.height = img.height;
-	  var ctx = canvas.getContext("2d");
-	  ctx.drawImage(img, 0, 0);
-	  var dataURL = canvas.toDataURL("image/png");
-	  return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+function ($scope, $stateParams, $window, $http, EventService,ConnectedUserService) {
+
+	var event = EventService.getEvent()
+	var ownerToSend = ConnectedUserService.getConnectedUser();
+	$scope.RegisterUserToEvent = function() {
+		$http({
+			method: 'POST',
+			url: 'http://webapp8.nantes.sii.fr/saveParticipant',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+				var str = [];
+				for(var p in obj)
+				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+			},
+			data: {tokenid:responseGoogle.idToken, person: JSON.stringify(ownerToSend), event:JSON.stringify(event)}
+		}).then(function successCallback(response) {
+			console.log("message send");
+			console.log(response);
+			alert(JSON.stringify(response));
+		}, function erroCallabck(response) {
+			console.log(response);
+			console.log("Envoi token: Il y a eu des erreurs!");
+			alert(JSON.stringify(response));
+		});
 	}
-
-
 
 	var event = EventService.getEvent();
 	$scope.getCommentMargin = function(owner){
@@ -58,28 +72,5 @@ function ($scope, $stateParams, $window, $http, EventService) {
 		console.log(response);
 	});
 
-	$scope.uploadImage = function(){
-		$http({
-			method: 'POST',
-			url: 'http://webapp8.nantes.sii.fr/saveEvent',
-			data: {
-				id: event.id,
-				Name: event.Name,
-				Datestart: event.Datestart,
-				Dateend: event.Dateend,
-				Placeid: event.Placeid,
-				Description: event.Description,
-				Image: "",
-				Iscanceled: 0,
-				Owner: event.Owner
-			}
-		}).then(function successCallback(response) {
-			alert("Image enregistrée!");
-			console.log(response);
-		}, function erroCallabck(response) {
-			console.log("Envoi formulaire creation d'evenement: Il y a eu des erreurs!");
-		});
-	}
-	/*console.log($stateParams.event)
-	console.log($stateParams.event.Name)*/
+
 }])

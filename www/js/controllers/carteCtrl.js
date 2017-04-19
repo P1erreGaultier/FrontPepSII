@@ -30,9 +30,6 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 		var infowindow = new google.maps.InfoWindow();
 		var service = new google.maps.places.PlacesService($scope.map);
 
-		//var contentPlace = "<button type=\"button\" ui-sref=\"menu.inscription\">Creer un évenement</button>";
-
-
 		google.maps.event.addListener($scope.map, 'click', function(evt) {
 	    evt.stop();
 			if (evt.placeId != null){
@@ -40,7 +37,8 @@ function ($scope, $stateParams, $http, $compile, EventService, $window, $filter)
 				 placeId: evt.placeId
 			 }, function(place, status) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
-					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <a href=\"/#/side-menu21/page8\">Creer un évenement</a>';
+					console.log(place.place_id);
+					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <a href=\"/#/side-menu21/page8\?id='+ place.place_id +'\">Creer un évenement</a>';
 					infowindow.setContent(contentPlace);
 	      	infowindow.setPosition(evt.latLng);
 	      	infowindow.open($scope.map);
