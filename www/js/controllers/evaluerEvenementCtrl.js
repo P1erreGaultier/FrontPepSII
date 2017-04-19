@@ -1,4 +1,4 @@
-angular.module('app.controllers', ['ngCordova','720kb.datepicker',])
+angular.module('app.controllers')
 
 .controller('evaluerEvenementCtrl', ['$scope', '$stateParams', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function

@@ -1,9 +1,9 @@
-angular.module('app.controllers', ['ngCordova','720kb.datepicker',])
+angular.module('app.controllers')
 
-.controller('carteCtrl', ['$scope', '$stateParams', '$http','$compile','CustomFactory','$window',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('carteCtrl', ['$scope', '$stateParams', '$http','$compile','EventService','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
+function ($scope, $stateParams, $http, $compile, EventService, $window, $filter) {
 
 	$scope.addMarker = function (pos, texte, numero){
 		var mark = new google.maps.Marker({position:pos});
@@ -17,15 +17,8 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 		})
 	}
 
-
-
-	$http({
-		method: 'GET',
-		url: 'http://webapp8.nantes.sii.fr/' + 'getAllEvent'
-		//url: 'http://NANTES-0156.sii.fr:4444/' + 'getAllEvent'
-	}).then(function successCallback(response) {
-		$scope.ListEvent = response.data;
-
+		$scope.ListEvent = EventService.getEvents();
+		console.log($scope.ListEvent);
 		var options = {timeout: 10000, enableHighAccuracy: true};
 		var latLng = new google.maps.LatLng(47.2112216, -1.5570168);
 		var mapOptions = {
@@ -37,6 +30,9 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 		var infowindow = new google.maps.InfoWindow();
 		var service = new google.maps.places.PlacesService($scope.map);
 
+		//var contentPlace = "<button type=\"button\" ui-sref=\"menu.inscription\">Creer un évenement</button>";
+
+
 		google.maps.event.addListener($scope.map, 'click', function(evt) {
 	    evt.stop();
 			if (evt.placeId != null){
@@ -44,8 +40,7 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 				 placeId: evt.placeId
 			 }, function(place, status) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
-					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> <button type=\"button\" onclick=\'CustomFactory.saveEvent('+ JSON.stringify(event) +'); $window.location.href=\"/#/side-menu21/page13\";\'>Creer un évenement</button> </p>';
-					var compilePlace = $compile(contentPlace)($scope);
+					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <a href=\"/#/side-menu21/page8\">Creer un évenement</a>';
 					infowindow.setContent(contentPlace);
 	      	infowindow.setPosition(evt.latLng);
 	      	infowindow.open($scope.map);
@@ -56,12 +51,14 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 
 		$scope.addMarker = function (place,marker){
 			marker.addListener('click', function() {
-				//var event =  $scope.hashTable[place.place_id];
+				console.log(place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}));
 				var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> ------------------------------------------------------------------------------------------------ </p>';
 				var contentEvent= "";
-				for (var key in $scope.hashTable[place.place_id]){
-					event = $scope.hashTable[place.place_id][key];
-					contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ event.Name +'</b></p> <p>'+ event.Description +'</p> <p>'+ 'Du ' + event.Datestart + ' au ' + event.Dateend +'</p> <button type=\'button\' onclick=\'CustomFactory.saveEvent('+ JSON.stringify(event) +'); $window.location.href=\"/#/side-menu21/page13\";\'>Voir l\'évenement</button></div></div>';
+				for (i = 0; i<$scope.ListEvent.length; i++){
+					event = $scope.ListEvent[i];
+					if (place.place_id == event.PlaceId){
+					contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ event.Name +'</b></p> <p>'+ event.Description +'</p> <p>'+ 'Du ' + $filter('date')(event.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + event.DateEnd +'</p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>';
+				}
 				}
 				var content = contentPlace + contentEvent
 				var compileEvent = $compile(content)($scope);
@@ -72,12 +69,12 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 
 		$scope.hashTable = {};
 		for ( $scope.i=0; $scope.i<$scope.ListEvent.length; $scope.i++){
-			if ($scope.hashTable[$scope.ListEvent[$scope.i].Placeid] == null){
+			/*if ($scope.hashTable[$scope.ListEvent[$scope.i].Placeid] == null){
 				$scope.hashTable[$scope.ListEvent[$scope.i].Placeid] = [];
 			}
-			$scope.hashTable[$scope.ListEvent[$scope.i].Placeid].push($scope.ListEvent[$scope.i]);
+			$scope.hashTable[$scope.ListEvent[$scope.i].Placeid].push($scope.ListEvent[$scope.i]);*/
 			service.getDetails({
-				 placeId: $scope.ListEvent[$scope.i].Placeid
+				 placeId: $scope.ListEvent[$scope.i].PlaceId
 			 }, function(place, status) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
 					 var marker = new google.maps.Marker({
@@ -89,8 +86,5 @@ function ($scope, $stateParams, $http, $compile,CustomFactory,$window) {
 			 });
 
 		}
-	}, function erroCallabck(response) {
-		console.log("Il y a eu des erreurs dans la map!")
-	});
 
 }])

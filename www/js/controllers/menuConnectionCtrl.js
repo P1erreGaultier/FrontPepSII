@@ -1,10 +1,10 @@
-angular.module('app.controllers', ['ngCordova','720kb.datepicker',])
+angular.module('app.controllers')
 
 .controller('menuConnnectionCtrl', ['$scope', '$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory',
 function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHistory) {
-		$scope.isConnected = ConnectedUserService.IsConnected();
+		$scope.isConnected = ConnectedUserService.isConnected();
 		if (ConnectedUserService.getConnectedUser() != null){
-			$scope.connected = ConnectedUserService.getConnectedUser().pseudo;
+			$scope.connected = ConnectedUserService.getConnectedUser().Pseudo;
 		}
 
 		$scope.showNavMenu = function() {
@@ -19,7 +19,7 @@ function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHis
 		$scope.logOut = function(){
 			ConnectedUserService.setConnected("false");
 			ConnectedUserService.setConnectedUser(null);
-			$scope.isConnected = ConnectedUserService.IsConnected();
+			window.plugins.googleplus.logout();
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});
