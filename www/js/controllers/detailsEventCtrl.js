@@ -1,10 +1,9 @@
-angular.module('app.controllers', ['ngCordova','720kb.datepicker',])
+angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$scope', '$stateParams', '$window', '$http','CustomFactory',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$scope', '$stateParams', '$window', '$http','EventService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $window, $http, CustomFactory) {
-
+function ($scope, $stateParams, $window, $http, EventService) {
 	$scope.getBase64Image = function(img) {
 		var canvas = document.createElement("canvas");
 	  canvas.width = img.width;
@@ -17,7 +16,7 @@ function ($scope, $stateParams, $window, $http, CustomFactory) {
 
 
 
-	var event = CustomFactory.getEvent();
+	var event = EventService.getEvent();
 	$scope.getCommentMargin = function(owner){
 		if (owner == null){
 			return "0%";
@@ -36,11 +35,11 @@ function ($scope, $stateParams, $window, $http, CustomFactory) {
 	$scope.TitleEvent = event.Name;
 	$scope.sourceImgEvent = event.Image;
 	$scope.descriptionEvent = event.Description;
-	$scope.dateStartEvent = event.Datestart;
+	$scope.dateStartEvent = event.DateStart;
 
 	$http({
 		method: 'GET',
-		url: 'http://webapp8.nantes.sii.fr/' + 'getCommentByEvent?id=' + $stateParams.id
+		url: 'http://webapp8.nantes.sii.fr/' + 'getCommentByEvent?id=' + event.EventId
 	}).then(function successCallback(response) {
 		$scope.ListComment = response.data;
 	}, function erroCallabck(response) {
@@ -50,7 +49,7 @@ function ($scope, $stateParams, $window, $http, CustomFactory) {
 
 	$http({
 		method: 'GET',
-		url: 'http://webapp8.nantes.sii.fr/getAllParticipantById?id=' + $stateParams.id
+		url: 'http://webapp8.nantes.sii.fr/getAllParticipantById?id=' + event.EventId
 	}).then(function successCallback(response) {
 		$scope.ListParticipant = response.data;
 		$scope.nbParticipants = $scope.ListParticipant.length;
@@ -58,6 +57,29 @@ function ($scope, $stateParams, $window, $http, CustomFactory) {
 		console.log("Participant: Il y a eu des erreurs!")
 		console.log(response);
 	});
+
+	$scope.uploadImage = function(){
+		$http({
+			method: 'POST',
+			url: 'http://webapp8.nantes.sii.fr/saveEvent',
+			data: {
+				id: event.id,
+				Name: event.Name,
+				Datestart: event.Datestart,
+				Dateend: event.Dateend,
+				Placeid: event.Placeid,
+				Description: event.Description,
+				Image: "",
+				Iscanceled: 0,
+				Owner: event.Owner
+			}
+		}).then(function successCallback(response) {
+			alert("Image enregistrée!");
+			console.log(response);
+		}, function erroCallabck(response) {
+			console.log("Envoi formulaire creation d'evenement: Il y a eu des erreurs!");
+		});
+	}
 	/*console.log($stateParams.event)
 	console.log($stateParams.event.Name)*/
 }])
