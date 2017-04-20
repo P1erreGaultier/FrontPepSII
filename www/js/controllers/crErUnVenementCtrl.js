@@ -5,9 +5,11 @@ angular.module('app.controllers')
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams, $window, $cordovaDatePicker, $http, EventService, ConnectedUserService, $ionicHistory, $state) {
 	console.log("Creation d'un evenement");
+	$scope.placeid=$window.location.href.substring(45);
 	$scope.minDate = new Date().toDateString();
 	$scope.saveEvent = function(){
 		var send = true;
+
 
 		if(document.getElementById("selectedDate").value == ""){
 			$scope.erreurDate = ": Date invalide"
