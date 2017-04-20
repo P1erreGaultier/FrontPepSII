@@ -30,8 +30,8 @@
         <input id="horaireDebut" border-radiustype="text" placeholder="00:00">
         <div class="createEventLabel">Horaire fin<p style="color:red"> {{erreurHoraireFin}}</p></div>
         <input id="horaireFin" border-radiustype="text" placeholder="00:00">
-        <div class="createEventLabel">Lieu<p style="color:red"> {{erreurLieu}}</p></div>
-        <input id="lieu" border-radiustype="text" placeholder="">
+        <div class="createEventLabel">Lieu <p style="color:red"> {{erreurLieu}}</p></div>
+        <input id="lieu" border-radiustype="text" placeholder="" ng-value="placeid">
         <div class="createEventLabel">Image</div>
         <input id="image" border-radiustype="text" placeholder="">
         <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="saveEvent()" />
