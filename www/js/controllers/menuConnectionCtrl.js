@@ -1,7 +1,7 @@
 angular.module('app.controllers')
 
-.controller('menuConnnectionCtrl', ['$scope', '$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory',
-function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHistory) {
+.controller('menuConnnectionCtrl', ['$scope', '$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory', '$http',
+function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHistory, $http) {
 		$scope.isConnected = ConnectedUserService.isConnected();
 		if (ConnectedUserService.getConnectedUser() != null){
 			$scope.connected = ConnectedUserService.getConnectedUser().Pseudo;
@@ -14,6 +14,42 @@ function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHis
 			}else{
 				div.style.display = 'none';
 			}
+		}
+
+		$scope.googlePlus = function() {
+			window.plugins.googleplus.login(
+			{'webClientId': '784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com',},
+			function (responseGoogle) {
+				$http({
+					method: 'POST',
+					url: 'http://webapp8.nantes.sii.fr/connect',
+					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+					transformRequest: function(obj) {
+					var str = [];
+					for(var p in obj)
+					str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+					return str.join("&");
+					},
+					data: {tokenid: responseGoogle.idToken}
+				}).then(function successCallback(response) {
+					if (response.data == null){
+						ConnectedUserService.setResponseGoogle(responseGoogle);
+						$state.go('menu.inscription');
+					}else{
+						ConnectedUserService.setConnectedUser(response.data);
+						ConnectedUserService.setResponseGoogle(responseGoogle);
+						ConnectedUserService.setConnected("true");
+						//$window.history.back();
+						$state.reload();
+					}
+				}, function erroCallabck(response) {
+					alert("Erreur");
+					alert(JSON.stringify(response));
+				});
+			},
+			function (error) {
+				alert("erreur: " + error);
+			});
 		}
 
 		$scope.logOut = function(){

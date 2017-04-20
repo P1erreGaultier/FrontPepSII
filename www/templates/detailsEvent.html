@@ -1,7 +1,7 @@
 <ion-view title="{{TitleEvent}}" id="page13">
   <ion-nav-buttons side="right" class="has-header">
     <div ng-controller="menuConnnectionCtrl" ng-switch="{{isConnected}}">
-      <button ng-switch-when="false"class="button icon No Icon" ui-sref="menu.connection()"> Connexion</button>
+      <button ng-switch-when="false"class="button icon No Icon" ng-click="googlePlus()"> Connexion</button>
       <div ng-switch-when="true" style="height:100%">
         <ul id="menuList">
           <li>
@@ -19,7 +19,6 @@
     <h1 id="heading1" style="color:#000000;"></h1>
     <div>
       <img id="imageEvent" src="data:image/png;base64,{{sourceImgEvent}}" style="display:block;width:40%;height:auto;">
-      <!--<img id="imageEvent" src="img/afterwork-sympa.jpg" style="display:block;width:40%;height:auto;">-->
     </div>
     <div id="footEnSalle-markdown1" class="show-list-numbers-and-dots">
       <p style="color:#000000;">{{descriptionEvent}}</p>
@@ -27,7 +26,16 @@
       <p style="color:#000000;">Le {{dateStartEvent | date:'dd/MM/yyyy'}} à {{dateStartEvent | date:'HH:mm'}}</p>
     </div>
     <div id="footEnSalle-button-bar3" class="button-bar"></div>
-    <button id="footEnSalle-button18" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="RegisterUserToEvent()">J'y vais</button>
+
+    <div ng-switch on="isRegister">
+      <div ng-switch-when="false">
+        <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="RegisterUserToEvent()">J'y vais</button>
+      </div>
+      <div ng-switch-when="true">
+        <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="UnregisterUserToEvent()">J'y vais plus</button>
+      </div>
+    </div>
+
     <div class="spacer" style="width: 300px; height: 6px;"></div>
     <div id="footEnSalle-markdown2" class="show-list-numbers-and-dots">
       <p style="color:#000000;">
