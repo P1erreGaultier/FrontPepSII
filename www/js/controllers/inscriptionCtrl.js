@@ -1,10 +1,11 @@
 angular.module('app.controllers')
-.controller('inscriptionCtrl', ['$scope', '$stateParams','$http','ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('inscriptionCtrl', ['$stateParams','$http','ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams,$http,ConnectedUserService) {
-alert(JSON.stringify(ConnectedUserService.getResponseGoogle()));
-$scope.inscription= function(){
+function ($stateParams,$http,ConnectedUserService) {
+	var vm = this;
+	alert(JSON.stringify(ConnectedUserService.getResponseGoogle()));
+	vm.inscription= function(){
 		var responseGoogle = ConnectedUserService.getResponseGoogle();
 		var personToSend = {
 			"Pseudo" : document.getElementById("pseudo").value,

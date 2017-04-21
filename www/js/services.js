@@ -18,7 +18,7 @@ angular.module('app.services', [])
   };
 }])
 
-.service('EventService', [function(){
+.factory('EventService', [function(){
   var event;
   var events;
 

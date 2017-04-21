@@ -1,39 +1,41 @@
 angular.module('app.controllers')
 
-.controller('crErUnVenementCtrl', ['$scope', '$stateParams','$window', '$cordovaDatePicker', '$http','EventService','ConnectedUserService', '$ionicHistory', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('crErUnVenementCtrl', ['$stateParams','$window', '$cordovaDatePicker', '$http','EventService','ConnectedUserService', '$ionicHistory', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $window, $cordovaDatePicker, $http, EventService, ConnectedUserService, $ionicHistory, $state) {
+function ($stateParams, $window, $cordovaDatePicker, $http, EventService, ConnectedUserService, $ionicHistory, $state) {
+	var vm = this;
+
 	console.log("Creation d'un evenement");
-	$scope.placeid=$window.location.href.substring(45);
-	$scope.minDate = new Date().toDateString();
-	$scope.saveEvent = function(){
+	vm.placeid=$window.location.href.substring(45);
+	vm.minDate = new Date().toDateString();
+	vm.saveEvent = function(){
 		var send = true;
 
 
 		if(document.getElementById("selectedDate").value == ""){
-			$scope.erreurDate = ": Date invalide"
+			vm.erreurDate = ": Date invalide"
 			send= false;
 		}else{
-			$scope.erreurDate = ""
+			vm.erreurDate = ""
 		}
 		if(document.getElementById("horaireDebut").value == ""){
-			$scope.erreurHoraireDebut = ": Heure invalide";
+			vm.erreurHoraireDebut = ": Heure invalide";
 			send = false;
 		}else{
-			$scope.erreurHoraireDebut = "";
+			vm.erreurHoraireDebut = "";
 		}
 		if(document.getElementById("horaireFin").value == ""){
-			$scope.erreurHoraireFin = ": Heure invalide";
+			vm.erreurHoraireFin = ": Heure invalide";
 			send = false;
 		}else{
-			$scope.erreurHoraireFin = "";
+			vm.erreurHoraireFin = "";
 		}
 		if(document.getElementById("lieu").value == ""){
-			$scope.erreurLieu = ": Lieu invalide";
+			vm.erreurLieu = ": Lieu invalide";
 			send = false;
 		}else {
-			$scope.erreurLieu = ""
+			vm.erreurLieu = ""
 		}
 
 		if (send){
