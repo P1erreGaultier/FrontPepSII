@@ -1,13 +1,12 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$scope', '$stateParams', '$window', '$http','EventService','ConnectedUserService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$scope', '$stateParams', '$window', '$http','EventService','ConnectedUserService', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $window, $http, EventService,ConnectedUserService) {
+function ($scope, $stateParams, $window, $http, EventService,ConnectedUserService, $state) {
 
-	var event = EventService.getEvent()
-	var ownerToSend = ConnectedUserService.getConnectedUser();
 	$scope.RegisterUserToEvent = function() {
+		var responseGoogle = ConnectedUserService.getResponseGoogle();
 		$http({
 			method: 'POST',
 			url: 'http://webapp8.nantes.sii.fr/saveParticipant',
@@ -18,11 +17,37 @@ function ($scope, $stateParams, $window, $http, EventService,ConnectedUserServic
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid:responseGoogle.idToken, person: JSON.stringify(ownerToSend), event:JSON.stringify(event)}
+			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: EventService.getEvent().EventId}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
 			alert(JSON.stringify(response));
+			$window.location.reload();
+		}, function erroCallabck(response) {
+			console.log(response);
+			console.log("Envoi token: Il y a eu des erreurs!");
+			alert(JSON.stringify(response));
+		});
+	}
+
+	$scope.UnregisterUserToEvent = function() {
+		var responseGoogle = ConnectedUserService.getResponseGoogle();
+		$http({
+			method: 'POST',
+			url: 'http://webapp8.nantes.sii.fr/cancelParticipation',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+				var str = [];
+				for(var p in obj)
+				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+			},
+			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: EventService.getEvent().EventId}
+		}).then(function successCallback(response) {
+			console.log("message send");
+			console.log(response);
+			alert(JSON.stringify(response));
+			$window.location.reload();
 		}, function erroCallabck(response) {
 			console.log(response);
 			console.log("Envoi token: Il y a eu des erreurs!");
@@ -67,6 +92,23 @@ function ($scope, $stateParams, $window, $http, EventService,ConnectedUserServic
 	}).then(function successCallback(response) {
 		$scope.ListParticipant = response.data;
 		$scope.nbParticipants = $scope.ListParticipant.length;
+
+		if (ConnectedUserService.getConnectedUser() == null){
+			$scope.isRegister = "null";
+		}else {
+			var isRegister = "false";
+			for(i=0;i<$scope.ListParticipant.length;i++){
+				if($scope.ListParticipant[i].PersonId == ConnectedUserService.getConnectedUser().PersonId){
+					isRegister = "true";
+				}
+			}
+			if (isRegister == "true"){
+				$scope.isRegister = "true";
+			}else{
+				$scope.isRegister = "false";
+			}
+		}
+
 	}, function erroCallabck(response) {
 		console.log("Participant: Il y a eu des erreurs!")
 		console.log(response);

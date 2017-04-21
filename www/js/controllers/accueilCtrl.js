@@ -12,9 +12,9 @@ function ($scope, $stateParams, $http, EventService) {
 		console.log(response);
 		$scope.ListEvent = response.data;
 		EventService.saveEvents($scope.ListEvent);
-		for(i=0; i<$scope.ListEvent.length; i++){
+		/*for(i=0; i<$scope.ListEvent.length; i++){
 			$scope.ListEvent[i].DateStart = Date.parse($scope.ListEvent[i].DateStart);
-		}
+		}*/
 		$scope.passEvent = function (event){
 			EventService.saveEvent(event);
 		}
