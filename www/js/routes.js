@@ -15,7 +15,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/accueil.html',
-        controller: 'accueilCtrl'
+        controller: 'accueilCtrl',
+        controllerAs: 'vm'
       }
     }
   })
@@ -91,7 +92,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/crErUnVenement.html',
-        controller: 'crErUnVenementCtrl'
+        controller: 'crErUnVenementCtrl',
+        controllerAs: 'vm'
       }
     }
   })
@@ -121,7 +123,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/detailsEvent.html',
-        controller: 'detailsEventCtrl'
+        controller: 'detailsEventCtrl',
+        controllerAs: 'vm'
       }
     }
   })
@@ -131,7 +134,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/connection.html',
-        controller: 'connectionCtrl'
+        controller: 'connectionCtrl',
+        controllerAs: 'vm'
       }
     }
   })
@@ -141,7 +145,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/inscription.html',
-        controller: 'inscriptionCtrl'
+        controller: 'inscriptionCtrl',
+        controllerAs: 'vm'
       }
     }
   })

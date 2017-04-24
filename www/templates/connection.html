@@ -4,34 +4,9 @@
       <div style="display:inline-block;width:100%">
         <div class="createEventLabel">Identifiant de connexion</div>
         <input id="connection" border-radiustype="text" placeholder="">
-        <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="connection()" />
-        <!--<input value="Google" type="submit" class="button button-positive  button-block" ng-click="login()" />-->
+        <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="vm.connection()" />
       </div>
     </form>
-
-    <p>Avant le bouton google</p>
-      <div id="my-signin2" ></div>
-    <p>Apres le bouton google</p>
-
-    <a ng-click="signOut()">Sign out</a>
-
-    <button id="test" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="testConnect()">Test</button>
-    <button id="googlePlus" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="googlePlus()">googlePlus</button>
-    <button id="googlePlusLogOut" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="googlePlusLogOut()">googlePlusLogOut</button>
   </ion-content>
 
 </ion-view>
-<!--<html lang="en">
-<head>
-  <meta name="google-signin-client_id" content="929890661942-49n2pcequcmns19fe1omff72tqcips1v.apps.googleusercontent.com">
-</head>
-  <body>
-    <ion-view title="Connexion" id="page14">
-      <ion-content padding="true" class="has-header">
-        <p>Avant le bouton google</p>
-        <div id="my-signin2" ></div>
-        <p>Apres le bouton google</p>
-      </ion-content>
-    </ion-view>
-  </body>
-</html>-->

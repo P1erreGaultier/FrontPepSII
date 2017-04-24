@@ -1,13 +1,15 @@
 angular.module('app.controllers')
 
-.controller('menuConnnectionCtrl', ['$scope', '$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory', '$http',
-function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHistory, $http) {
-		$scope.isConnected = ConnectedUserService.isConnected();
+.controller('menuConnnectionCtrl', ['$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory', '$http',
+function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, $http) {
+	var vm = this;
+
+		vm.isConnected = ConnectedUserService.isConnected();
 		if (ConnectedUserService.getConnectedUser() != null){
-			$scope.connected = ConnectedUserService.getConnectedUser().Pseudo;
+			vm.connected = ConnectedUserService.getConnectedUser().Pseudo;
 		}
 
-		$scope.showNavMenu = function() {
+		vm.showNavMenu = function() {
 			var div = document.getElementById("navMenu");
 			if (div.style.display == 'none'){
 				div.style.display = 'block';
@@ -16,7 +18,7 @@ function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHis
 			}
 		}
 
-		$scope.googlePlus = function() {
+		vm.googlePlus = function() {
 			window.plugins.googleplus.login(
 			{'webClientId': '784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com',},
 			function (responseGoogle) {
@@ -52,7 +54,7 @@ function ($scope, $stateParams, ConnectedUserService, $window, $state, $ionicHis
 			});
 		}
 
-		$scope.logOut = function(){
+		vm.logOut = function(){
 			ConnectedUserService.setConnected("false");
 			ConnectedUserService.setConnectedUser(null);
 			window.plugins.googleplus.logout();

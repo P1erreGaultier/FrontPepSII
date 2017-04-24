@@ -1,11 +1,12 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$scope', '$stateParams', '$window', '$http','EventService','ConnectedUserService', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','event','ConnectedUserService', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $window, $http, EventService,ConnectedUserService, $state) {
+function ($stateParams, $window, $http, event,ConnectedUserService, $state) {
+	var vm = this;
 
-	$scope.RegisterUserToEvent = function() {
+	vm.RegisterUserToEvent = function() {
 		var responseGoogle = ConnectedUserService.getResponseGoogle();
 		$http({
 			method: 'POST',
@@ -17,7 +18,7 @@ function ($scope, $stateParams, $window, $http, EventService,ConnectedUserServic
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: EventService.getEvent().EventId}
+			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: event.getEvent().EventId}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
@@ -30,7 +31,7 @@ function ($scope, $stateParams, $window, $http, EventService,ConnectedUserServic
 		});
 	}
 
-	$scope.UnregisterUserToEvent = function() {
+	vm.UnregisterUserToEvent = function() {
 		var responseGoogle = ConnectedUserService.getResponseGoogle();
 		$http({
 			method: 'POST',
@@ -42,7 +43,7 @@ function ($scope, $stateParams, $window, $http, EventService,ConnectedUserServic
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: EventService.getEvent().EventId}
+			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: event.getEvent().EventId}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
@@ -55,15 +56,15 @@ function ($scope, $stateParams, $window, $http, EventService,ConnectedUserServic
 		});
 	}
 
-	var event = EventService.getEvent();
-	$scope.getCommentMargin = function(owner){
+	var event = event.getEvent();
+	vm.getCommentMargin = function(owner){
 		if (owner == null){
 			return "0%";
 		}else {
 			return "5%";
 		}
 	}
-	$scope.detailsParticipant = function(){
+	vm.detailsParticipant = function(){
 		var div = document.getElementById("participantDiv");
 		if (div.style.display == 'none'){
 			div.style.display = 'block';
@@ -71,16 +72,16 @@ function ($scope, $stateParams, $window, $http, EventService,ConnectedUserServic
 			div.style.display = 'none';
 		}
 	}
-	$scope.TitleEvent = event.Name;
-	$scope.sourceImgEvent = event.Image;
-	$scope.descriptionEvent = event.Description;
-	$scope.dateStartEvent = event.DateStart;
+	vm.TitleEvent = event.Name;
+	vm.sourceImgEvent = event.Image;
+	vm.descriptionEvent = event.Description;
+	vm.dateStartEvent = event.DateStart;
 
 	$http({
 		method: 'GET',
 		url: 'http://webapp8.nantes.sii.fr/' + 'getCommentByEvent?id=' + event.EventId
 	}).then(function successCallback(response) {
-		$scope.ListComment = response.data;
+		vm.ListComment = response.data;
 	}, function erroCallabck(response) {
 		console.log("Il y a eu des erreurs!")
 		console.log(response);
@@ -90,22 +91,22 @@ function ($scope, $stateParams, $window, $http, EventService,ConnectedUserServic
 		method: 'GET',
 		url: 'http://webapp8.nantes.sii.fr/getAllParticipantById?id=' + event.EventId
 	}).then(function successCallback(response) {
-		$scope.ListParticipant = response.data;
-		$scope.nbParticipants = $scope.ListParticipant.length;
+		vm.ListParticipant = response.data;
+		vm.nbParticipants = vm.ListParticipant.length;
 
 		if (ConnectedUserService.getConnectedUser() == null){
-			$scope.isRegister = "null";
+			vm.isRegister = "null";
 		}else {
 			var isRegister = "false";
-			for(i=0;i<$scope.ListParticipant.length;i++){
-				if($scope.ListParticipant[i].PersonId == ConnectedUserService.getConnectedUser().PersonId){
+			for(i=0;i<vm.ListParticipant.length;i++){
+				if(vm.ListParticipant[i].PersonId == ConnectedUserService.getConnectedUser().PersonId){
 					isRegister = "true";
 				}
 			}
 			if (isRegister == "true"){
-				$scope.isRegister = "true";
+				vm.isRegister = "true";
 			}else{
-				$scope.isRegister = "false";
+				vm.isRegister = "false";
 			}
 		}
 

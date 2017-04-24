@@ -18,23 +18,23 @@
   <ion-content padding="true" class="has-header">
     <form id="crErUnVenement-form6" class="list">
       <div style="display:inline-block;width:100%">
-        <div class="createEventLabel">Nom de l'évènement<p style="color:red"> {{erreurNom}}</p></div>
+        <div class="createEventLabel">Nom de l'évènement<p style="color:red"> {{vm.erreurNom}}</p></div>
         <input id="nomEvenement" border-radiustype="text" placeholder="">
         <div class="createEventLabel">Description</div>
         <textarea id="description" style="width:15%;height:100px;background-color:aliceblue;" placeholder=""></textarea>
-        <div class="createEventLabel">Date <p style="color:red"> {{erreurDate}}</p></div>
-        <datepicker style="height:auto;" date-min-limit="{{minDate}}" date-format="dd/MM/yyyy" button-prev="<" button-next=">" class="ng-isolate-scope" date-set="true">
+        <div class="createEventLabel">Date <p style="color:red"> {{vm.erreurDate}}</p></div>
+        <datepicker style="height:auto;" date-min-limit="{{vm.minDate}}" date-format="dd/MM/yyyy" button-prev="<" button-next=">" class="ng-isolate-scope" date-set="true">
           <input id="selectedDate" ng-model="date" type="text" placeholder="Selectionnez une date" readonly="true"/>
         </datepicker>
-        <div class="createEventLabel">Horaire début<p style="color:red"> {{erreurHoraireDebut}}</p></div>
+        <div class="createEventLabel">Horaire début<p style="color:red"> {{vm.erreurHoraireDebut}}</p></div>
         <input id="horaireDebut" border-radiustype="text" placeholder="00:00">
-        <div class="createEventLabel">Horaire fin<p style="color:red"> {{erreurHoraireFin}}</p></div>
+        <div class="createEventLabel">Horaire fin<p style="color:red"> {{vm.erreurHoraireFin}}</p></div>
         <input id="horaireFin" border-radiustype="text" placeholder="00:00">
-        <div class="createEventLabel">Lieu <p style="color:red"> {{erreurLieu}}</p></div>
+        <div class="createEventLabel">Lieu <p style="color:red"> {{vm.erreurLieu}}</p></div>
         <input id="lieu" border-radiustype="text" placeholder="" ng-value="placeid">
         <div class="createEventLabel">Image</div>
         <input id="image" border-radiustype="text" placeholder="">
-        <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="saveEvent()" />
+        <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="vm.saveEvent()" />
       </div>
     </form>
     <!--<a ui-sref="menu.accueil" id="crErUnVenement-button25" class="button button-positive  button-block">Valider</a>-->
