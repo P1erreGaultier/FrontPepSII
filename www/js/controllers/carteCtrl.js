@@ -1,9 +1,9 @@
 angular.module('app.controllers')
 
-.controller('carteCtrl', ['$stateParams', '$http','$compile','event','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('carteCtrl', ['$stateParams','$compile','event','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $http, $compile, event, $window, $filter) {
+function ($stateParams , $compile, event, $window, $filter) {
 
 	var vm = this;
 	vm.listEvent = [];
@@ -60,7 +60,7 @@ function ($stateParams, $http, $compile, event, $window, $filter) {
 				zoom: 15,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
-			
+
 		vm.map = new google.maps.Map(document.getElementById("map"), mapOptions);
 		var infowindow = new google.maps.InfoWindow();
 		var service = new google.maps.places.PlacesService(vm.map);

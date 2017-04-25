@@ -9,7 +9,8 @@ function event($http) {
   return {
     getAllEvent: getAllEvent,
     saveEvent: saveEvent,
-    getEvent: getEvent
+    getEvent: getEvent,
+    registerEvent: registerEvent
   };
 
   function getAllEvent(){
@@ -38,4 +39,39 @@ function event($http) {
   function getEvent() {
     return event;
   }
+
+  function registerEvent(idToken, eventToSend ){
+    return $http({
+      method: 'POST',
+      url: 'http://webapp8.nantes.sii.fr/saveEvent',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      transformRequest: function(obj) {
+        var str = [];
+        for(var p in obj)
+        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        return str.join("&");
+      },
+      data: {tokenid: idToken, event: JSON.stringify(eventToSend)}
+    })
+      .then(getAllEventComplete)
+      .catch(getAllEventFailed);
+
+    function registerEventComplete(response) {
+      console.log("message send");
+      console.log(response);
+      alert(JSON.stringify(response));
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      $state.go('menu.accueil', {}, {location: 'replace', reload: true})
+      return response;
+    }
+    function registerEventFailed(response){
+      console.log(response);
+      console.log("Envoi token: Il y a eu des erreurs!");
+      alert(JSON.stringify(response));
+      return response;
+    }
+  };
+
 }

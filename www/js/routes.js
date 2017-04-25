@@ -103,7 +103,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/suggestion.html',
-        controller: 'suggestionCtrl'
+        controller: 'suggestionCtrl',
+        controllerAs: 'vm'
       }
     }
   })
