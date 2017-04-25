@@ -1,9 +1,9 @@
 angular.module('app.services')
-.factory('event', event)
+.factory('eventService', eventService)
 
-event.$inject = ['$http'];
+eventService.$inject = ['$http'];
 
-function event($http) {
+function eventService($http) {
   var event;
 
   return {
@@ -44,7 +44,6 @@ function event($http) {
       /*for(i=0; i<$scope.ListEvent.length; i++){
         $scope.ListEvent[i].DateStart = Date.parse($scope.ListEvent[i].DateStart);
       }*/
-      alert('MyEvnts loaded');
       return response.data;
     }
     function getMyEventsFailed(response){

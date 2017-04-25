@@ -1,9 +1,9 @@
 angular.module('app.controllers')
 
-.controller('carteCtrl', ['$stateParams','$compile','event','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('carteCtrl', ['$stateParams','$compile','eventService','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams , $compile, event, $window, $filter) {
+function ($stateParams , $compile, eventService, $window, $filter) {
 
 	var vm = this;
 	vm.listEvent = [];
@@ -17,7 +17,7 @@ function ($stateParams , $compile, event, $window, $filter) {
 	}
 
 	function getAllEvent() {
-		return event.getAllEvent()
+		return eventService.getAllEvent()
 			.then(function(data) {
 				vm.listEvent = data;
 				for (vm.i=0; vm.i<vm.listEvent.length; vm.i++){

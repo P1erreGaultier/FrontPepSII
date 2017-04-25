@@ -1,15 +1,16 @@
 angular.module('app.controllers')
 
-.controller('mesVenementsCtrl', ['$stateParams', 'event', 'ConnectedUserService','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('mesVenementsCtrl', ['$stateParams', 'eventService', 'ConnectedUserService','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, event, ConnectedUserService, $filter) {
+function ($stateParams, eventService, ConnectedUserService, $filter) {
   var vm = this;
   vm.listMyEvents = [];
   vm.listPastEvents = [];
   vm.listNextEvents = [];
   vm.getMyEvents = getMyEvents;
   vm.select = select;
+  vm.passEvent = passEvent;
 
   activate();
   console.log("coucou");
@@ -19,7 +20,7 @@ function ($stateParams, event, ConnectedUserService, $filter) {
   }
 
   function getMyEvents() {
-    return event.getAllEvent()
+    return eventService.getMyEvents(ConnectedUserService.getConnectedUser().PersonId)
     //return event.getMyEvents(ConnectedUserService.getConnectedUser().PersonId)
       .then(function(data) {
         console.log(data);
@@ -48,6 +49,10 @@ function ($stateParams, event, ConnectedUserService, $filter) {
       vm.listMyEvents = vm.listPastEvents;
       document.getElementById("nextEvents").style.height = "38px";
     }
+  }
+
+  function passEvent(eventToSend){
+    return eventService.saveEvent(eventToSend);
   }
 
 }])

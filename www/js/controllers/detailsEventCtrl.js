@@ -1,9 +1,9 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','event','ConnectedUserService', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','ConnectedUserService', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $http, event,ConnectedUserService, $state) {
+function ($stateParams, $window, $http, eventService,ConnectedUserService, $state) {
 	var vm = this;
 
 	vm.RegisterUserToEvent = function() {
@@ -18,7 +18,7 @@ function ($stateParams, $window, $http, event,ConnectedUserService, $state) {
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: event.getEvent().EventId}
+			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
@@ -43,7 +43,7 @@ function ($stateParams, $window, $http, event,ConnectedUserService, $state) {
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: event.getEvent().EventId}
+			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
@@ -56,7 +56,7 @@ function ($stateParams, $window, $http, event,ConnectedUserService, $state) {
 		});
 	}
 
-	var event = event.getEvent();
+	var event = eventService.getEvent();
 	vm.getCommentMargin = function(owner){
 		if (owner == null){
 			return "0%";
