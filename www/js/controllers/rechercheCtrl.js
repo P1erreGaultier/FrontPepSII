@@ -5,5 +5,5 @@ angular.module('app.controllers')
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams) {
 
-
+  console.log("coucou");
 }])

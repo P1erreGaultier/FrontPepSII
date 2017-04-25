@@ -8,6 +8,7 @@ function event($http) {
 
   return {
     getAllEvent: getAllEvent,
+    getMyEvents: getMyEvents,
     saveEvent: saveEvent,
     getEvent: getEvent
   };
@@ -26,7 +27,27 @@ function event($http) {
       return response.data;
     }
     function getAllEventFailed(response){
-      console.log("Il y a eu des erreurs sur l'accueil");
+      console.log("Error: getAllEvent");
+      console.log(response);
+    }
+  };
+
+  function getMyEvents(idPerson) {
+    return $http({
+    method: 'GET',
+    url: 'http://webapp8.nantes.sii.fr/' + 'getEventsByPerson?id=' + idPerson})
+      .then(getMyEventsComplete)
+      .catch(getMyEventsFailed);
+
+    function getMyEventsComplete(response) {
+      /*for(i=0; i<$scope.ListEvent.length; i++){
+        $scope.ListEvent[i].DateStart = Date.parse($scope.ListEvent[i].DateStart);
+      }*/
+      alert('MyEvnts loaded');
+      return response.data;
+    }
+    function getMyEventsFailed(response){
+      console.log("Error: getMyEvents");
       console.log(response);
     }
   };

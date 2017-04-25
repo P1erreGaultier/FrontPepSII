@@ -19,6 +19,7 @@ function (event) {
 		return event.getAllEvent()
 			.then(function(data) {
 				vm.listEvent = data;
+				alert(JSON.stringify(data));
 				return vm.listEvent;
 			});
 	}

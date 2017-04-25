@@ -82,7 +82,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/mesVenements.html',
-        controller: 'mesVenementsCtrl'
+        controller: 'mesVenementsCtrl',
+        controllerAs: 'vm'
       }
     }
   })
