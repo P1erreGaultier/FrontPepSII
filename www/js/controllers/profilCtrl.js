@@ -1,62 +1,64 @@
 angular.module('app.controllers')
 
-.controller('profilCtrl', ['$scope', '$stateParams','ConnectedUserService','$http',
-function ($scope, $stateParams, ConnectedUserService, $http) {
-	var user = ConnectedUserService.getConnectedUser();
-	$scope.personID = user.PersonID;
-	$scope.pseudo = user.Pseudo;
-	$scope.lastName = user.LastName;
-	$scope.firstName = user.FirstName;
-	$scope.job = user.Job;
-	$scope.canModifiy = "false";
-	console.log(ConnectedUserService.getConnectedUser());
+.controller('profilCtrl', ['$scope', '$stateParams','ConnectedUserService','personService','$document',
+function ($scope, $stateParams, ConnectedUserService, personService,$document) {
 
-	$scope.saveProfil = function(){
+	var vm = this;
+	vm.user = personService.getConnectedUser();
+	vm.personID = vm.user.PersonID;
+	vm.pseudo = vm.user.Pseudo;
+	vm.lastName = vm.user.LastName;
+	vm.firstName = vm.user.FirstName;
+	vm.job = vm.user.Job;
+	vm.canModify = "false";
+
+	vm.saveProfil = saveProfil;
+	vm.modify = modify;
+	vm.modifyBack = modifyBack;
+
+	console.log(personService.getConnectedUser());
+
+	function saveProfil() {
 		var save = true;
-		if (document.getElementById("pseudoInput").value.trim() == ""){
-			document.getElementById("pseudo").innerText = "Votre pseudo ne peut pas être vide: ";
+		if ($document("#pseudoInput").value.trim() == ""){
+			$document("#pseudo").innerText = "Votre pseudo ne peut pas être vide: ";
 			save = false;
 		}else{
-			document.getElementById("pseudo").innerText = "Pseudo: ";
+			$document("#pseudo").innerText = "Pseudo: ";
 		}
-		if (document.getElementById("firstNameInput").value.trim() == ""){
-			document.getElementById("firstName").innerText = "Votre prenom ne peut pas être vide: ";
+		if ($document("#firstNameInput").value.trim() == ""){
+			$document("#firstName").innerText = "Votre prenom ne peut pas être vide: ";
 			save = false;
 		}else{
-			document.getElementById("firstName").innerText = "Prenom: ";
+			$document("#firstName").innerText = "Prenom: ";
 		}
-		if (document.getElementById("lastNameInput").value.trim() == ""){
-			document.getElementById("lastName").innerText = "Votre nom ne peut pas être vide: ";
+		if ($document("#lastNameInput").value.trim() == ""){
+			$document("#lastName").innerText = "Votre nom ne peut pas être vide: ";
 			save = false;
 		}else{
-			document.getElementById("lastName").innerText = "Nom: ";
+			$document("#lastName").innerText = "Nom: ";
 		}
 		if (save){
-
-			$http({
-				method: 'POST',
-				url : 'http://webapp8.nantes.sii.fr/registerPerson?id=' + ConnectedUserService.getGoogleId(),
-				//url: 'http://NANTES-0156.sii.fr:4444/addPerson',
-				data: {
-					personID: $scope.personID,
-					pseudo: document.getElementById("pseudoInput").value,
-					lastName: document.getElementById("lastNameInput").value,
-					firstName: document.getElementById("firstNameInput").value,
-					job: document.getElementById("jobInput").value,
-					personEmail: ConnectedUserService.getConnectedUser().personEmail
-				},
-			}).then(function successCallback(response) {
+			var personToSend = {
+				"Pseudo" : $document("#pseudoInput").value,
+				"LastName" : $document("#lastNameInput").value,
+				"FirstName" : $document("#firstNameInput").value,
+				"Job" : $document("#jobInput").value,
+				"PersonEmail" : personService.getConnectedUser().personEmail
+			};
+			personService.registerPerson(ConnectedUserService.getGoogleId(), personToSend)
+			.then(function successCallback(response) {
 				console.log("message send");
-				console.log(user.personID);
+				console.log(vm.user.personID);
 				console.log(response);
 				var userResponse = response.data;
-				$scope.personID = userResponse.PersonID;
-				$scope.pseudo = userResponse.Pseudo;
-				$scope.lastName = userResponse.LastName;
-				$scope.firstName = userResponse.FirstName;
-				$scope.job = userResponse.Job;
-				ConnectedUserService.setConnectedUser(userResponse);
-				$scope.canModifiy = "false";
+				vm.personID = userResponse.PersonID;
+				vm.pseudo = userResponse.Pseudo;
+				vm.lastName = userResponse.LastName;
+				vm.firstName = userResponse.FirstName;
+				vm.job = userResponse.Job;
+				personService.connectedUser=userResponse;
+				vm.canModify = "false";
 				alert("Modification enregistrées");
 				alert(JSON.stringify(response));
 			}, function erroCallabck(response) {
@@ -67,12 +69,12 @@ function ($scope, $stateParams, ConnectedUserService, $http) {
 		}
 	}
 
-	$scope.modify = function(){
-		$scope.canModifiy = "true";
+	function modify() {
+		vm.canModify = "true";
 	}
 
-	$scope.modifyBack = function(){
-		$scope.canModifiy = "false";
+	function modifyBack() {
+		vm.canModify = "false";
 	}
 
 }])

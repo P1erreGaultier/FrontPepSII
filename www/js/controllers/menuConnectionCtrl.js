@@ -1,12 +1,15 @@
 angular.module('app.controllers')
 
-.controller('menuConnnectionCtrl', ['$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory', '$http',
-function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, $http) {
+.controller('menuConnnectionCtrl', ['$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory', '$http','personService',
+function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, $http, personService) {
 	var vm = this;
 
-		vm.isConnected = ConnectedUserService.isConnected();
-		if (ConnectedUserService.getConnectedUser() != null){
-			vm.connected = ConnectedUserService.getConnectedUser().Pseudo;
+		vm.isConnected = personService.getConnected();
+		console.log(personService);
+		console.log(personService.getConnected());
+		console.log(personService.getConnectedUser());
+		if (personService.getConnectedUser() != null){
+			vm.connected = personService.getConnectedUser().Pseudo;
 		}
 
 		vm.showNavMenu = function() {

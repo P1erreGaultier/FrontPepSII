@@ -1,9 +1,9 @@
 angular.module('app.services')
-.factory('person', person)
+.factory('personService', personService)
 
 suggestion.$inject = ['$http','$window', '$ionicHistory'];
 
-function person($http, $window, $ionicHistory) {
+function personService($http, $window, $ionicHistory) {
 
   var connectedUser;
   var connected = "false";
@@ -12,8 +12,47 @@ function person($http, $window, $ionicHistory) {
 
   return {
     registerPerson : registerPerson,
-    connect : connect
+    connect : connect,
+    getPersonById : getPersonById,
+    getConnected : getConnected,
+    setConnected : setConnected,
+    getConnectedUser : getConnectedUser,
+    setConnectedUser : setConnectedUser,
+
   };
+
+  function getConnected (){
+    return connected;
+  }
+
+  function getConnectedUser (){
+    return connectedUser;
+  }
+
+  function setConnected (connect){
+    connected = connect;
+  }
+
+  function setConnectedUser (user){
+    connectedUser = user;
+  }
+
+  function getPersonById(personId){
+    return $http({
+  	method: 'GET',
+  	url: 'http://webapp8.nantes.sii.fr/' +  '/getPersonById?id=' + personId })
+      .then(getPersonByIdComplete)
+      .catch(getPersonByIdFailed);
+
+    function getPersonByIdComplete(response) {
+      return response.data;
+    }
+    function getPersonByIdFailed(response){
+      console.log("Error: getAllEvent");
+      console.log(response);
+    }
+  };
+
 
 function registerPerson(idToken, personToSend ){
     return $http({
@@ -62,7 +101,9 @@ function registerPerson(idToken, personToSend ){
       })
       .then(connectComplete)
       .catch(connectFailed);
-  }
+    }
+  )}
+
   function connectComplete(response) {
     if (response.data == null){
       ConnectedUserService.setResponseGoogle(responseGoogle);
