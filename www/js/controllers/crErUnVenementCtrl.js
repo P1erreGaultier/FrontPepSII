@@ -1,9 +1,9 @@
 angular.module('app.controllers')
 
-.controller('crErUnVenementCtrl', ['$stateParams','$window', '$cordovaDatePicker', '$http','event','ConnectedUserService', '$ionicHistory', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('crErUnVenementCtrl', ['$stateParams','$window', '$cordovaDatePicker', '$http','eventService','ConnectedUserService', '$ionicHistory', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $cordovaDatePicker, $http, event, ConnectedUserService, $ionicHistory, $state) {
+function ($stateParams, $window, $cordovaDatePicker, $http, eventService, ConnectedUserService, $ionicHistory, $state) {
 	var vm = this;
 
 	console.log("Creation d'un evenement");
@@ -51,7 +51,7 @@ function ($stateParams, $window, $cordovaDatePicker, $http, event, ConnectedUser
 				"Owner" : ownerToSend
 			};
 			alert(JSON.stringify(eventToSend));
-			event.registerEvent(responseGoogle.idToken,eventToSend);
+			eventService.registerEvent(responseGoogle.idToken,eventToSend);
 		}
 	}
 }])

@@ -1,4 +1,4 @@
-<ion-view title="Mes évenements" id="page7">
+<ion-view title="Mes évenements" id="page7" cache-view="false">
   <ion-nav-buttons side="right" class="has-header">
     <div ng-controller="menuConnnectionCtrl" ng-switch="{{isConnected}}">
       <button ng-switch-when="false"class="button icon No Icon" ng-click="googlePlus()"> Connexion</button>
@@ -21,23 +21,33 @@
     <div id="mesVenements-container5">
       <a ui-sref="menu.evaluerEvenement" id="mesVenements-button8" class="button button-positive  button-block">Evaluer un évenement</a>
       <div class="spacer" style="width: 300px; height: 32px;"></div>
-      <ion-list id="mesVenements-list9">
-        <ion-item class="item-thumbnail-left" id="mesVenements-list-item27" ui-sref="menu.footEnSalle">
-          <img src="img/foot_en_salle.jpg">
-          <h2>Foot en Salle</h2>
-          <p style="white-space:normal;">Afterwork de l'agence au bar "Le Rond point" </p>
-        </ion-item>
-        <ion-item class="item-thumbnail-left" id="mesVenements-list-item28" ui-sref="menu.afterwork">
-          <img src="img/afterwork-sympa.jpg">
-          <h2>Afterwork</h2>
-          <p style="white-space:normal;">Afterwork de l'agence au bar "Le Rond point" </p>
-        </ion-item>
-        <ion-item class="item-thumbnail-left" id="mesVenements-list-item30" ui-sref="menu.dejTech">
-          <img src="img/dej-pros-VV.jpg">
-          <h2>Dej' Tech</h2>
-          <p style="white-space:normal;">Comment survivre à une réunion agile avec Francois?</p>
-        </ion-item>
-      </ion-list>
+      <h2>Mes évènements</h2>
+      <ul>
+        <div style="position:relative; height:50px">
+          <h3 id="nextEvents" class="myEventsMenu" style="height: 50px;" ng-click="vm.select('nextEvents')">A venir</h3>
+          <h3 id="pastEvents" class="myEventsMenu" style="margin-left:35%" ng-click="vm.select('pastEvents')">Passé</h3>
+        </div>
+        <li ng-repeat="event in vm.listMyEvents">
+          <ion-item class="item-thumbnail-left" id="accueil-list-item{{event.id}}" ng-click="vm.passEvent({{event}})" ui-sref="menu.detailsEvent()">
+            <img src="data:image/png;base64,{{event.Image}}">
+            <h2>{{event.Name}}</h2>
+            <p style="white-space:normal;">{{event.Description}}</p>
+            <p style="white-space:normal;">Le {{event.DateStart | date:'dd/MM/yyyy'}} à {{event.DateStart | date:'HH:mm'}}</p>
+          </ion-item>
+        </li>
+      </ul>
+      <div class="spacer" style="width: 300px; height: 32px;"></div>
+      <h2>J'y participe</h2>
+      <ul>
+        <li ng-repeat="event in vm.listRegisteredEvent">
+          <ion-item class="item-thumbnail-left" id="accueil-list-item{{event.id}}" ng-click="vm.passEvent({{event}})" ui-sref="menu.detailsEvent()">
+            <img src="data:image/png;base64,{{event.Image}}">
+            <h2>{{event.Name}}</h2>
+            <p style="white-space:normal;">{{event.Description}}</p>
+            <p style="white-space:normal;">Le {{event.DateStart | date:'dd/MM/yyyy'}} à {{event.DateStart | date:'HH:mm'}}</p>
+          </ion-item>
+        </li>
+      </ul>
     </div>
   </ion-content>
 </ion-view>

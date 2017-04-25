@@ -23,7 +23,7 @@
         <div class="createEventLabel">Description</div>
         <textarea id="description" style="width:15%;height:100px;background-color:aliceblue;" placeholder=""></textarea>
         <div class="createEventLabel">Date <p style="color:red"> {{vm.erreurDate}}</p></div>
-        <datepicker style="height:auto;" date-min-limit="{{vm.minDate}}" date-format="dd/MM/yyyy" button-prev="<" button-next=">" class="ng-isolate-scope" date-set="true">
+        <datepicker style="height:auto;" date-min-limit="{{vm.minDate}}" date-format="yyyy-MM-dd" button-prev="<" button-next=">" class="ng-isolate-scope" date-set="true">
           <input id="selectedDate" ng-model="date" type="text" placeholder="Selectionnez une date" readonly="true"/>
         </datepicker>
         <div class="createEventLabel">Horaire début<p style="color:red"> {{vm.erreurHoraireDebut}}</p></div>

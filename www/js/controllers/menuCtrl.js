@@ -6,15 +6,14 @@ function ($scope, $stateParams, $ionicHistory, $state, ConnectedUserService) {
 	$scope.checkUser = function() {
 		console.log("checkUser");
 		if (ConnectedUserService.isConnected() != "true"){
-			//$state.go('menu.connection', {}, {location: 'replace', reload: true})
-			/*$location.path('/#/side-menu21/page14');
-			$window.location.reload();*/
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});
 			$state.go('menu.connection', {}, {location: 'replace', reload: true});
 		}else {
-			$state.go('menu.mesVenements', {}, {location: 'replace', reload: true});
+			$ionicHistory.nextViewOptions({disableBack: true});
+			$state.transitionTo('menu.mesVenements', {}, { reload: true, inherit: true, notify: true });
+			//$state.go('menu.mesVenements', {}, {reload: true});
 		}
 	}
 }])
