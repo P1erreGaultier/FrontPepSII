@@ -3,6 +3,9 @@ angular.module('app.controllers')
 .controller('menuConnnectionCtrl', ['$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory','personService',
 function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, personService) {
 	var vm = this;
+	vm.showNavMenu = showNavMenu;
+	vm.googlePlus = googlePlus;
+	vm.logOut = logOut;
 
 		vm.isConnected = personService.getConnected();
 		console.log(personService);
@@ -12,7 +15,7 @@ function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, pe
 			vm.connected = personService.getConnectedUser().Pseudo;
 		}
 
-		vm.showNavMenu = function() {
+		function showNavMenu() {
 			var div = document.getElementById("navMenu");
 			if (div.style.display == 'none'){
 				div.style.display = 'block';
@@ -21,11 +24,11 @@ function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, pe
 			}
 		}
 
-		vm.googlePlus = function() {
+		function googlePlus() {
 			personService.connect();
 		}
 
-		vm.logOut = function(){
+		function logOut(){
 			personService.setConnected("false");
 			personService.setConnectedUser(null);
 			window.plugins.googleplus.logout();
