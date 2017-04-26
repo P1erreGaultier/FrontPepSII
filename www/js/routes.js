@@ -36,7 +36,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/carte.html',
-        controller: 'carteCtrl'
+        controller: 'carteCtrl',
+        controllerAs: 'vm'
       }
     }
   })
@@ -74,7 +75,8 @@ angular.module('app.routes', [])
   .state('menu', {
     url: '/side-menu21',
     templateUrl: 'templates/menu.html',
-    controller: 'menuCtrl'
+    controller: 'menuCtrl',
+    controllerAs: 'vm'
   })
 
   .state('menu.mesVenements', {
@@ -115,7 +117,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/evaluerEvenement.html',
-        controller: 'evaluerEvenementCtrl'
+        controller: 'evaluerEvenementCtrl',
+        controllerAs: 'vm'
       }
     }
   })
@@ -158,7 +161,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/profil.html',
-        controller: 'profilCtrl'
+        controller: 'profilCtrl',
+        controllerAs: 'vm'
       }
     }
   })
