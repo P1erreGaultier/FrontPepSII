@@ -1,16 +1,22 @@
 angular.module('app.controllers')
 
-.controller('crErUnVenementCtrl', ['$stateParams','$window', '$cordovaDatePicker', '$http','eventService','ConnectedUserService', '$ionicHistory', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('crErUnVenementCtrl', ['$stateParams','$window', '$cordovaDatePicker', '$http','eventService', '$ionicHistory', '$state', 'personService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $cordovaDatePicker, $http, eventService, ConnectedUserService, $ionicHistory, $state) {
+function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionicHistory, $state, personService) {
 	var vm = this;
+	vm.placeid;
+	vm.minDate;
+	vm.saveEvent = saveEvent;
 
-	console.log("Creation d'un evenement");
-	vm.placeid=$window.location.href.substring(45);
-	vm.minDate = new Date().toDateString();
+	activate();
 
-	vm.saveEvent = function(){
+	function activate() {
+		vm.placeid=$window.location.href.substring(45);
+		vm.minDate = new Date().toDateString();
+	}
+
+	function saveEvent() {
 		vm.send = true;
 		if(document.getElementById("selectedDate").value == ""){
 			vm.erreurDate = ": Date invalide"
@@ -38,8 +44,8 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, Connec
 		}
 
 		if (vm.send){
-			var ownerToSend = ConnectedUserService.getConnectedUser();
-			var responseGoogle = ConnectedUserService.getResponseGoogle();
+			var ownerToSend = personService.getConnectedUser();
+			var responseGoogle = personServicef.getResponseGoogle();
 			var eventToSend = {
 				"Name" : document.getElementById("nomEvenement").value,
 				"DateStart" : document.getElementById("selectedDate").value + " " + document.getElementById("horaireDebut").value,

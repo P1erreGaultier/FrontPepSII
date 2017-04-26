@@ -1,55 +1,82 @@
 angular.module('app.controllers')
 
-.controller('mesVenementsCtrl', ['$stateParams', 'eventService', 'ConnectedUserService','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('mesVenementsCtrl', ['$stateParams', 'eventService', 'personService','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, eventService, ConnectedUserService, $filter) {
+function ($stateParams, eventService, personService, $filter) {
   var vm = this;
+  var selectedDiv = "next";
   vm.listMyEvents = [];
+  vm.listToDisplay = [];
   vm.listPastEvents = [];
   vm.listNextEvents = [];
   vm.getMyEvents = getMyEvents;
   vm.select = select;
   vm.passEvent = passEvent;
+  vm.myEventCheck = myEventCheck;
+  vm.owner = "";
 
   activate();
-  console.log("coucou");
 
   function activate() {
     getMyEvents();
   }
 
   function getMyEvents() {
-    return eventService.getMyEvents(ConnectedUserService.getConnectedUser().PersonId)
-    //return event.getMyEvents(ConnectedUserService.getConnectedUser().PersonId)
+    return eventService.getMyEvents(personService.getConnectedUser().PersonId)
+    //return event.getMyEvents(personService.getConnectedUser().PersonId)
       .then(function(data) {
-        console.log(data);
 
-        function checkDateSup(eventToFilter) {
-          return eventToFilter.DateStart >= $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
-        }
+        vm.listMyEvents = data;
 
-        function checkDateInf(eventToFilter) {
-          return eventToFilter.DateStart < $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
-        }
-
-        vm.listNextEvents = data.filter(checkDateSup);
-        vm.listPastEvents = data.filter(checkDateInf);
-
-        vm.listMyEvents = vm.listNextEvents;
+        vm.listPastEvents = vm.listMyEvents.filter(checkDateInf);
+        vm.listNextEvents = vm.listMyEvents.filter(checkDateSup);
+        vm.listToDisplay = vm.listNextEvents;
+        vm.owner = personService.getConnectedUser().PersonId;
       });
   }
 
   function select(div) {
     document.getElementById(div).style.height = "50px";
     if (div == "nextEvents"){
-      vm.listMyEvents = vm.listNextEvents;
+      vm.listToDisplay = vm.listNextEvents;
+      selectedDiv = "next";
       document.getElementById("pastEvents").style.height = "38px";
     } else {
-      vm.listMyEvents = vm.listPastEvents;
+      vm.listToDisplay = vm.listPastEvents;
+      selectedDiv = "past";
       document.getElementById("nextEvents").style.height = "38px";
     }
   }
+
+  function myEventCheck() {
+    if (document.getElementById("checkboxMyEvent").checked){
+      vm.listNextEvents = vm.listNextEvents.filter(checkIsMyEvent);
+      vm.listPastEvents = vm.listPastEvents.filter(checkIsMyEvent);
+      vm.listToDisplay = vm.listToDisplay.filter(checkIsMyEvent);
+    } else {
+      vm.listPastEvents = vm.listMyEvents.filter(checkDateInf);
+      vm.listNextEvents = vm.listMyEvents.filter(checkDateSup);
+      if (selectedDiv == "next") {
+        vm.listToDisplay = vm.listNextEvents;
+      } else {
+        vm.listToDisplay = vm.listPastEvents;
+      }
+    }
+  }
+
+  function checkDateSup(eventToFilter) {
+    return eventToFilter.DateStart >= $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
+  }
+
+  function checkDateInf(eventToFilter) {
+    return eventToFilter.DateStart < $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
+  }
+
+  function checkIsMyEvent(eventToFilter){
+    return eventToFilter.Owner.PersonId == personService.getConnectedUser().PersonId;
+  }
+
 
   function passEvent(eventToSend){
     return eventService.saveEvent(eventToSend);

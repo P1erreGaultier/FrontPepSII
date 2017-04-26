@@ -1,11 +1,10 @@
 angular.module('app.controllers')
-.controller('menuCtrl', ['$scope', '$stateParams', '$ionicHistory', '$state', 'ConnectedUserService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('menuCtrl', ['$scope', '$stateParams', '$ionicHistory', '$state', 'personService', // The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($scope, $stateParams, $ionicHistory, $state, ConnectedUserService) {
+function ($scope, $stateParams, $ionicHistory, $state, personService) {
 	$scope.checkUser = function() {
-		console.log("checkUser");
-		if (ConnectedUserService.isConnected() != "true"){
+		if (personService.getConnected() != "true"){
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});

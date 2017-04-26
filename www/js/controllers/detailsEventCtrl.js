@@ -1,13 +1,13 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','ConnectedUserService', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','personService', '$state', '$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $http, eventService,ConnectedUserService, $state) {
+function ($stateParams, $window, $http, eventService,personService, $state, $filter) {
 	var vm = this;
 
-	vm.RegisterUserToEvent = function() {
-		var responseGoogle = ConnectedUserService.getResponseGoogle();
+	vm.registerUserToEvent = function() {
+		var responseGoogle = personService.getResponseGoogle();
 		$http({
 			method: 'POST',
 			url: 'http://webapp8.nantes.sii.fr/saveParticipant',
@@ -18,7 +18,7 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
+			data: {tokenid:responseGoogle.idToken, person: personService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
@@ -31,8 +31,8 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 		});
 	}
 
-	vm.UnregisterUserToEvent = function() {
-		var responseGoogle = ConnectedUserService.getResponseGoogle();
+	vm.unregisterUserToEvent = function() {
+		var responseGoogle = personService.getResponseGoogle();
 		$http({
 			method: 'POST',
 			url: 'http://webapp8.nantes.sii.fr/cancelParticipation',
@@ -43,7 +43,7 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
+			data: {tokenid:responseGoogle.idToken, person: personService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
@@ -64,6 +64,24 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 			return "5%";
 		}
 	}
+
+	vm.cancelEvent = function() {
+		var responseGoogle = personService.getResponseGoogle();
+		var eventToSend = {
+			"EventId" : event.EventId,
+			"Name" : event.Name,
+			"DateStart" : event.DateStart,
+			"DateEnd" : event.DateEnd,
+			"PlaceId" : event.PlaceId,
+			"Description": event.Description,
+			"Image" : event.Image,
+			"IsCanceled" : 1,
+			"Owner" : event.Owner
+		};
+		eventService.registerEvent(responseGoogle.idToken,eventToSend);
+		alert('Votre évènement à bien été annulé');
+	}
+
 	vm.detailsParticipant = function(){
 		var div = document.getElementById("participantDiv");
 		if (div.style.display == 'none'){
@@ -72,10 +90,21 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 			div.style.display = 'none';
 		}
 	}
+
 	vm.TitleEvent = event.Name;
 	vm.sourceImgEvent = event.Image;
 	vm.descriptionEvent = event.Description;
 	vm.dateStartEvent = event.DateStart;
+	vm.owner = event.Owner.PersonId;
+	vm.dateOfDay = $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
+	console.log(vm.dateOfDay);
+	console.log(vm.dateStartEvent);
+	console.log(vm.dateOfDay > vm.dateStartEvent);
+	if (personService.getConnectedUser() == null){
+		vm.connectedUser = -1;
+	} else {
+		vm.connectedUser = personService.getConnectedUser().PersonId;
+	}
 
 	$http({
 		method: 'GET',
@@ -94,12 +123,12 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 		vm.ListParticipant = response.data;
 		vm.nbParticipants = vm.ListParticipant.length;
 
-		if (ConnectedUserService.getConnectedUser() == null){
+		if (personService.getConnectedUser() == null){
 			vm.isRegister = "null";
 		}else {
 			var isRegister = "false";
 			for(i=0;i<vm.ListParticipant.length;i++){
-				if(vm.ListParticipant[i].PersonId == ConnectedUserService.getConnectedUser().PersonId){
+				if(vm.ListParticipant[i].PersonId == personService.getConnectedUser().PersonId){
 					isRegister = "true";
 				}
 			}
@@ -109,7 +138,8 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 				vm.isRegister = "false";
 			}
 		}
-
+		console.log("isRegister");
+		console.log(vm.isRegister);
 	}, function erroCallabck(response) {
 		console.log("Participant: Il y a eu des erreurs!")
 		console.log(response);
