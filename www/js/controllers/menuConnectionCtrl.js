@@ -7,12 +7,11 @@ function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, pe
 	vm.googlePlus = googlePlus;
 	vm.logOut = logOut;
 
+	console.log("salut");
 		vm.isConnected = personService.getConnected();
-		console.log(personService);
-		console.log(personService.getConnected());
-		console.log(personService.getConnectedUser());
 		if (personService.getConnectedUser() != null){
 			vm.connected = personService.getConnectedUser().Pseudo;
+			console.log(vm.connected);
 		}
 
 		function showNavMenu() {

@@ -1,13 +1,13 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','ConnectedUserService', '$state', '$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','personService', '$state', '$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $http, eventService,ConnectedUserService, $state, $filter) {
+function ($stateParams, $window, $http, eventService,personService, $state, $filter) {
 	var vm = this;
 
 	vm.registerUserToEvent = function() {
-		var responseGoogle = ConnectedUserService.getResponseGoogle();
+		var responseGoogle = personService.getResponseGoogle();
 		$http({
 			method: 'POST',
 			url: 'http://webapp8.nantes.sii.fr/saveParticipant',
@@ -18,7 +18,7 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
+			data: {tokenid:responseGoogle.idToken, person: personService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
@@ -32,7 +32,7 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 	}
 
 	vm.unregisterUserToEvent = function() {
-		var responseGoogle = ConnectedUserService.getResponseGoogle();
+		var responseGoogle = personService.getResponseGoogle();
 		$http({
 			method: 'POST',
 			url: 'http://webapp8.nantes.sii.fr/cancelParticipation',
@@ -43,7 +43,7 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid:responseGoogle.idToken, person: ConnectedUserService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
+			data: {tokenid:responseGoogle.idToken, person: personService.getConnectedUser().PersonId, event: eventService.getEvent().EventId}
 		}).then(function successCallback(response) {
 			console.log("message send");
 			console.log(response);
@@ -66,7 +66,7 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 	}
 
 	vm.cancelEvent = function() {
-		var responseGoogle = ConnectedUserService.getResponseGoogle();
+		var responseGoogle = personService.getResponseGoogle();
 		var eventToSend = {
 			"EventId" : event.EventId,
 			"Name" : event.Name,
@@ -100,10 +100,10 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 	console.log(vm.dateOfDay);
 	console.log(vm.dateStartEvent);
 	console.log(vm.dateOfDay > vm.dateStartEvent);
-	if (ConnectedUserService.getConnectedUser() == null){
+	if (personService.getConnectedUser() == null){
 		vm.connectedUser = -1;
 	} else {
-		vm.connectedUser = ConnectedUserService.getConnectedUser().PersonId;
+		vm.connectedUser = personService.getConnectedUser().PersonId;
 	}
 
 	$http({
@@ -123,12 +123,12 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 		vm.ListParticipant = response.data;
 		vm.nbParticipants = vm.ListParticipant.length;
 
-		if (ConnectedUserService.getConnectedUser() == null){
+		if (personService.getConnectedUser() == null){
 			vm.isRegister = "null";
 		}else {
 			var isRegister = "false";
 			for(i=0;i<vm.ListParticipant.length;i++){
-				if(vm.ListParticipant[i].PersonId == ConnectedUserService.getConnectedUser().PersonId){
+				if(vm.ListParticipant[i].PersonId == personService.getConnectedUser().PersonId){
 					isRegister = "true";
 				}
 			}
@@ -138,7 +138,8 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 				vm.isRegister = "false";
 			}
 		}
-
+		console.log("isRegister");
+		console.log(vm.isRegister);
 	}, function erroCallabck(response) {
 		console.log("Participant: Il y a eu des erreurs!")
 		console.log(response);

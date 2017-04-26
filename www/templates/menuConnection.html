@@ -1,4 +1,5 @@
 <ion-nav-buttons side="right" class="has-header">
+  <p>coucou</p>
   <div ng-controller="menuConnnectionCtrl as vm" ng-switch="{{vm.isConnected}}">
     <button ng-switch-when="false"class="button icon No Icon" ng-click="vm.googlePlus()"> Connexion</button>
     <div ng-switch-when="true" style="height:100%">
