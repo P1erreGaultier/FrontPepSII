@@ -3,24 +3,24 @@
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
 
-    <div ng-switch on="canModifiy" >
+    <div ng-switch on="vm.canModify" >
       <img src="img/defaultUser2.jpg" style="height:500px;width:auto;">
   <div ng-switch-when="true" >
-    <label id="pseudo">Pseudo:</label> <input id="pseudoInput" value="{{pseudo}}" style="margin-bottom:15px;"></br>
-    <label id="lastName">Nom:</label> <input id="lastNameInput" value="{{lastName}}" style="margin-bottom:15px;"></br>
-    <label id="firstName">Prenom:</label> <input id="firstNameInput" value="{{firstName}}" style="margin-bottom:15px;"></br>
-    <label>Poste:</label> <input id="jobInput" value="{{job}}" style="margin-bottom:15px;">
+    <label id="pseudo">Pseudo:</label> <input id="pseudoInput" value="{{vm.pseudo}}" style="margin-bottom:15px;"></br>
+    <label id="lastName">Nom:</label> <input id="lastNameInput" value="{{vm.lastName}}" style="margin-bottom:15px;"></br>
+    <label id="firstName">Prenom:</label> <input id="firstNameInput" value="{{vm.firstName}}" style="margin-bottom:15px;"></br>
+    <label>Poste:</label> <input id="jobInput" value="{{vm.job}}" style="margin-bottom:15px;">
     <div style="display:flex;">
-      <a href="javascript:void(0)" ng-click="saveProfil()" class="button button-positive  button-block" style="width:45%;margin-right:10%;">Sauvegarder</a>
-      <a href="javascript:void(0)" ng-click="modifyBack()" class="button button-positive  button-block" style="width:45%;">Retour</a>
+      <a href="javascript:void(0)" ng-click="vm.saveProfil()" class="button button-positive  button-block" style="width:45%;margin-right:10%;">Sauvegarder</a>
+      <a href="javascript:void(0)" ng-click="vm.modifyBack()" class="button button-positive  button-block" style="width:45%;">Retour</a>
     </div>
   </div>
   <div ng-switch-when="false">
-    <p >Pseudo: {{pseudo}}</p>
-    <p>Nom: {{lastName}}</p>
-    <p>Prenom: {{firstName}}</p>
-    <p>Poste: {{job}}</p>
-    <a href="javascript:void(0)" ng-click="modify()" class="button button-positive  button-block">Modifier</a>
+    <p >Pseudo: {{vm.pseudo}}</p>
+    <p>Nom: {{vm.lastName}}</p>
+    <p>Prenom: {{vm.firstName}}</p>
+    <p>Poste: {{vm.job}}</p>
+    <a href="javascript:void(0)" ng-click="vm.modify()" class="button button-positive  button-block">Modifier</a>
   </div>
 </div>
 

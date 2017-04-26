@@ -27,5 +27,4 @@ function (eventService) {
 		return eventService.saveEvent(eventToSend);
 	}
 
-
 }])
