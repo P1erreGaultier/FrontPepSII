@@ -7,7 +7,6 @@ function ($stateParams, $window, $state, $ionicHistory, personService) {
 	vm.googlePlus = googlePlus;
 	vm.logOut = logOut;
 
-	console.log("JE SUIS EN VIE");
 		vm.isConnected = personService.getConnected();
 		if (personService.getConnectedUser() != null){
 			vm.connected = personService.getConnectedUser().Pseudo;

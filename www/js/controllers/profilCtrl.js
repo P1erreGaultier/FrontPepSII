@@ -1,7 +1,7 @@
 angular.module('app.controllers')
 
-.controller('profilCtrl', ['$scope', '$stateParams','ConnectedUserService','personService',
-function ($scope, $stateParams, ConnectedUserService, personService) {
+.controller('profilCtrl', ['$scope', '$stateParams','personService',
+function ($scope, $stateParams, personService) {
 
 	var vm = this;
 	vm.user = personService.getConnectedUser();

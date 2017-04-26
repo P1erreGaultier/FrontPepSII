@@ -1,9 +1,9 @@
 angular.module('app.services')
 .factory('personService', personService)
 
-suggestion.$inject = ['$http','$window', '$ionicHistory'];
+suggestion.$inject = ['$http','$window', '$ionicHistory', '$state'];
 
-function personService($http, $window, $ionicHistory) {
+function personService($http, $window, $ionicHistory, $state) {
 
   var connectedUser;
   var connected = "false";
