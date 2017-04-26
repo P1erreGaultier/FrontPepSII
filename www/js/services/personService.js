@@ -18,6 +18,8 @@ function personService($http, $window, $ionicHistory) {
     setConnected : setConnected,
     getConnectedUser : getConnectedUser,
     setConnectedUser : setConnectedUser,
+    getResponseGoogle : getResponseGoogle,
+    setResponseGoogle : setResponseGoogle
 
   };
 
@@ -37,6 +39,14 @@ function personService($http, $window, $ionicHistory) {
     connectedUser = user;
   }
 
+  function getResponseGoogle (){
+    return responseGoogle;
+  }
+
+  function setResponseGoogle (response){
+    responseGoogle = response;
+  }
+
   function getPersonById(personId){
     return $http({
   	method: 'GET',
@@ -52,7 +62,6 @@ function personService($http, $window, $ionicHistory) {
       console.log(response);
     }
   };
-
 
 function registerPerson(idToken, personToSend ){
     return $http({
@@ -86,7 +95,8 @@ function registerPerson(idToken, personToSend ){
   function connect(){
     window.plugins.googleplus.login(
     {'webClientId': '784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com',},
-    function (responseGoogle) {
+    function (responseG) {
+      responseGoogle = responseG;
       return $http({
         method: 'POST',
         url: 'http://webapp8.nantes.sii.fr/connect',
@@ -97,7 +107,7 @@ function registerPerson(idToken, personToSend ){
         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
         return str.join("&");
         },
-        data: {tokenid: responseGoogle.idToken}
+        data: {tokenid: responseG.idToken}
       })
       .then(connectComplete)
       .catch(connectFailed);
@@ -106,12 +116,10 @@ function registerPerson(idToken, personToSend ){
 
   function connectComplete(response) {
     if (response.data == null){
-      ConnectedUserService.setResponseGoogle(responseGoogle);
       $state.go('menu.inscription');
     }else{
-      ConnectedUserService.setConnectedUser(response.data);
-      ConnectedUserService.setResponseGoogle(responseGoogle);
-      ConnectedUserService.setConnected("true");
+      connectedUser =response.data;
+      connected = "true";
       //$window.history.back();
       $state.reload();
     return response;

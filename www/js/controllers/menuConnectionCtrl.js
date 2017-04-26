@@ -1,7 +1,7 @@
 angular.module('app.controllers')
 
-.controller('menuConnnectionCtrl', ['$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory', '$http','personService',
-function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, $http, personService) {
+.controller('menuConnnectionCtrl', ['$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory','personService',
+function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, personService) {
 	var vm = this;
 
 		vm.isConnected = personService.getConnected();
@@ -22,51 +22,17 @@ function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, $h
 		}
 
 		vm.googlePlus = function() {
-			window.plugins.googleplus.login(
-			{'webClientId': '784894623300-gmkq3hut99f16n220kjimotv0os7vt2e.apps.googleusercontent.com',},
-			function (responseGoogle) {
-				$http({
-					method: 'POST',
-					url: 'http://webapp8.nantes.sii.fr/connect',
-					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-					transformRequest: function(obj) {
-					var str = [];
-					for(var p in obj)
-					str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-					return str.join("&");
-					},
-					data: {tokenid: responseGoogle.idToken}
-				}).then(function successCallback(response) {
-					if (response.data == null){
-						ConnectedUserService.setResponseGoogle(responseGoogle);
-						$state.go('menu.inscription');
-					}else{
-						ConnectedUserService.setConnectedUser(response.data);
-						ConnectedUserService.setResponseGoogle(responseGoogle);
-						ConnectedUserService.setConnected("true");
-						//$window.history.back();
-						$state.reload();
-					}
-				}, function erroCallabck(response) {
-					alert("Erreur");
-					alert(JSON.stringify(response));
-				});
-			},
-			function (error) {
-				alert("erreur: " + error);
-			});
+			personService.connect();
 		}
 
 		vm.logOut = function(){
-			ConnectedUserService.setConnected("false");
-			ConnectedUserService.setConnectedUser(null);
+			personService.setConnected("false");
+			personService.setConnectedUser(null);
 			window.plugins.googleplus.logout();
 			$ionicHistory.nextViewOptions({
 				disableBack: true
 			});
 			$state.go('menu.accueil', {}, {location: 'replace', reload: true})
-			//$location.path('/#/side-menu21/page1').replace();
-			//$window.location.reload();
 		}
 
 }])

@@ -1,7 +1,7 @@
 angular.module('app.controllers')
 
-.controller('profilCtrl', ['$scope', '$stateParams','ConnectedUserService','personService','$document',
-function ($scope, $stateParams, ConnectedUserService, personService,$document) {
+.controller('profilCtrl', ['$scope', '$stateParams','ConnectedUserService','personService',
+function ($scope, $stateParams, ConnectedUserService, personService) {
 
 	var vm = this;
 	vm.user = personService.getConnectedUser();
@@ -20,30 +20,30 @@ function ($scope, $stateParams, ConnectedUserService, personService,$document) {
 
 	function saveProfil() {
 		var save = true;
-		if ($document("#pseudoInput").value.trim() == ""){
-			$document("#pseudo").innerText = "Votre pseudo ne peut pas être vide: ";
+		if (document.getElementById("pseudoInput").value.trim() == ""){
+			document.getElementById("pseudo").innerText = "Votre pseudo ne peut pas être vide: ";
 			save = false;
 		}else{
-			$document("#pseudo").innerText = "Pseudo: ";
+			document.getElementById("pseudo").innerText = "Pseudo: ";
 		}
-		if ($document("#firstNameInput").value.trim() == ""){
-			$document("#firstName").innerText = "Votre prenom ne peut pas être vide: ";
+		if (document.getElementById("firstNameInput").value.trim() == ""){
+			document.getElementById("firstName").innerText = "Votre prenom ne peut pas être vide: ";
 			save = false;
 		}else{
-			$document("#firstName").innerText = "Prenom: ";
+			document.getElementById("firstName").innerText = "Prenom: ";
 		}
-		if ($document("#lastNameInput").value.trim() == ""){
-			$document("#lastName").innerText = "Votre nom ne peut pas être vide: ";
+		if (document.getElementById("lastNameInput").value.trim() == ""){
+			document.getElementById("lastName").innerText = "Votre nom ne peut pas être vide: ";
 			save = false;
 		}else{
-			$document("#lastName").innerText = "Nom: ";
+			document.getElementById("lastName").innerText = "Nom: ";
 		}
 		if (save){
 			var personToSend = {
-				"Pseudo" : $document("#pseudoInput").value,
-				"LastName" : $document("#lastNameInput").value,
-				"FirstName" : $document("#firstNameInput").value,
-				"Job" : $document("#jobInput").value,
+				"Pseudo" : document.getElementById("pseudoInput").value,
+				"LastName" : document.getElementById("lastNameInput").value,
+				"FirstName" : document.getElementById("firstNameInput").value,
+				"Job" : document.getElementById("jobInput").value,
 				"PersonEmail" : personService.getConnectedUser().personEmail
 			};
 			personService.registerPerson(ConnectedUserService.getGoogleId(), personToSend)
