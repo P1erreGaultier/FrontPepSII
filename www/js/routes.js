@@ -163,6 +163,17 @@ angular.module('app.routes', [])
     }
   })
 
+  .state('menu.noteEvent', {
+    url: '/noteEvent',
+    views: {
+      'side-menu21': {
+        templateUrl: 'templates/noterEvenement.html',
+        controller: 'noterEvenementCtrl',
+        controllerAs: 'vm'
+      }
+    }
+  })
+
 $urlRouterProvider.otherwise('/side-menu21/page1')
 
 

@@ -1,12 +1,12 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','ConnectedUserService', '$state',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','ConnectedUserService', '$state', '$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $http, eventService,ConnectedUserService, $state) {
+function ($stateParams, $window, $http, eventService,ConnectedUserService, $state, $filter) {
 	var vm = this;
 
-	vm.RegisterUserToEvent = function() {
+	vm.registerUserToEvent = function() {
 		var responseGoogle = ConnectedUserService.getResponseGoogle();
 		$http({
 			method: 'POST',
@@ -31,7 +31,7 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 		});
 	}
 
-	vm.UnregisterUserToEvent = function() {
+	vm.unregisterUserToEvent = function() {
 		var responseGoogle = ConnectedUserService.getResponseGoogle();
 		$http({
 			method: 'POST',
@@ -64,6 +64,24 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 			return "5%";
 		}
 	}
+
+	vm.cancelEvent = function() {
+		var responseGoogle = ConnectedUserService.getResponseGoogle();
+		var eventToSend = {
+			"EventId" : event.EventId,
+			"Name" : event.Name,
+			"DateStart" : event.DateStart,
+			"DateEnd" : event.DateEnd,
+			"PlaceId" : event.PlaceId,
+			"Description": event.Description,
+			"Image" : event.Image,
+			"IsCanceled" : 1,
+			"Owner" : event.Owner
+		};
+		eventService.registerEvent(responseGoogle.idToken,eventToSend);
+		alert('Votre évènement à bien été annulé');
+	}
+
 	vm.detailsParticipant = function(){
 		var div = document.getElementById("participantDiv");
 		if (div.style.display == 'none'){
@@ -72,10 +90,21 @@ function ($stateParams, $window, $http, eventService,ConnectedUserService, $stat
 			div.style.display = 'none';
 		}
 	}
+
 	vm.TitleEvent = event.Name;
 	vm.sourceImgEvent = event.Image;
 	vm.descriptionEvent = event.Description;
 	vm.dateStartEvent = event.DateStart;
+	vm.owner = event.Owner.PersonId;
+	vm.dateOfDay = $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
+	console.log(vm.dateOfDay);
+	console.log(vm.dateStartEvent);
+	console.log(vm.dateOfDay > vm.dateStartEvent);
+	if (ConnectedUserService.getConnectedUser() == null){
+		vm.connectedUser = -1;
+	} else {
+		vm.connectedUser = ConnectedUserService.getConnectedUser().PersonId;
+	}
 
 	$http({
 		method: 'GET',

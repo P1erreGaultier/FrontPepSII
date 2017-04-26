@@ -73,8 +73,8 @@ function eventService($http) {
       },
       data: {tokenid: idToken, event: JSON.stringify(eventToSend)}
     })
-      .then(getAllEventComplete)
-      .catch(getAllEventFailed);
+      .then(registerEventComplete)
+      .catch(registerEventFailed);
 
     function registerEventComplete(response) {
       console.log("message send");
