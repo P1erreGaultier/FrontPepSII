@@ -1,9 +1,9 @@
 angular.module('app.controllers')
 
-.controller('connectionCtrl', ['$stateParams', '$window', '$http', 'ConnectedUserService', '$state','personService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('connectionCtrl', ['$stateParams', '$window', '$http', '$state','personService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $http, ConnectedUserService, $state, personService) {
+function ($stateParams, $window, $http, $state, personService) {
 	var vm = this;
 	vm.connection = connection;
 
@@ -13,8 +13,8 @@ function ($stateParams, $window, $http, ConnectedUserService, $state, personServ
 			personService.setConnectedUser(response);
 			personService.setConnected("true");
 			console.log("Connecté en tant que: ");
-			console.log(personService.connectedUser);
-			console.log(personService.connected);
+			console.log(personService.getConnectedUser());
+			console.log(personService.getConnected());
 			$window.history.back();
 		}, function erroCallabck(response) {
 			alert('impossible de récupérer cette personne');

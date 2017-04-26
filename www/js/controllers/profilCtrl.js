@@ -46,7 +46,7 @@ function ($scope, $stateParams, ConnectedUserService, personService) {
 				"Job" : document.getElementById("jobInput").value,
 				"PersonEmail" : personService.getConnectedUser().personEmail
 			};
-			personService.registerPerson(ConnectedUserService.getGoogleId(), personToSend)
+			personService.registerPerson(personService.getGoogleId(), personToSend)
 			.then(function successCallback(response) {
 				console.log("message send");
 				console.log(vm.user.personID);

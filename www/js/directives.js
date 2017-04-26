@@ -1,5 +1,8 @@
-var myApp = angular.module('app.directives', [])
+var myApp =  angular.module('app.directives',[])
 
-.directive('blankDirective', [function(){
-
-}]);
+.directive("menu", function() {
+  return {
+  restrict : 'E',
+  templateUrl: "templates/menuConnection.html"
+  }
+})
