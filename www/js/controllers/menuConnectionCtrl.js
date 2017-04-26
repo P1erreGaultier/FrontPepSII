@@ -1,13 +1,12 @@
 angular.module('app.controllers')
 
-.controller('menuConnnectionCtrl', ['$stateParams', 'ConnectedUserService', '$window', '$state', '$ionicHistory','personService',
-function ($stateParams, ConnectedUserService, $window, $state, $ionicHistory, personService) {
+.controller('menuConnectionCtrl', ['$stateParams', '$window', '$state', '$ionicHistory','personService',
+function ($stateParams, $window, $state, $ionicHistory, personService) {
 	var vm = this;
 	vm.showNavMenu = showNavMenu;
 	vm.googlePlus = googlePlus;
 	vm.logOut = logOut;
 
-	console.log("salut");
 		vm.isConnected = personService.getConnected();
 		if (personService.getConnectedUser() != null){
 			vm.connected = personService.getConnectedUser().Pseudo;

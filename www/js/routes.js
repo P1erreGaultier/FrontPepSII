@@ -180,6 +180,4 @@ angular.module('app.routes', [])
 
 $urlRouterProvider.otherwise('/side-menu21/page1')
 
-
-
 });

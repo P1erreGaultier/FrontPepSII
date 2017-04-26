@@ -1,9 +1,9 @@
 angular.module('app.services')
 .factory('personService', personService)
 
-suggestion.$inject = ['$http','$window', '$ionicHistory'];
+suggestion.$inject = ['$http','$window', '$ionicHistory', '$state'];
 
-function personService($http, $window, $ionicHistory) {
+function personService($http, $window, $ionicHistory, $state) {
 
   var connectedUser;
   var connected = "false";
@@ -19,7 +19,9 @@ function personService($http, $window, $ionicHistory) {
     getConnectedUser : getConnectedUser,
     setConnectedUser : setConnectedUser,
     getResponseGoogle : getResponseGoogle,
-    setResponseGoogle : setResponseGoogle
+    setResponseGoogle : setResponseGoogle,
+    getGoogleId : getGoogleId,
+    setGoogleId : setGoogleId
 
   };
 
@@ -45,6 +47,14 @@ function personService($http, $window, $ionicHistory) {
 
   function setResponseGoogle (response){
     responseGoogle = response;
+  }
+
+  function getGoogleId (){
+    return googleId;
+  }
+
+  function setGoogleId (id){
+    googleId = id;
   }
 
   function getPersonById(personId){
