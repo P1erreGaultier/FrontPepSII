@@ -1,4 +1,4 @@
-<ion-view title="{{vm.TitleEvent}}" id="page13" cache-view="false">
+<ion-view title="{{vm.event.Name}}" id="page13" cache-view="false">
   <ion-nav-buttons side="right" class="has-header">
     <div ng-controller="menuConnectionCtrl as vm" ng-switch="{{vm.isConnected}}">
       <button ng-switch-when="false"class="button icon No Icon" ng-click="vm.googlePlus()"> Connexion</button>
@@ -18,15 +18,15 @@
   <ion-content padding="true" class="has-header">
     <h1 id="heading1" style="color:#000000;"></h1>
     <div>
-      <img id="imageEvent" src="data:image/png;base64,{{vm.sourceImgEvent}}" style="display:block;width:40%;height:auto;">
+      <img id="imageEvent" src="data:image/png;base64,{{vm.event.Image}}" style="display:block;width:40%;height:auto;">
     </div>
     <div id="footEnSalle-markdown1" class="show-list-numbers-and-dots">
-      <p style="color:#000000;">{{vm.descriptionEvent}}</p>
+      <p style="color:#000000;">{{vm.event.Description}}</p>
 
-      <p style="color:#000000;">Le {{vm.dateStartEvent | date:'dd/MM/yyyy'}} à {{vm.dateStartEvent | date:'HH:mm'}}</p>
+      <p style="color:#000000;">Le {{vm.event.DateStart | date:'dd/MM/yyyy'}} à {{vm.event.DateStart | date:'HH:mm'}}</p>
     </div>
     <div id="footEnSalle-button-bar3" class="button-bar"></div>
-    <div ng-if="vm.owner == vm.connectedUser">
+    <div ng-if="vm.event.Owner.PersonId == vm.connectedUser">
       <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.cancelEvent()">Annuler l'évènement</button>
     </div>
 
@@ -36,8 +36,8 @@
           <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.registerUserToEvent()">J'y vais</button>
         </div>
         <div ng-switch-when="true">
-          <button ng-if="vm.dateOfDay < vm.dateStartEvent" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.unregisterUserToEvent()">J'y vais plus</button>
-          <button ng-if="vm.dateOfDay > vm.dateStartEvent" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.displayRateForm()">Noter l'évènement</button>
+          <button ng-if="vm.dateOfDay < vm.event.DateStart" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.unregisterUserToEvent()">J'y vais plus</button>
+          <button ng-if="vm.dateOfDay > vm.event.DateStart" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.displayRateForm()">Noter l'évènement</button>
         </div>
       </div>
 

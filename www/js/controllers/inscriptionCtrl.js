@@ -14,27 +14,6 @@ function ($stateParams,$http,personService) {
 			"Job" : document.getElementById("job").value,
 			"PersonEmail" : responseGoogle.email
 		};
-		alert(JSON.stringify(personToSend));
-		$http({
-			method: 'POST',
-			url: 'http://webapp8.nantes.sii.fr/registerPerson',
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-			transformRequest: function(obj) {
-				var str = [];
-				for(var p in obj)
-				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-				return str.join("&");
-			},
-			data: {tokenid: responseGoogle.idToken, person: JSON.stringify(personToSend)}
-		}).then(function successCallback(response) {
-			console.log("message send");
-			console.log(response);
-			alert(JSON.stringify(response));
-		}, function erroCallabck(response) {
-			console.log(response);
-			console.log("Envoi token: Il y a eu des erreurs!");
-			alert(JSON.stringify(response));
-		});
+ 		vm.registerPerson(responseGoogle.idToken, personToSend )
 }
-
 }])
