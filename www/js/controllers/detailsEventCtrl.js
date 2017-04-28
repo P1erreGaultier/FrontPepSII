@@ -138,6 +138,13 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	function saveReview(idToken, personToSend, eventToSend, rateToSend, textToSend){
 		alert(personToSend);
 		alert(eventToSend);
+		var reviewToSend = {
+			"person" : personToSend,
+			"event" : eventToSend,
+			"rate" : rateToSend,
+			"text" : textToSend
+		};
+
 		return $http({
 			method: 'POST',
 			url: 'http://webapp8.nantes.sii.fr/updateReview',
@@ -148,7 +155,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid: idToken, person: personToSend, event: eventToSend, rate: rateToSend, text: textToSend}
+			data: {tokenid: idToken, review: reviewToSend}
 		})
 			.then(saveReviewComplete)
 			.catch(saveReviewFailed);
@@ -157,6 +164,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			alert(JSON.stringify(response));
 			return response;
 		}
+
 		function saveReviewFailed(response){
 			console.log("Error: saveReviewFailed");
 			console.log(response);
