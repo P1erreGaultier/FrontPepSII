@@ -32,11 +32,11 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	}
 
 	function registerUserToEvent () {
-		saveParticipant(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId);
+		participantService.saveParticipant(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId);
 	}
 
 	function unregisterUserToEvent() {
-		cancelParticipation(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId);
+		participantService.cancelParticipation(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId);
 	}
 
 	function getCommentMargin(owner){
