@@ -8,7 +8,7 @@ function (eventService) {
 	vm.listEvent = [];
 	vm.getAllEvent = getAllEvent;
 	vm.passEvent = passEvent;
-
+	vm.changeColor = changeColor;
 	activate();
 
 	function activate() {
@@ -25,6 +25,13 @@ function (eventService) {
 
 	function passEvent(eventToSend){
 		return eventService.saveEvent(eventToSend);
+	}
+
+	function changeColor() {
+		console.log("coucou");
+		document.getElementById("oui").style.background = "#EC008C";
+		document.getElementById("oui").style.backgroundBlendMode = "screen";
+		document.getElementById("oui").style.content = "";
 	}
 
 }])

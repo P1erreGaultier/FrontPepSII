@@ -57,7 +57,7 @@ function ($stateParams , $compile, eventService, $window, $filter) {
 		var latLng = new google.maps.LatLng(47.2112216, -1.5570168);
 		var mapOptions = {
 				center: latLng,
-				zoom: 15,
+				zoom: 12,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 
