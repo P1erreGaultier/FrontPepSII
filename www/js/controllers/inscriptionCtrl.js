@@ -4,8 +4,10 @@ angular.module('app.controllers')
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($stateParams,$http,personService) {
 	var vm = this;
+	vm.inscription = inscription;
+
 	alert(JSON.stringify(personService.getResponseGoogle()));
-	vm.inscription= function(){
+	function inscription(){
 		var responseGoogle = personService.getResponseGoogle();
 		var personToSend = {
 			"Pseudo" : document.getElementById("pseudo").value,
@@ -14,6 +16,6 @@ function ($stateParams,$http,personService) {
 			"Job" : document.getElementById("job").value,
 			"PersonEmail" : responseGoogle.email
 		};
- 		vm.registerPerson(responseGoogle.idToken, personToSend )
+ 		personService.registerPerson(responseGoogle.idToken, personToSend )
 }
 }])

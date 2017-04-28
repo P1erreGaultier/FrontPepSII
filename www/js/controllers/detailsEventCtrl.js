@@ -14,10 +14,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.getCommentMargin = getCommentMargin;
 	vm.cancelEvent = cancelEvent;
 	vm.detailsParticipant = detailsParticipant;
-	vm.saveReview = saveReview;
-	vm.event = eventService.getEvent();
 	activate();
-
 
 	function activate(){
 		vm.isRegister = personService.getConnected();
@@ -125,52 +122,19 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		console.log(note);
 		console.log(comment);
 
-		var saveReviewPromise = vm.saveReview(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, vm.event.EventId, note, comment);
-		saveReviewPromise.then(function(result){
+		var reviewToSend = {
+			"person" : personService.getConnectedUser().PersonId,
+			"event" : vm.event.EventId,
+			"rate" : note,
+			"text" : comment
+		};
+
+		reviewService.updateReview(personService.getResponseGoogle().idToken, reviewToSend )
+		.then(function(result){
 			alert("Vous avez donné la note de " + note + " à l'évènement!")
 			alert(comment);
 			alert(JSON.stringify(result));
 			vm.hideRateForm();
 		})
 	}
-
-
-	function saveReview(idToken, personToSend, eventToSend, rateToSend, textToSend){
-		alert(personToSend);
-		alert(eventToSend);
-		var reviewToSend = {
-			"person" : personToSend,
-			"event" : eventToSend,
-			"rate" : rateToSend,
-			"text" : textToSend
-		};
-
-		return $http({
-			method: 'POST',
-			url: 'http://webapp8.nantes.sii.fr/updateReview',
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-			transformRequest: function(obj) {
-				var str = [];
-				for(var p in obj)
-				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-				return str.join("&");
-			},
-			data: {tokenid: idToken, review: reviewToSend}
-		})
-			.then(saveReviewComplete)
-			.catch(saveReviewFailed);
-
-		function saveReviewComplete(response) {
-			alert(JSON.stringify(response));
-			return response;
-		}
-
-		function saveReviewFailed(response){
-			console.log("Error: saveReviewFailed");
-			console.log(response);
-			alert(JSON.stringify(response));
-			return response;
-		}
-	};
-
 }])
