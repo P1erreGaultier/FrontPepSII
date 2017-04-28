@@ -139,10 +139,10 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		alert(personToSend);
 		alert(eventToSend);
 		var reviewToSend = {
-			"person" : personToSend,
-			"event" : eventToSend,
-			"rate" : rateToSend,
-			"text" : textToSend
+			"PersonId" : personToSend,
+			"EventId" : eventToSend,
+			"Rate" : parseInt(rateToSend),
+			"Text" : textToSend
 		};
 
 		return $http({
@@ -155,7 +155,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid: idToken, review: reviewToSend}
+			data: {tokenid: idToken, review: JSON.stringify(reviewToSend)}
 		})
 			.then(saveReviewComplete)
 			.catch(saveReviewFailed);
