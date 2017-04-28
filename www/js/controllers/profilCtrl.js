@@ -40,13 +40,14 @@ function ($scope, $stateParams, personService) {
 		}
 		if (save){
 			var personToSend = {
+				"PersonId": personService.getConnectedUser().PersonId,
 				"Pseudo" : document.getElementById("pseudoInput").value,
 				"LastName" : document.getElementById("lastNameInput").value,
 				"FirstName" : document.getElementById("firstNameInput").value,
 				"Job" : document.getElementById("jobInput").value,
-				"PersonEmail" : personService.getConnectedUser().personEmail
+				"PersonEmail" : personService.getConnectedUser().PersonEmail
 			};
-			personService.registerPerson(personService.getGoogleId(), personToSend)
+			personService.registerPerson(personService.getResponseGoogle().idToken, personToSend)
 			.then(function successCallback(response) {
 				console.log("message send");
 				console.log(vm.user.personID);
@@ -57,7 +58,7 @@ function ($scope, $stateParams, personService) {
 				vm.lastName = userResponse.LastName;
 				vm.firstName = userResponse.FirstName;
 				vm.job = userResponse.Job;
-				personService.connectedUser=userResponse;
+				personService.setConnectedUser(userResponse);
 				vm.canModify = "false";
 				alert("Modification enregistrées");
 				alert(JSON.stringify(response));
