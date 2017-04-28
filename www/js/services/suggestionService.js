@@ -9,15 +9,8 @@ function suggestion($http,$ionicHistory,personService,$filter) {
     saveSuggestion: saveSuggestion
   };
 
-  function saveSuggestion(){
 
-    var date = $filter('date')(new Date(), 'dd/MM/yyyy')
-  	var responseGoogle = personService.getResponseGoogle();
-  	var suggestionToSend = {
-  		"Text" : document.getElementById("text").value,
-  		"Job" : personService.getConnectedUser().Job,
-  		"Date" : date
-  	};
+  function saveSuggestion(tokenidToSend, suggestionToSend){
 
     return $http({
   		method: 'POST',
@@ -29,7 +22,7 @@ function suggestion($http,$ionicHistory,personService,$filter) {
   			str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
   			return str.join("&");
   		},
-  		data: {tokenid:responseGoogle.idToken, suggestion: JSON.stringify(suggestionToSend)}
+  		data: {tokenid:tokenidToSend, suggestion: JSON.stringify(suggestionToSend)}
   	})
       .then(saveSuggestionComplete)
       .catch(saveSuggestionFailed);

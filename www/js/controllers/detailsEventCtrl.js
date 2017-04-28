@@ -5,15 +5,29 @@ angular.module('app.controllers')
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($stateParams, $window, $http, eventService,personService,commentService,participantService, $state, $filter) {
 	var vm = this;
+	vm.event;
+	vm.isRegister;
+	vm.dateOfDay;
+	vm.connectedUser;
 	vm.registerUserToEvent = registerUserToEvent;
 	vm.unregisterUserToEvent = unregisterUserToEvent;
 	vm.getCommentMargin = getCommentMargin;
 	vm.cancelEvent = cancelEvent;
 	vm.detailsParticipant = detailsParticipant;
-	vm.event;
+	vm.saveReview = saveReview;
+	vm.event = eventService.getEvent();
 	activate();
 
+
 	function activate(){
+		vm.isRegister = personService.getConnected();
+		vm.dateOfDay = $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
+		if (personService.getConnectedUser() == null){
+			vm.connectedUser = -1;
+		} else {
+			vm.connectedUser = personService.getConnectedUser().PersonId;
+		}
+		alert(vm.isRegister);
 		vm.event = eventService.getEvent();
 	}
 
@@ -59,12 +73,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		}
 	}
 
-	vm.dateOfDay = $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
-	if (personService.getConnectedUser() == null){
-		vm.connectedUser = -1;
-	} else {
-		vm.connectedUser = personService.getConnectedUser().PersonId;
-	}
 
 	commentService.getCommentByEvent(vm.event.EventId)
 	.then(function successCallback(response) {
@@ -100,5 +108,69 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		console.log("Participant: Il y a eu des erreurs!")
 		console.log(response);
 	});
+
+	vm.displayRateForm = function() {
+		document.getElementById("ratingForm").style.display = "block";
+		document.getElementById("beforeRate").style.display = "none";
+	}
+
+	vm.hideRateForm = function() {
+		document.getElementById("ratingForm").style.display = "none";
+		document.getElementById("beforeRate").style.display = "block";
+	}
+
+	vm.noteEvent = function() {
+		var note = document.getElementById("note").value;
+		var comment = document.getElementById("comment").value;
+		console.log(note);
+		console.log(comment);
+
+		var saveReviewPromise = vm.saveReview(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, vm.event.EventId, note, comment);
+		saveReviewPromise.then(function(result){
+			alert("Vous avez donné la note de " + note + " à l'évènement!")
+			alert(comment);
+			alert(JSON.stringify(result));
+			vm.hideRateForm();
+		})
+	}
+
+
+	function saveReview(idToken, personToSend, eventToSend, rateToSend, textToSend){
+		alert(personToSend);
+		alert(eventToSend);
+		var reviewToSend = {
+			"person" : personToSend,
+			"event" : eventToSend,
+			"rate" : rateToSend,
+			"text" : textToSend
+		};
+
+		return $http({
+			method: 'POST',
+			url: 'http://webapp8.nantes.sii.fr/updateReview',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+				var str = [];
+				for(var p in obj)
+				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+			},
+			data: {tokenid: idToken, review: reviewToSend}
+		})
+			.then(saveReviewComplete)
+			.catch(saveReviewFailed);
+
+		function saveReviewComplete(response) {
+			alert(JSON.stringify(response));
+			return response;
+		}
+
+		function saveReviewFailed(response){
+			console.log("Error: saveReviewFailed");
+			console.log(response);
+			alert(JSON.stringify(response));
+			return response;
+		}
+	};
 
 }])

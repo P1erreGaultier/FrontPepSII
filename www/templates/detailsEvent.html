@@ -29,40 +29,50 @@
     <div ng-if="vm.event.Owner.PersonId == vm.connectedUser">
       <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.cancelEvent()">Annuler l'évènement</button>
     </div>
-    <div ng-switch on="vm.isRegister">
-      <div ng-switch-when="false">
-        <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.registerUserToEvent()">J'y vais</button>
-      </div>
-      <div ng-switch-when="true">
-        <button ng-if="vm.dateOfDay < vm.dateStartEvent" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.unregisterUserToEvent()">J'y vais plus</button>
-        <button ng-if="vm.dateOfDay > vm.dateStartEvent" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ui-sref="menu.noteEvent">Noter l'évènement</button>
-      </div>
-    </div>
 
-    <div class="spacer" style="width: 300px; height: 6px;"></div>
-    <div id="footEnSalle-markdown2" class="show-list-numbers-and-dots">
-      <p style="color:#000000;">
-        <strong>{{vm.nbParticipants}}</strong> personnes y participent
-      <button ng-click="vm.detailsParticipant()" id="detailParticipant" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Participant</button>
-      <div id="participantDiv" style="display:none;">
-        <ion-list ng-repeat="participant in vm.ListParticipant">
-          <ion-item class="item-avatar">
-            <img src="img/defaultUser.jpg">
-            <h2>{{participant.Pseudo}}</h2>
-          </ion-item>
-        </ion-list>
-      </div>
-    </p>
-    </div>
-    <ion-list ng-repeat="comment in vm.ListComment">
-        <div ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}">
-          <ion-item class="item-avatar">
-            <img src="img/defaultUser.jpg">
-            <h2>{{comment.Person.Pseudo}}</h2>
-            <p>{{comment.Text}}</p>
-            <p style="text-align:right;font-style:italic;padding-right:1%;">{{comment.DatePost | date:'dd/MM/yyyy HH:mm:ss'}}</p>
-          </ion-item>
+    <div id="beforeRate">
+      <div ng-switch on="vm.isRegister">
+        <div ng-switch-when="false">
+          <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.registerUserToEvent()">J'y vais</button>
         </div>
-    </ion-list>
+        <div ng-switch-when="true">
+          <button ng-if="vm.dateOfDay < vm.event.DateStart" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.unregisterUserToEvent()">J'y vais plus</button>
+          <button ng-if="vm.dateOfDay > vm.event.DateStart" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.displayRateForm()">Noter l'évènement</button>
+        </div>
+      </div>
+
+      <div class="spacer" style="width: 300px; height: 6px;"></div>
+      <div id="footEnSalle-markdown2" class="show-list-numbers-and-dots">
+        <p style="color:#000000;">
+          <strong>{{vm.nbParticipants}}</strong> personnes y participent
+        <button ng-click="vm.detailsParticipant()" id="detailParticipant" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Participant</button>
+        <div id="participantDiv" style="display:none;">
+          <ion-list ng-repeat="participant in vm.ListParticipant">
+            <ion-item class="item-avatar">
+              <img src="img/defaultUser.jpg">
+              <h2>{{participant.Pseudo}}</h2>
+            </ion-item>
+          </ion-list>
+        </div>
+      </p>
+      </div>
+      <ion-list ng-repeat="comment in vm.ListComment">
+          <div ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}">
+            <ion-item class="item-avatar">
+              <img src="img/defaultUser.jpg">
+              <h2>{{comment.Person.Pseudo}}</h2>
+              <p>{{comment.Text}}</p>
+              <p style="text-align:right;font-style:italic;padding-right:1%;">{{comment.DatePost | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+            </ion-item>
+          </div>
+      </ion-list>
+    </div>
+    <div id="ratingForm" style="display:none">
+        <label>Note: <input id="note"></label>
+        <p>Laisser un commentaire:</p>
+        <textarea id="comment" style="width:85%;height:50%;background-color:aliceblue;" placeholder=""></textarea>
+        <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.noteEvent()">Envoyer</button>
+        <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.hideRateForm()">Retour</button>
+    </div>
   </ion-content>
 </ion-view>
