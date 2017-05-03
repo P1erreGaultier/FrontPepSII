@@ -5,13 +5,16 @@ eventService.$inject = ['$http'];
 
 function eventService($http) {
   var event;
+  var eventId;
 
   return {
     getAllEvent: getAllEvent,
     getMyEvents: getMyEvents,
     saveEvent: saveEvent,
     getEvent: getEvent,
-    registerEvent: registerEvent
+    registerEvent: registerEvent,
+    saveEventId : saveEventId,
+    getEventId : getEventId
   };
 
   function getAllEvent(){
@@ -93,5 +96,14 @@ function eventService($http) {
       return response;
     }
   };
+
+
+  function saveEventId( id) {
+    eventId = id;
+  }
+
+  function getEventId() {
+    return eventId;
+  }
 
 }

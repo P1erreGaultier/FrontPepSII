@@ -5,14 +5,14 @@ angular.module('app.controllers')
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionicHistory, $state, personService) {
 	var vm = this;
-	vm.placeid;
+	vm.placeid = eventService.getEventId();
+	console.log(vm.placeid);
 	vm.minDate;
 	vm.saveEvent = saveEvent;
 
 	activate();
 
 	function activate() {
-		vm.placeid=$window.location.href.substring(45);
 		vm.minDate = new Date().toDateString();
 	}
 
