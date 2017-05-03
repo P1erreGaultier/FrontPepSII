@@ -9,9 +9,10 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 	vm.listEvent = [];
 	vm.getAllEvent = getAllEvent;
 	vm.addMarker = addMarker;
-	vm.redirect = redirect;
+	vm.redirectEvent = redirectEvent;
+	vm.redirectCreate = redirectCreate;
 
-	vm.test = "test2";
+	vm.eventToSend;
 	vm.pid = "test";
 
 	activate();
@@ -20,9 +21,15 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 		getAllEvent();
 	}
 
-	function redirect() {
+	function redirectCreate() {
 		eventService.saveEventId(vm.pid);
 		$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: true})
+	}
+
+	function redirectEvent() {
+		console.log(vm.eventToSend);
+		eventService.saveEvent(vm.listEvent[vm.eventToSend]);
+		$state.go('menu.detailsEvent', {}, {location: 'replace', reload: true})
 	}
 
 	function getAllEvent() {
@@ -44,8 +51,6 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 				}
 			});
 	}
-	var contentButton = "<br/> <button ng-click=vm.redirect();> GO </button> </p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>";
-	var compiled = $compile(contentButton);
 
 	function addMarker (place,marker){
 	 marker.addListener('click', function() {
@@ -53,14 +58,14 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 		 var contentEvent= "";
 		 for (i = 0; i<vm.listEvent.length; i++){
 			 ev = vm.listEvent[i];
-			 if (place.place_id == ev.PlaceId){
-			 contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ ev.Name +'</b></p> <p>'+ ev.Description +'</p> <p>'+ 'Du ' + $filter('date')(ev.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + ev.DateEnd;
-			 contentEvent = contentButton;
-		 }
-		 }
 
+			 if (place.place_id == ev.PlaceId){
+			 vm.eventToSend = i;
+			 contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ ev.Name +'</b></p> <p>'+ ev.Description +'</p> <p>'+ 'Du ' + $filter('date')(ev.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + ev.DateEnd;
+			 contentEvent = contentEvent +"<br/> <button onclick=\"document.getElementById('detailsEvent').click();\"> GO </button> </p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>";
+		 }
+		 }
 		 var content = contentPlace + contentEvent;
-		 var compiled = $compile(content);
 		 infowindow.setContent(content);
 		 infowindow.open(map, this);
 	 });

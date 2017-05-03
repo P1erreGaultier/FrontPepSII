@@ -24,7 +24,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		} else {
 			vm.connectedUser = personService.getConnectedUser().PersonId;
 		}
-		alert(vm.isRegister);
 		vm.event = eventService.getEvent();
 	}
 
@@ -69,7 +68,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			div.style.display = 'none';
 		}
 	}
-
 
 	commentService.getCommentByEvent(vm.event.EventId)
 	.then(function successCallback(response) {
