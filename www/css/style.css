@@ -89,3 +89,43 @@ html *
 	bottom: 0;
 	font-size: 180%;
 }
+
+/*-----Css for ribbon-----*/
+.box {
+  width: 200px; height: 300px;
+  position: relative;
+  border: 1px solid #BBB;
+  background: #EEE;
+}
+.ribbon {
+  z-index: 1;
+  overflow: hidden;
+  width: 100%; height: 100%;
+}
+.ribbon span {
+  font-size: 10px;
+  font-weight: bold;
+  color: #FFF;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  width: 100px;
+  display: block;
+  background: #79A70A;
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px; right: -21px;
+}
+.ribbonRed span {
+	background: linear-gradient(#F70505 0%, #8F0808 100%);
+}
+.ribbonBlue span {
+	background: linear-gradient(#2989d8 0%, #1e5799 100%);
+}
+.ribbonGreen span {
+	background: linear-gradient(#9BC90D 0%, #79A70A 100%);
+}
+
+/*-----End Css for ribbon-----*/

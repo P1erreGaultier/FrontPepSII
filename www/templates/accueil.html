@@ -17,12 +17,19 @@
       <div class="spacer" style="height: 30px;"></div>
         <ul>
           <li ng-repeat="event in vm.listEvent">
-            <ion-item class="item-thumbnail-left" id="accueil-list-item{{event.id}}" ng-click="vm.passEvent({{event}})" ui-sref="menu.detailsEvent()">
-              <img src="data:image/png;base64,{{event.Image}}">
-              <h2>{{event.Name}}</h2>
-              <p style="white-space:normal;">{{event.Description}}</p>
-              <p style="white-space:normal;">Le {{event.DateStart | date:'dd/MM/yyyy'}} à {{event.DateStart | date:'HH:mm'}}</p>
-            </ion-item>
+              <ion-item class="ribbon" ng-class="vm.getRibbon(event.EventType.Type)" id="accueil-list-item{{event.id}}" ng-click="vm.passEvent({{event}})" ui-sref="menu.detailsEvent()">
+                <span>{{event.EventType.Type}}</span>
+                <div style="display:flex; height:110px;">
+                  <div style="margin-right:3%;height:100%;width:auto;">
+                    <img style="height:100px;width:100px;" src="img/defaultUser2.jpg">
+                  </div>
+                  <div style="height:100%;width:65%;">
+                    <h2>{{event.Name}}</h2><br/>
+                    <p style="white-space:nowrap;font-size:75%;overflow:hidden;">{{event.Description}}</p><br/>
+                    <p style="white-space:normal;font-size:75%;">Le {{vm.formatDate(event.DateStart) | date : 'dd/MM/yyyy'}} à {{vm.formatDate(event.DateStart) | date:'HH:mm'}}</p>
+                  </div>
+                </div>
+              </ion-item>
           </li>
         </ul>
           <a href="/#/side-menu21/page14" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Participant</a>
