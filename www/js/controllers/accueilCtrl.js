@@ -9,6 +9,9 @@ function (eventService) {
 	vm.getAllEvent = getAllEvent;
 	vm.passEvent = passEvent;
 	vm.changeColor = changeColor;
+	vm.formatDate = formatDate;
+	vm.formatDescription = formatDescription;
+	vm.getRibbon = getRibbon;
 	activate();
 
 	function activate() {
@@ -32,6 +35,32 @@ function (eventService) {
 		document.getElementById("oui").style.background = "#EC008C";
 		document.getElementById("oui").style.backgroundBlendMode = "screen";
 		document.getElementById("oui").style.content = "";
+	}
+
+	function formatDate(date){
+    var dateOut = new Date(date);
+    return dateOut;
+  }
+
+	function formatDescription(description) {
+		var descriptionOut = "";
+		if (description.length > 49) {
+			descriptionOut = description.substring(0, 50) + "...";
+		} else {
+			descriptionOut = description;
+		}
+		return descriptionOut;
+	}
+
+	function getRibbon(type) {
+		return "ribbonRed";
+		if (type == "AfterWork"){
+			return "ribbonRed";
+		} else if (type == "Sport") {
+			return "ribbonBlue";
+		} else {
+			return "ribbonGreen";
+		}
 	}
 
 }])

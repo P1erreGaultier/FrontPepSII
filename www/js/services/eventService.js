@@ -1,9 +1,9 @@
 angular.module('app.services')
 .factory('eventService', eventService)
 
-eventService.$inject = ['$http'];
+eventService.$inject = ['$http', '$state', '$ionicHistory'];
 
-function eventService($http) {
+function eventService($http, $state, $ionicHistory) {
   var event;
 
   return {

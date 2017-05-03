@@ -55,7 +55,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			"Description": vm.event.Description,
 			"Image" : vm.event.Image,
 			"IsCanceled" : 1,
-			"Owner" : vm.event.Owner
+			"Owner" : vm.event.Owner,
+			"EventType" : vm.event.EventType
 		};
 		eventService.registerEvent(responseGoogle.idToken,eventToSend);
 		alert('Votre évènement à bien été annulé');

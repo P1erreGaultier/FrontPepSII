@@ -45,7 +45,11 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 
 		if (vm.send){
 			var ownerToSend = personService.getConnectedUser();
-			var responseGoogle = personServicef.getResponseGoogle();
+			var responseGoogle = personService.getResponseGoogle();
+			var eventType = {
+				"EventTypeId" : 2,
+				"Type" : "AfterWork"
+			}
 			var eventToSend = {
 				"Name" : document.getElementById("nomEvenement").value,
 				"DateStart" : document.getElementById("selectedDate").value + " " + document.getElementById("horaireDebut").value,
@@ -54,7 +58,8 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 				"Description": document.getElementById("description").value,
 				"Image" : document.getElementById("image").value,
 				"IsCanceled" : 0,
-				"Owner" : ownerToSend
+				"Owner" : ownerToSend,
+				"EventType" : eventType
 			};
 			alert(JSON.stringify(eventToSend));
 			eventService.registerEvent(responseGoogle.idToken,eventToSend);
