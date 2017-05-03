@@ -3,7 +3,7 @@ angular.module('app.services')
 
 suggestion.$inject = ['$http','$window', '$ionicHistory', '$state'];
 
-function participantService($http) {
+function participantService($http, $window, $ionicHistory, $state) {
 
 return {
   saveParticipant : saveParticipant,
@@ -79,10 +79,12 @@ function saveParticipant(idToken, personId, eventId ){
   			$window.location.reload();
         return response;
       }
+
       function cancelParticipationFailed(response){
         console.log("Envoi token: Il y a eu des erreurs!");
         alert(JSON.stringify(response));
         return response;
       }
-    };
+    }
+
 }

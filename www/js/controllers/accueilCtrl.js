@@ -9,6 +9,8 @@ function (eventService) {
 	vm.getAllEvent = getAllEvent;
 	vm.passEvent = passEvent;
 	vm.changeColor = changeColor;
+	vm.formatDate = formatDate;
+	vm.getRibbon = getRibbon;
 	activate();
 
 	function activate() {
@@ -32,6 +34,22 @@ function (eventService) {
 		document.getElementById("oui").style.background = "#EC008C";
 		document.getElementById("oui").style.backgroundBlendMode = "screen";
 		document.getElementById("oui").style.content = "";
+	}
+
+	function formatDate(date){
+    var dateOut = new Date(date);
+    return dateOut;
+  }
+
+
+	function getRibbon(type) {
+		if (type == "AfterWork"){
+			return "ribbonRed";
+		} else if (type == "Sport") {
+			return "ribbonBlue";
+		} else {
+			return "ribbonGreen";
+		}
 	}
 
 }])

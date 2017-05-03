@@ -1,9 +1,9 @@
 angular.module('app.services')
 .factory('suggestion', suggestion)
 
-suggestion.$inject = ['$http','$ionicHistory','personService','$filter'];
+suggestion.$inject = ['$http', '$ionicHistory', 'personService', '$filter', '$state'];
 
-function suggestion($http,$ionicHistory,personService,$filter) {
+function suggestion($http, $ionicHistory, personService, $filter, $state) {
 
   return {
     saveSuggestion: saveSuggestion
