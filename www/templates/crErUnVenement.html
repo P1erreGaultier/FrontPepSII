@@ -12,7 +12,7 @@
         <textarea id="description" style="width:15%;height:100px;background-color:aliceblue;" placeholder=""></textarea>
         <div class="createEventLabel">Date <p style="color:red"> {{vm.erreurDate}}</p></div>
         <datepicker style="height:auto;" date-min-limit="{{vm.minDate}}" date-format="yyyy-MM-dd" button-prev="<" button-next=">" class="ng-isolate-scope" date-set="true">
-          <input id="selectedDate" ng-model="date" type="text" placeholder="Selectionnez une date" readonly="true"/>
+          <input id="selectedDate" ng-model="date" type="text" placeholder="Selectionnez une date" />
         </datepicker>
         <div class="createEventLabel">Horaire début<p style="color:red"> {{vm.erreurHoraireDebut}}</p></div>
         <input id="horaireDebut" border-radiustype="text" placeholder="00:00">
@@ -24,11 +24,8 @@
         <input id="image" border-radiustype="text" placeholder="">
         <ion-list radio-group [(ngModel)]="categorie">
           <div class="createEventLabel">Type d'évenement</div>
-        <select id="type" ng-model="myType">
-          <option>Sport</option>
-          <option>Afterwork</option>
-          <option>Conférence</option>
-
+        <select id="type" >
+          <option ng-repeat="type in vm.eventTypes" value="{{type.EventTypeId}}">{{type.Type}}</option>
         </select>
         <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="vm.saveEvent()" />
       </div>

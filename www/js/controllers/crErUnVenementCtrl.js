@@ -7,6 +7,8 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 	var vm = this;
 	vm.placeid;
 	vm.minDate;
+	vm.eventTypes;
+	vm.getAllEventType = getAllEventType;
 	vm.saveEvent = saveEvent;
 
 	activate();
@@ -14,6 +16,15 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 	function activate() {
 		vm.placeid=$window.location.href.substring(45);
 		vm.minDate = new Date().toDateString();
+		getAllEventType();
+	}
+
+	function getAllEventType() {
+		return eventService.getAllEventType()
+			.then(function(data) {
+				vm.eventTypes = data;
+				return vm.eventTypes;
+			});
 	}
 
 	function saveEvent() {
@@ -44,12 +55,13 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 		}
 
 		if (vm.send){
+			var type = vm.eventTypes[document.getElementById("type").value - 1];
+			var eventToSend = {
+				"EventTypeId": type.EventTypeId,
+				"Type": type.Type
+			}
 			var ownerToSend = personService.getConnectedUser();
 			var responseGoogle = personService.getResponseGoogle();
-			var eventType = {
-				"EventTypeId" : 2,
-				"Type" : "AfterWork"
-			}
 			var eventToSend = {
 				"Name" : document.getElementById("nomEvenement").value,
 				"DateStart" : document.getElementById("selectedDate").value + " " + document.getElementById("horaireDebut").value,
@@ -59,7 +71,7 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 				"Image" : document.getElementById("image").value,
 				"IsCanceled" : 0,
 				"Owner" : ownerToSend,
-				"EventType" : eventType
+				"EventType" : eventToSend
 			};
 			alert(JSON.stringify(eventToSend));
 			eventService.registerEvent(responseGoogle.idToken,eventToSend);

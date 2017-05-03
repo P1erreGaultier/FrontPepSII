@@ -9,6 +9,7 @@ function eventService($http, $state, $ionicHistory) {
   return {
     getAllEvent: getAllEvent,
     getMyEvents: getMyEvents,
+    getAllEventType: getAllEventType,
     saveEvent: saveEvent,
     getEvent: getEvent,
     registerEvent: registerEvent
@@ -22,9 +23,6 @@ function eventService($http, $state, $ionicHistory) {
       .catch(getAllEventFailed);
 
     function getAllEventComplete(response) {
-      /*for(i=0; i<$scope.ListEvent.length; i++){
-        $scope.ListEvent[i].DateStart = Date.parse($scope.ListEvent[i].DateStart);
-      }*/
       return response.data;
     }
     function getAllEventFailed(response){
@@ -41,13 +39,26 @@ function eventService($http, $state, $ionicHistory) {
       .catch(getMyEventsFailed);
 
     function getMyEventsComplete(response) {
-      /*for(i=0; i<$scope.ListEvent.length; i++){
-        $scope.ListEvent[i].DateStart = Date.parse($scope.ListEvent[i].DateStart);
-      }*/
       return response.data;
     }
     function getMyEventsFailed(response){
       console.log("Error: getMyEvents");
+      console.log(response);
+    }
+  };
+
+  function getAllEventType(){
+    return $http({
+  	method: 'GET',
+  	url: 'http://webapp8.nantes.sii.fr/' + 'getAllEventType'})
+      .then(getAllEventTypeComplete)
+      .catch(getAllEventTypeFailed);
+
+    function getAllEventTypeComplete(response) {
+      return response.data;
+    }
+    function getAllEventTypeFailed(response){
+      console.log("Error: getAllEventType");
       console.log(response);
     }
   };

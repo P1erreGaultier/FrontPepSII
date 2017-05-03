@@ -53,7 +53,6 @@ function (eventService) {
 	}
 
 	function getRibbon(type) {
-		return "ribbonRed";
 		if (type == "AfterWork"){
 			return "ribbonRed";
 		} else if (type == "Sport") {
