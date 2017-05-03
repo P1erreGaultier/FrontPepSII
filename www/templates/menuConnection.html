@@ -1,5 +1,5 @@
   <div ng-controller="menuConnectionCtrl as vm" ng-switch="{{vm.isConnected}}">
-    <button ion-button block color="danger" ng-click="vm.googlePlus()" ng-switch-when="false"> <ion-icon name="logo-googleplus"></ion-icon> Login with Google</button>
+    <button ng-switch-when="false" class="button buttonGoogle" ng-click="vm.googlePlus()"> G+ Login with Google</button>
     <div ng-switch-when="true" style="height:100%">
       <ul id="menuList">
         <li>
