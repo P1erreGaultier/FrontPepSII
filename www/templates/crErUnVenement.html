@@ -22,10 +22,17 @@
         <input id="lieu" border-radiustype="text" placeholder="" ng-value="placeid">
         <div class="createEventLabel">Image</div>
         <input id="image" border-radiustype="text" placeholder="">
+        <ion-list radio-group [(ngModel)]="categorie">
+          <div class="createEventLabel">Type d'évenement</div>
+        <select id="type" ng-model="myType">
+          <option>Sport</option>
+          <option>Afterwork</option>
+          <option>Conférence</option>
+
+        </select>
         <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="vm.saveEvent()" />
       </div>
     </form>
-    <!--<a ui-sref="menu.accueil" id="crErUnVenement-button25" class="button button-positive  button-block">Valider</a>-->
 
   </ion-content>
 
