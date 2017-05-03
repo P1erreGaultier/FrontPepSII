@@ -1,19 +1,28 @@
 angular.module('app.controllers')
 
-.controller('carteCtrl', ['$stateParams','$compile','eventService','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('carteCtrl', ['$stateParams','$state','$compile','eventService','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams , $compile, eventService, $window, $filter) {
+function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 
 	var vm = this;
 	vm.listEvent = [];
 	vm.getAllEvent = getAllEvent;
 	vm.addMarker = addMarker;
+	vm.redirect = redirect;
+
+	vm.test = "test2";
+	vm.pid = "test";
 
 	activate();
 
 	function activate() {
 		getAllEvent();
+	}
+
+	function redirect() {
+		eventService.saveEventId(vm.pid);
+		$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: true})
 	}
 
 	function getAllEvent() {
@@ -35,19 +44,23 @@ function ($stateParams , $compile, eventService, $window, $filter) {
 				}
 			});
 	}
+	var contentButton = "<br/> <button ng-click=vm.redirect();> GO </button> </p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>";
+	var compiled = $compile(contentButton);
 
 	function addMarker (place,marker){
 	 marker.addListener('click', function() {
-		 console.log(place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}));
 		 var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> ------------------------------------------------------------------------------------------------ </p>';
 		 var contentEvent= "";
 		 for (i = 0; i<vm.listEvent.length; i++){
 			 ev = vm.listEvent[i];
 			 if (place.place_id == ev.PlaceId){
-			 contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ ev.Name +'</b></p> <p>'+ ev.Description +'</p> <p>'+ 'Du ' + $filter('date')(ev.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + ev.DateEnd +'</p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>';
+			 contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ ev.Name +'</b></p> <p>'+ ev.Description +'</p> <p>'+ 'Du ' + $filter('date')(ev.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + ev.DateEnd;
+			 contentEvent = contentButton;
 		 }
 		 }
+
 		 var content = contentPlace + contentEvent;
+		 var compiled = $compile(content);
 		 infowindow.setContent(content);
 		 infowindow.open(map, this);
 	 });
@@ -73,8 +86,12 @@ function ($stateParams , $compile, eventService, $window, $filter) {
 			 }, function(place, status) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
 					console.log(place.place_id);
-					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <a href=\"/#/side-menu21/page8?id='+ place.place_id +'\">Creer un évenement</a>';
-					infowindow.setContent(contentPlace);
+					vm.pid = place.place_id;
+					console.log(vm.pid);
+					console.log(vm.test);
+					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +"</p> </div>";
+					var contentButton= "<br/> <button onclick=\"document.getElementById('create').click();\"> GO </button> <a href=\"/#/side-menu21/page8?id="+ place.place_id +"\">Creer un évenement</a>";
+					infowindow.setContent(contentPlace + contentButton);
 	      	infowindow.setPosition(evt.latLng);
 	      	infowindow.open(vm.map);
 				}
