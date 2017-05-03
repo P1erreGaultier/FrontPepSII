@@ -10,7 +10,6 @@ function (eventService) {
 	vm.passEvent = passEvent;
 	vm.changeColor = changeColor;
 	vm.formatDate = formatDate;
-	vm.formatDescription = formatDescription;
 	vm.getRibbon = getRibbon;
 	activate();
 
@@ -42,15 +41,6 @@ function (eventService) {
     return dateOut;
   }
 
-	function formatDescription(description) {
-		var descriptionOut = "";
-		if (description.length > 49) {
-			descriptionOut = description.substring(0, 50) + "...";
-		} else {
-			descriptionOut = description;
-		}
-		return descriptionOut;
-	}
 
 	function getRibbon(type) {
 		if (type == "AfterWork"){

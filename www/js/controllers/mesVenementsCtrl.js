@@ -15,6 +15,8 @@ function ($stateParams, eventService, personService, $filter) {
   vm.passEvent = passEvent;
   vm.myEventCheck = myEventCheck;
   vm.owner = "";
+  vm.formatDate = formatDate;
+  vm.getRibbon = getRibbon;
 
   activate();
 
@@ -80,6 +82,21 @@ function ($stateParams, eventService, personService, $filter) {
 
   function passEvent(eventToSend){
     return eventService.saveEvent(eventToSend);
+  }
+
+  function formatDate(date){
+    var dateOut = new Date(date);
+    return dateOut;
+  }
+
+  function getRibbon(type) {
+    if (type == "AfterWork"){
+      return "ribbonRed";
+    } else if (type == "Sport") {
+      return "ribbonBlue";
+    } else {
+      return "ribbonGreen";
+    }
   }
 
 }])

@@ -5,6 +5,7 @@ eventService.$inject = ['$http', '$state', '$ionicHistory'];
 
 function eventService($http, $state, $ionicHistory) {
   var event;
+  var eventId;
 
   return {
     getAllEvent: getAllEvent,
@@ -12,7 +13,9 @@ function eventService($http, $state, $ionicHistory) {
     getAllEventType: getAllEventType,
     saveEvent: saveEvent,
     getEvent: getEvent,
-    registerEvent: registerEvent
+    registerEvent: registerEvent,
+    saveEventId : saveEventId,
+    getEventId : getEventId
   };
 
   function getAllEvent(){
@@ -104,5 +107,14 @@ function eventService($http, $state, $ionicHistory) {
       return response;
     }
   };
+
+
+  function saveEventId( id) {
+    eventId = id;
+  }
+
+  function getEventId() {
+    return eventId;
+  }
 
 }
