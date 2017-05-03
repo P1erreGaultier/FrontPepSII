@@ -54,7 +54,7 @@ function ($stateParams , $compile, eventService, $window, $filter) {
  }
 
 		var options = {timeout: 10000, enableHighAccuracy: true};
-		var latLng = new google.maps.LatLng(47.2112216, -1.5570168);
+		var latLng = new google.maps.LatLng(47.2112216, -1.5570168); // Nantes
 		var mapOptions = {
 				center: latLng,
 				zoom: 12,

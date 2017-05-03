@@ -64,6 +64,16 @@ html *
 	min-height: 0;
 }
 
+.buttonGoogle{
+	color: #fff !important;
+	background-color: #dd4b39 !important;
+	font-size: 15px !important;
+	font-weight: bold !important;
+}
+
+.buttonGoogle:active{
+	background-color: #ad2211 !important;
+}
 
 .myEventsMenu {
 	display: inline-block;

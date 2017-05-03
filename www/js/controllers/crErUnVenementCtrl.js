@@ -54,7 +54,8 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 				"Description": document.getElementById("description").value,
 				"Image" : document.getElementById("image").value,
 				"IsCanceled" : 0,
-				"Owner" : ownerToSend
+				"Owner" : ownerToSend,
+				"EventType" : myType
 			};
 			alert(JSON.stringify(eventToSend));
 			eventService.registerEvent(responseGoogle.idToken,eventToSend);
