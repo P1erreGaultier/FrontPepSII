@@ -5,7 +5,8 @@
 	</ion-nav-buttons>
 	<ion-content>
 		<div id="map" data-tap-diseable="true" ></div>
-		<p>{{vm.pid}}</p>
-		<button id="create" ng-click=vm.redirect();> GO </button>
+		<input type="hidden" id="eventToSend" value="0">
+		<button id="create" style="display:none;" ng-click=vm.redirectCreate();> GO </button>
+		<button id="detailsEvent" style="display:none;" ng-click=vm.redirectEvent();> GO </button>
 	</ion-content>
 </ion-view>
