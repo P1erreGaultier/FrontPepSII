@@ -10,10 +10,13 @@ function ($stateParams, eventService, personService, $filter) {
   vm.listToDisplay = [];
   vm.listPastEvents = [];
   vm.listNextEvents = [];
+  vm.listTypes = [];
   vm.getMyEvents = getMyEvents;
+  vm.getEventTypes = getEventTypes;
   vm.select = select;
   vm.passEvent = passEvent;
   vm.myEventCheck = myEventCheck;
+  vm.typeCheck = typeCheck;
   vm.owner = "";
   vm.formatDate = formatDate;
   vm.getRibbon = getRibbon;
@@ -22,6 +25,7 @@ function ($stateParams, eventService, personService, $filter) {
 
   function activate() {
     getMyEvents();
+    getEventTypes();
   }
 
   function getMyEvents() {
@@ -38,6 +42,13 @@ function ($stateParams, eventService, personService, $filter) {
       });
   }
 
+  function getEventTypes() {
+    return eventService.getAllEventType()
+      .then(function(data){
+        vm.listTypes = data;
+      })
+  }
+
   function select(div) {
     document.getElementById(div).style.height = "50px";
     if (div == "nextEvents"){
@@ -52,6 +63,7 @@ function ($stateParams, eventService, personService, $filter) {
   }
 
   function myEventCheck() {
+    console.log(document.getElementById("checkboxMyEvent"));
     if (document.getElementById("checkboxMyEvent").checked){
       vm.listNextEvents = vm.listNextEvents.filter(checkIsMyEvent);
       vm.listPastEvents = vm.listPastEvents.filter(checkIsMyEvent);
@@ -65,6 +77,10 @@ function ($stateParams, eventService, personService, $filter) {
         vm.listToDisplay = vm.listPastEvents;
       }
     }
+  }
+
+  function typeCheck(type) {
+    console.log(type);
   }
 
   function checkDateSup(eventToFilter) {
