@@ -27,8 +27,6 @@
         <select id="type" >
           <option ng-repeat="type in vm.eventTypes" value="{{type.EventTypeId}}">{{type.Type}}</option>
         </select>
-        <p>test {{vm.placeid}}</p>
-
         <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="vm.saveEvent()" />
       </div>
     </form>
