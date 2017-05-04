@@ -23,13 +23,12 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 
 	function redirectCreate() {
 		eventService.saveEventId(vm.pid);
-		$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: true})
+		$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: false})
 	}
 
 	function redirectEvent() {
-		console.log(vm.eventToSend);
-		eventService.saveEvent(vm.listEvent[vm.eventToSend]);
-		$state.go('menu.detailsEvent', {}, {location: 'replace', reload: true})
+		eventService.saveEvent(vm.listEvent[document.getElementById('eventToSend').value]);
+		$state.go('menu.detailsEvent', {}, {location: 'replace', reload: false})
 	}
 
 	function getAllEvent() {
@@ -60,9 +59,9 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 			 ev = vm.listEvent[i];
 
 			 if (place.place_id == ev.PlaceId){
-			 vm.eventToSend = i;
+			 document.getElementById("eventToSend").value = i;
 			 contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ ev.Name +'</b></p> <p>'+ ev.Description +'</p> <p>'+ 'Du ' + $filter('date')(ev.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + ev.DateEnd;
-			 contentEvent = contentEvent +"<br/> <button onclick=\"document.getElementById('detailsEvent').click();\"> GO </button> </p> <a href=\"/#/side-menu21/page10\">Voir l\'évenement</a></div></div>";
+			 contentEvent = contentEvent +"<br/> <button onclick=\"document.getElementById('eventToSend').value = "+ i + ";document.getElementById('detailsEvent').click();\"> Voir l\'évenement </button> </p></div></div>";
 		 }
 		 }
 		 var content = contentPlace + contentEvent;
@@ -90,12 +89,10 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 				 placeId: evt.placeId
 			 }, function(place, status) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
-					console.log(place.place_id);
+
 					vm.pid = place.place_id;
-					console.log(vm.pid);
-					console.log(vm.test);
 					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +"</p> </div>";
-					var contentButton= "<br/> <button onclick=\"document.getElementById('create').click();\"> GO </button> <a href=\"/#/side-menu21/page8?id="+ place.place_id +"\">Creer un évenement</a>";
+					var contentButton= "<br/> <button onclick=\"document.getElementById('create').click();\"> Creer un évenement </button>";
 					infowindow.setContent(contentPlace + contentButton);
 	      	infowindow.setPosition(evt.latLng);
 	      	infowindow.open(vm.map);
