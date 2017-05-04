@@ -21,6 +21,9 @@ function ($stateParams, eventService, personService, $filter) {
   vm.formatDate = formatDate;
   vm.getRibbon = getRibbon;
 
+  vm.types = [];
+  vm.onlyMyEvents = "true";
+
   activate();
 
   function activate() {
@@ -46,6 +49,10 @@ function ($stateParams, eventService, personService, $filter) {
     return eventService.getAllEventType()
       .then(function(data){
         vm.listTypes = data;
+        for(i=0;i<vm.listTypes.length;i++){
+          vm.types[vm.listTypes[i].EventTypeId] = true;
+
+        }
       })
   }
 
@@ -63,8 +70,8 @@ function ($stateParams, eventService, personService, $filter) {
   }
 
   function myEventCheck() {
-    console.log(document.getElementById("checkboxMyEvent"));
-    if (document.getElementById("checkboxMyEvent").checked){
+    console.log(vm.checkType);
+    if (vm.onlyMyEvents){
       vm.listNextEvents = vm.listNextEvents.filter(checkIsMyEvent);
       vm.listPastEvents = vm.listPastEvents.filter(checkIsMyEvent);
       vm.listToDisplay = vm.listToDisplay.filter(checkIsMyEvent);
@@ -80,19 +87,32 @@ function ($stateParams, eventService, personService, $filter) {
   }
 
   function typeCheck(type) {
+    console.log("-------------");
     console.log(type);
+    console.log("-------------");
+    vm.listToDisplay = vm.listToDisplay.filter(removeType(type));
   }
 
-  function checkDateSup(eventToFilter) {
-    return eventToFilter.DateStart >= $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
+  function checkDateSup(eventsToFilter) {
+    return eventsToFilter.DateStart >= $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
   }
 
-  function checkDateInf(eventToFilter) {
-    return eventToFilter.DateStart < $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
+  function checkDateInf(eventsToFilter) {
+    return eventsToFilter.DateStart < $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
   }
 
-  function checkIsMyEvent(eventToFilter){
-    return eventToFilter.Owner.PersonId == personService.getConnectedUser().PersonId;
+  function checkIsMyEvent(eventsToFilter){
+    return eventsToFilter.Owner.PersonId == personService.getConnectedUser().PersonId;
+  }
+
+  function removeType(typeToRemove){
+    return function(eventsToFilter){
+      console.log(eventsToFilter);
+      console.log(eventsToFilter.EventType.Type);
+      console.log(typeToRemove);
+      console.log(eventsToFilter.EventType.Type != typeToRemove);
+      return eventsToFilter.EventType.Type != typeToRemove;
+    }
   }
 
 
