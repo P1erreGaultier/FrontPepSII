@@ -53,18 +53,19 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 
 	function addMarker (place,marker){
 	 marker.addListener('click', function() {
-		 var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +' </p> </div> <br/> <p> ------------------------------------------------------------------------------------------------ </p>';
-		 var contentEvent= "";
+		 var bootstrap = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>'
+		 var contentPlace = '<div style=\"display:inline-block;\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 150, 'maxHeight': 200}) +'\" class ="img-thumbnail" alt="photo place"><h4>'+ place.name + '</h4><p>'+ place.formatted_address +'</p><p><a href="'+ place.website +'">' + place.website +'</a></p> </div>';
+		 var contentEvent= "<h3>Evenements</h3><ul class=\"list-group\">";
 		 for (i = 0; i<vm.listEvent.length; i++){
 			 ev = vm.listEvent[i];
-
 			 if (place.place_id == ev.PlaceId){
 			 document.getElementById("eventToSend").value = i;
-			 contentEvent = contentEvent + '<div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div ui-sref=\'menu.detailsEvent()\' style=\'display:inline-block\'><p><b>'+ ev.Name +'</b></p> <p>'+ ev.Description +'</p> <p>'+ 'Du ' + $filter('date')(ev.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + ev.DateEnd;
-			 contentEvent = contentEvent +"<br/> <button onclick=\"document.getElementById('eventToSend').value = "+ i + ";document.getElementById('detailsEvent').click();\"> Voir l\'évenement </button> </p></div></div>";
+			 contentEvent = contentEvent + ' <li class=\"list-group-item\"><div style=\'display:inline-block;margin-bottom:10px;\'><img src=\''+place.icon+'\'style=\'display:inline;width:75px;height:75;\'><div style=\'display:inline-block\'><h4>'+ ev.Name +'</h4> <p>'+ ev.Description.substring(0,30)+'... ' +'</p> <p>'+ 'Du ' + $filter('date')(ev.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + ev.DateEnd;
+			 contentEvent = contentEvent +"<br/> <button class='btn btn-primary' onclick=\"document.getElementById('eventToSend').value = "+ i + ";document.getElementById('detailsEvent').click();\"> Voir l\'évenement </button> </p></div></div></li>";
 		 }
 		 }
-		 var content = contentPlace + contentEvent;
+		 contentEvent = contentEvent + "</ul>";
+		 var content = bootstrap + contentPlace + contentEvent;
 		 infowindow.setContent(content);
 		 infowindow.open(map, this);
 	 });
@@ -91,9 +92,12 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 				 if (status === google.maps.places.PlacesServiceStatus.OK) {
 
 					vm.pid = place.place_id;
-					var contentPlace = '<div style=\"display:inline-block\"><img src=\"'+ place.photos[0].getUrl({'maxWidth': 100, 'maxHeight': 100}) +'\" alt="photo place"></div> <div style=\"display:inline-block\"><p><b>'+ place.name + '</b></p> <p>'+ place.address_components[0].short_name + " " + place.address_components[1].short_name + " " + place.address_components[2].short_name +"</p> </div>";
-					var contentButton= "<br/> <button onclick=\"document.getElementById('create').click();\"> Creer un évenement </button>";
-					infowindow.setContent(contentPlace + contentButton);
+					var bootstrap = '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>'
+
+					var contentPhoto = '<div style=\"display:inline-block\"><img class ="img-thumbnail" src=\"'+ place.photos[0].getUrl({'maxWidth': 150, 'maxHeight': 200}) +'\" alt="photo place"></div></br> <div style=\"display:inline-block\">';
+					var contentPlace = '<h4>'+ place.name + '</h4><p>'+ place.formatted_address +'</p><p>  <a type="button" class="btn btn-link" href="'+ place.website +'">'+place.website+'</a></p>' ;
+					var contentButton= "<p> <button class='btn btn-primary' onclick=\"document.getElementById('create').click();\"> Creer un évenement ici </button> </p></div>";
+					infowindow.setContent(bootstrap + contentPhoto + contentPlace + contentButton);
 	      	infowindow.setPosition(evt.latLng);
 	      	infowindow.open(vm.map);
 				}
