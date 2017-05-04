@@ -9,6 +9,11 @@ html *
 	height: 500px;
 }
 
+.gm-style-iw {
+  width: 250px !important;
+	text-align: center;
+}
+
 .createEventLabel {
 	display: flex;
 	width: 100%;
