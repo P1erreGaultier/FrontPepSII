@@ -35,29 +35,30 @@ html *
 #menuList a {
 	display: block;
 	padding: 0;
-	background: #000;
+	background: #387ef5;
 	color: #fff;
 	text-decoration: none;
 	width: 100%;
-	font-size: 30px;
+	font-size: 20px;
 	margin-right: 5%;
 	height: 30px;
+	border: 1px solid black;
 }
 
 #menuList li {
 	float: left;
-	border-right: 1px solid #fff;
+	width: 100%;
+	
 }
 
 #menuList li ul {
 	position: absolute;
-	width: 144px;
 	left: -999em;
 }
 
 #menuList a:hover {
-	color: #000;
-	background: #fff;
+	color: #fff;
+	background: #0c60ee;
 }
 
 #menuList li:hover ul ul {
