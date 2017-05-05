@@ -14,6 +14,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.getCommentMargin = getCommentMargin;
 	vm.cancelEvent = cancelEvent;
 	vm.detailsParticipant = detailsParticipant;
+	vm.imageToDisplay = "";
 	activate();
 
 	function activate(){
@@ -25,6 +26,12 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			vm.connectedUser = personService.getConnectedUser().PersonId;
 		}
 		vm.event = eventService.getEvent();
+
+		if(Math.random() > 0.5){
+			vm.imageToDisplay = "grosChat.jpg";
+		} else {
+			vm.imageToDisplay = "chaton.jpg";
+		}
 	}
 
 	function registerUserToEvent () {

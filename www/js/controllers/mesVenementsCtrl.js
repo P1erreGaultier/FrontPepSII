@@ -10,18 +10,24 @@ function ($stateParams, eventService, personService, $filter) {
   vm.listToDisplay = [];
   vm.listPastEvents = [];
   vm.listNextEvents = [];
+  vm.listTypes = [];
   vm.getMyEvents = getMyEvents;
+  vm.getEventTypes = getEventTypes;
   vm.select = select;
   vm.passEvent = passEvent;
-  vm.myEventCheck = myEventCheck;
+  vm.filterEvents = filterEvents;
   vm.owner = "";
   vm.formatDate = formatDate;
   vm.getRibbon = getRibbon;
+
+  vm.types = [];
+  vm.onlyMyEvents = false;
 
   activate();
 
   function activate() {
     getMyEvents();
+    getEventTypes();
   }
 
   function getMyEvents() {
@@ -38,6 +44,17 @@ function ($stateParams, eventService, personService, $filter) {
       });
   }
 
+  function getEventTypes() {
+    return eventService.getAllEventType()
+      .then(function(data){
+        vm.listTypes = data;
+        for(i=0;i<vm.listTypes.length;i++){
+          vm.types[vm.listTypes[i].EventTypeId] = true;
+
+        }
+      })
+  }
+
   function select(div) {
     document.getElementById(div).style.height = "50px";
     if (div == "nextEvents"){
@@ -51,32 +68,43 @@ function ($stateParams, eventService, personService, $filter) {
     }
   }
 
-  function myEventCheck() {
-    if (document.getElementById("checkboxMyEvent").checked){
+  function filterEvents() {
+    vm.listPastEvents = vm.listMyEvents.filter(checkDateInf);
+    vm.listNextEvents = vm.listMyEvents.filter(checkDateSup);
+    for (i=0;i<vm.listTypes.length;i++){
+      if (!vm.types[vm.listTypes[i].EventTypeId]){
+        vm.listPastEvents = vm.listPastEvents.filter(removeType(vm.listTypes[i].Type));
+        vm.listNextEvents = vm.listNextEvents.filter(removeType(vm.listTypes[i].Type))
+      }
+    }
+    if (vm.onlyMyEvents) {
       vm.listNextEvents = vm.listNextEvents.filter(checkIsMyEvent);
       vm.listPastEvents = vm.listPastEvents.filter(checkIsMyEvent);
-      vm.listToDisplay = vm.listToDisplay.filter(checkIsMyEvent);
+    }
+
+    if (selectedDiv == "next") {
+      vm.listToDisplay = vm.listNextEvents;
     } else {
-      vm.listPastEvents = vm.listMyEvents.filter(checkDateInf);
-      vm.listNextEvents = vm.listMyEvents.filter(checkDateSup);
-      if (selectedDiv == "next") {
-        vm.listToDisplay = vm.listNextEvents;
-      } else {
-        vm.listToDisplay = vm.listPastEvents;
-      }
+      vm.listToDisplay = vm.listPastEvents;
     }
   }
 
-  function checkDateSup(eventToFilter) {
-    return eventToFilter.DateStart >= $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
+  function checkDateSup(eventsToFilter) {
+    return eventsToFilter.DateStart >= $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
   }
 
-  function checkDateInf(eventToFilter) {
-    return eventToFilter.DateStart < $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
+  function checkDateInf(eventsToFilter) {
+    return eventsToFilter.DateStart < $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
   }
 
-  function checkIsMyEvent(eventToFilter){
-    return eventToFilter.Owner.PersonId == personService.getConnectedUser().PersonId;
+  function checkIsMyEvent(eventsToFilter){
+    return eventsToFilter.Owner.PersonId == personService.getConnectedUser().PersonId;
+  }
+
+  function removeType(typeToRemove){
+    return function(eventsToFilter){
+      return eventsToFilter.EventType.Type != typeToRemove;
+    }
   }
 
 
