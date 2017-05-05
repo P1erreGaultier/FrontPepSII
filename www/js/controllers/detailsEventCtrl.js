@@ -34,8 +34,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		} else {
 			vm.imageToDisplay = "chaton.jpg";
 		}
-
-
 	}
 
 	function registerUserToEvent () {
