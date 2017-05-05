@@ -15,14 +15,13 @@ function ($stateParams, eventService, personService, $filter) {
   vm.getEventTypes = getEventTypes;
   vm.select = select;
   vm.passEvent = passEvent;
-  vm.myEventCheck = myEventCheck;
-  vm.typeCheck = typeCheck;
+  vm.filterEvents = filterEvents;
   vm.owner = "";
   vm.formatDate = formatDate;
   vm.getRibbon = getRibbon;
 
   vm.types = [];
-  vm.onlyMyEvents = "true";
+  vm.onlyMyEvents = false;
 
   activate();
 
@@ -69,28 +68,25 @@ function ($stateParams, eventService, personService, $filter) {
     }
   }
 
-  function myEventCheck() {
-    console.log(vm.checkType);
-    if (vm.onlyMyEvents){
-      vm.listNextEvents = vm.listNextEvents.filter(checkIsMyEvent);
-      vm.listPastEvents = vm.listPastEvents.filter(checkIsMyEvent);
-      vm.listToDisplay = vm.listToDisplay.filter(checkIsMyEvent);
-    } else {
-      vm.listPastEvents = vm.listMyEvents.filter(checkDateInf);
-      vm.listNextEvents = vm.listMyEvents.filter(checkDateSup);
-      if (selectedDiv == "next") {
-        vm.listToDisplay = vm.listNextEvents;
-      } else {
-        vm.listToDisplay = vm.listPastEvents;
+  function filterEvents() {
+    vm.listPastEvents = vm.listMyEvents.filter(checkDateInf);
+    vm.listNextEvents = vm.listMyEvents.filter(checkDateSup);
+    for (i=0;i<vm.listTypes.length;i++){
+      if (!vm.types[vm.listTypes[i].EventTypeId]){
+        vm.listPastEvents = vm.listPastEvents.filter(removeType(vm.listTypes[i].Type));
+        vm.listNextEvents = vm.listNextEvents.filter(removeType(vm.listTypes[i].Type))
       }
     }
-  }
+    if (vm.onlyMyEvents) {
+      vm.listNextEvents = vm.listNextEvents.filter(checkIsMyEvent);
+      vm.listPastEvents = vm.listPastEvents.filter(checkIsMyEvent);
+    }
 
-  function typeCheck(type) {
-    console.log("-------------");
-    console.log(type);
-    console.log("-------------");
-    vm.listToDisplay = vm.listToDisplay.filter(removeType(type));
+    if (selectedDiv == "next") {
+      vm.listToDisplay = vm.listNextEvents;
+    } else {
+      vm.listToDisplay = vm.listPastEvents;
+    }
   }
 
   function checkDateSup(eventsToFilter) {
@@ -107,10 +103,6 @@ function ($stateParams, eventService, personService, $filter) {
 
   function removeType(typeToRemove){
     return function(eventsToFilter){
-      console.log(eventsToFilter);
-      console.log(eventsToFilter.EventType.Type);
-      console.log(typeToRemove);
-      console.log(eventsToFilter.EventType.Type != typeToRemove);
       return eventsToFilter.EventType.Type != typeToRemove;
     }
   }
