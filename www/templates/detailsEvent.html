@@ -18,8 +18,8 @@
       <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.cancelEvent()">Annuler l'évènement</button>
     </div>
 
-    <div id="beforeRate">
-      <div ng-switch on="vm.isRegister">
+    <div id="beforeRate" ng-switch on="vm.isLogged">
+      <div ng-switch-when="true" ng-switch on="vm.isRegister">
         <div ng-switch-when="false">
           <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.registerUserToEvent()">J'y vais</button>
         </div>

@@ -12,11 +12,11 @@
       <div style="width:100%; display:inline-flex;margin-bottom:1%;">
         <span style="margin-right:1%;">
           <ion-label style="width:100%;">J'ai créé: </ion-label>
-          <ion-checkbox id="checkboxMyEvent" ng-model="vm.onlyMyEvents" ng-change="vm.filterEvents()"></ion-checkbox>
+          <ion-checkbox style="border:none;" id="checkboxMyEvent" ng-model="vm.onlyMyEvents" ng-change="vm.filterEvents()"></ion-checkbox>
         </span>
         <span ng-repeat="type in vm.listTypes" style="margin-right:1%;">
             <ion-label>{{type.Type}}</ion-label>
-            <ion-checkbox id="{{type.Type}}" ng-model="vm.types[type.EventTypeId]" ng-change="vm.filterEvents()" ng-checked="true"></ion-checkbox>
+            <ion-checkbox style="border:none;" id="{{type.Type}}" ng-model="vm.types[type.EventTypeId]" ng-change="vm.filterEvents()" ng-checked="true"></ion-checkbox>
         </span>
       </div>
       <ul>
