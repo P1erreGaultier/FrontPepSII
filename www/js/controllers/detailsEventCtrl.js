@@ -15,6 +15,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.getCommentMargin = getCommentMargin;
 	vm.cancelEvent = cancelEvent;
 	vm.detailsParticipant = detailsParticipant;
+	vm.swipeOnImage = swipeOnImage;
 	vm.imageToDisplay = "";
 	activate();
 
@@ -83,7 +84,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 
 	commentService.getCommentByEvent(vm.event.EventId)
 	.then(function successCallback(response) {
-		vm.ListComment = response.data;
+		vm.ListComment = response;
+		console.log(response);
 	}, function erroCallabck(response) {
 		console.log("Il y a eu des erreurs!")
 		console.log(response);
@@ -147,4 +149,11 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			vm.hideRateForm();
 		})
 	}
+
+	function swipeOnImage() {
+		alert("ok");
+		var audio = new Audio('img/986.mp3');
+		audio.play();
+	}
+
 }])
