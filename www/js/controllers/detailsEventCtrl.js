@@ -9,6 +9,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.isRegister;
 	vm.dateOfDay;
 	vm.connectedUser;
+	vm.isLogged;
 	vm.registerUserToEvent = registerUserToEvent;
 	vm.unregisterUserToEvent = unregisterUserToEvent;
 	vm.getCommentMargin = getCommentMargin;
@@ -18,12 +19,13 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	activate();
 
 	function activate(){
-		vm.isRegister = personService.getConnected();
 		vm.dateOfDay = $filter('date')(new Date(), 'yyyy-MM-dd HH:mm');
 		if (personService.getConnectedUser() == null){
 			vm.connectedUser = -1;
+			vm.isLogged = "false"
 		} else {
 			vm.connectedUser = personService.getConnectedUser().PersonId;
+			vm.isLogged = "true"
 		}
 		vm.event = eventService.getEvent();
 
@@ -32,6 +34,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		} else {
 			vm.imageToDisplay = "chaton.jpg";
 		}
+
+
 	}
 
 	function registerUserToEvent () {
