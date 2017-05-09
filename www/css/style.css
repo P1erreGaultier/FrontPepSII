@@ -6,7 +6,7 @@ html *
 }
 
 #map{
-	height: 500px;
+	height: 2000px;
 }
 
 .gm-style-iw {
@@ -48,7 +48,7 @@ html *
 #menuList li {
 	float: left;
 	width: 100%;
-	
+
 }
 
 #menuList li ul {
