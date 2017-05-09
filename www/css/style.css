@@ -48,7 +48,7 @@ html *
 #menuList li {
 	float: left;
 	width: 100%;
-	
+
 }
 
 #menuList li ul {
@@ -133,5 +133,12 @@ html *
 .ribbonGreen span {
 	background: linear-gradient(#9BC90D 0%, #79A70A 100%);
 }
-
 /*-----End Css for ribbon-----*/
+
+.popup-buttons {
+  width: 100% !important;
+}
+.popup{
+  width: 300px !important;
+	text-align: center !important;
+}

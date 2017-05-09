@@ -1,10 +1,11 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','personService','commentService','participantService', '$state', '$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','personService','commentService','participantService', '$state', '$filter', '$ionicPopup',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $http, eventService,personService,commentService,participantService, $state, $filter) {
+function ($stateParams, $window, $http, eventService,personService,commentService,participantService, $state, $filter, $ionicPopup) {
 	var vm = this;
+	vm.data = {};
 	vm.event;
 	vm.isRegister;
 	vm.dateOfDay;
@@ -16,6 +17,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.cancelEvent = cancelEvent;
 	vm.detailsParticipant = detailsParticipant;
 	vm.swipeOnImage = swipeOnImage;
+	vm.formatDate = formatDate;
+	vm.openPopup = openPopup;
 	vm.imageToDisplay = "";
 	activate();
 
@@ -151,9 +154,42 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	}
 
 	function swipeOnImage() {
-		alert("ok");
 		var audio = new Audio('img/986.mp3');
 		audio.play();
+	}
+
+	function formatDate(date){
+    var dateOut = new Date(date);
+    return dateOut;
+  }
+
+	function openPopup() {
+		var myPopup = $ionicPopup.show({
+         template: '<textarea id="commentText" rows="6" cols="150" maxlength="300" ng-model="data.model" ng-model="vm.data.comment" ></textarea>',
+         title: 'Commentaire',
+         subTitle: 'Les commentaires que vous rentrez doivent être assumer, ils ne pourront pas être effacés!',
+
+         buttons: [
+            { text: 'Annuler' }, {
+               text: '<b>Commenter</b>',
+               type: 'button-positive',
+                  onTap: function(e) {
+										if (!document.getElementById("commentText").value) {
+					             e.preventDefault();
+					           } else {
+					             return document.getElementById("commentText").value;
+					           }
+                  }
+            }
+         ]
+      });
+
+      myPopup.then(function(res) {
+				if (res){
+					console.log('Tapped!', res);
+				}
+
+      });
 	}
 
 }])
