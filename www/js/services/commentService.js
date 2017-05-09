@@ -8,7 +8,7 @@ function commentService($http) {
   return {
     getCommentByEvent: getCommentByEvent,
     getResponseList: getResponseList,
-    saveComment: saveComment
+    registerComment: registerComment
   }
 
   function getCommentByEvent(eventId){
