@@ -16,8 +16,9 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.cancelEvent = cancelEvent;
 	vm.detailsParticipant = detailsParticipant;
 	vm.swipeOnImage = swipeOnImage;
-	vm.imageToDisplay = "";
 	vm.registerComment = registerComment;
+	vm.imageToDisplay = "";
+
 
 	activate();
 
@@ -150,8 +151,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		})
 	}
 
-	vm.saveComment = function(responseTo) {
-
+	function registerComment (responseTo) {
 		var commentToSend = {
 			"responseTo" : responseTo,
 			"text" : document.getElementById("commentText").value,
@@ -166,7 +166,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			alert(JSON.stringify(result));
 		})
 	}
-
 
 	function swipeOnImage() {
 		var audio = new Audio('img/986.mp3');
