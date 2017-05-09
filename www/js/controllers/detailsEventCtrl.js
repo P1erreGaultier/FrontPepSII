@@ -17,6 +17,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.detailsParticipant = detailsParticipant;
 	vm.swipeOnImage = swipeOnImage;
 	vm.imageToDisplay = "";
+	vm.registerComment = registerComment;
+
 	activate();
 
 	function activate(){
@@ -148,8 +150,25 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		})
 	}
 
+	vm.saveComment = function(responseTo) {
+
+		var commentToSend = {
+			"responseTo" : responseTo,
+			"text" : document.getElementById("commentText").value,
+			"datePost" : $filter('date')(new Date(), 'yyyy-MM-dd HH:mm'),
+			"EventId" : vm.event.EventId,
+			"PersonId" : personService.getConnectedUser().PersonId,
+			"Person" : personService.getConnectedUser()
+		};
+
+		commentService.registerComment(personService.getResponseGoogle().idToken, commentToSend )
+		.then(function(result){
+			alert(JSON.stringify(result));
+		})
+	}
+
+
 	function swipeOnImage() {
-		alert("ok");
 		var audio = new Audio('img/986.mp3');
 		audio.play();
 	}

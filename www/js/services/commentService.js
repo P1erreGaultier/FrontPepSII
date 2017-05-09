@@ -6,7 +6,9 @@ eventService.$inject = ['$http'];
 function commentService($http) {
 
   return {
-    getCommentByEvent: getCommentByEvent
+    getCommentByEvent: getCommentByEvent,
+    getResponseList: getResponseList,
+    saveComment: saveComment
   }
 
   function getCommentByEvent(eventId){
@@ -25,4 +27,56 @@ function commentService($http) {
         console.log(response);
       }
     };
+
+    function getResponseList(eventId){
+      return 	$http({
+      		method: 'GET',
+      		url: 'http://webapp8.nantes.sii.fr/' + 'getResponseList?id=' + eventId
+      	})
+        .then(getResponseListComplete)
+        .catch(getResponseListFailed);
+
+        function getResponseListComplete(response) {
+          return response.data;
+        }
+        function getResponseListFailed(response){
+          console.log("Error: getCommentByEventFailed");
+          console.log(response);
+        }
+      };
+
+      function registerComment(idToken, commentToSend ){
+        return $http({
+          method: 'POST',
+          url: 'http://webapp8.nantes.sii.fr/saveComment',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          transformRequest: function(obj) {
+            var str = [];
+            for(var p in obj)
+            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            return str.join("&");
+          },
+          data: {tokenid: idToken, comment: JSON.stringify(commentToSend)}
+        })
+          .then(registerCommentComplete)
+          .catch(registerCommentFailed);
+
+        function registerCommentComplete(response) {
+          console.log("message send");
+          console.log(response);
+          alert(JSON.stringify(response));
+          $ionicHistory.nextViewOptions({
+            disableBack: true
+          });
+          $state.go('menu.accueil', {}, {location: 'replace', reload: true})
+          return response;
+        }
+        function registerCommentFailed(response){
+          console.log(response);
+          console.log("Envoi token: Il y a eu des erreurs!");
+          alert(JSON.stringify(response));
+          return response;
+        }
+      };
+
 }
