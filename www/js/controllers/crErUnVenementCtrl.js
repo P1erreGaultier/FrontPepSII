@@ -5,18 +5,20 @@ angular.module('app.controllers')
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionicHistory, $state, personService) {
 	var vm = this;
-	vm.placeid = eventService.getEventId();
-	console.log(vm.placeid);
+
 	vm.minDate;
 	vm.eventTypes;
 	vm.getAllEventType = getAllEventType;
 	vm.saveEvent = saveEvent;
+	vm.selectPlaceId = selectPlaceId;
 
 	activate();
 
 	function activate() {
 		vm.minDate = new Date().toDateString();
 		getAllEventType();
+		vm.placeid = eventService.getEventId();
+		vm.placename = eventService.getEventName();
 	}
 
 	function getAllEventType() {
@@ -27,13 +29,17 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 			});
 	}
 
+	function selectPlaceId() {
+		$state.go('menu.carte', {}, {location: 'replace', reload: false})
+	}
+
 	function saveEvent() {
 		vm.send = true;
 		if(document.getElementById("selectedDate").value == ""){
-			vm.erreurDate = ": Date invalide"
+			vm.erreurDate = ": Date invalide";
 			vm.send= false;
 		}else{
-			vm.erreurDate = ""
+			vm.erreurDate = "";
 		}
 		if(document.getElementById("horaireDebut").value == ""){
 			vm.erreurHoraireDebut = ": Heure invalide";
@@ -51,14 +57,14 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 			vm.erreurLieu = ": Lieu invalide";
 			vm.send = false;
 		}else {
-			vm.erreurLieu = ""
+			vm.erreurLieu = "";
 		}
 
 		if (vm.send){
 			var type = vm.eventTypes[document.getElementById("type").value - 1];
 			var eventToSend = {
 				"EventTypeId": type.EventTypeId,
-				"Type": type.Type
+				"Type": type.Type;
 			}
 			var ownerToSend = personService.getConnectedUser();
 			var responseGoogle = personService.getResponseGoogle();
@@ -66,7 +72,7 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 				"Name" : document.getElementById("nomEvenement").value,
 				"DateStart" : document.getElementById("selectedDate").value + " " + document.getElementById("horaireDebut").value,
 				"DateEnd" : document.getElementById("selectedDate").value + " " + document.getElementById("horaireFin").value,
-				"PlaceId" : "ChIJy6rbS_brBUgRXzWPvQ0FDXg",
+				"PlaceId" : document.getElementById("lieu").value,
 				"Description": document.getElementById("description").value,
 				"Image" : document.getElementById("image").value,
 				"IsCanceled" : 0,

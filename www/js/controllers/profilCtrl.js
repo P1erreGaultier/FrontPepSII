@@ -11,12 +11,10 @@ function ($scope, $stateParams, personService) {
 	vm.firstName = vm.user.FirstName;
 	vm.job = vm.user.Job;
 	vm.canModify = "false";
-
 	vm.saveProfil = saveProfil;
 	vm.modify = modify;
 	vm.modifyBack = modifyBack;
-
-	console.log(personService.getConnectedUser());
+	console.log(personService.getResponseGoogle());
 
 	function saveProfil() {
 		var save = true;
