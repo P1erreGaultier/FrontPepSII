@@ -24,7 +24,6 @@ before_script:
 script:
 - npm install
 - chmod +x hooks/after_prepare/010_add_platform_class.js
-- cordova platform add android
 - ionic build android
 after_success:
 - sh set_tags.sh

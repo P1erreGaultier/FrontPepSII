@@ -18,8 +18,14 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.detailsParticipant = detailsParticipant;
 	vm.swipeOnImage = swipeOnImage;
 	vm.formatDate = formatDate;
+	vm.displayRateForm = displayRateForm;
+	vm.hideRateForm = hideRateForm;
+	vm.noteEvent = noteEvent;
 	vm.openPopup = openPopup;
+	vm.registerComment = registerComment;
 	vm.imageToDisplay = "";
+
+
 	activate();
 
 	function activate(){
@@ -39,6 +45,41 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			vm.imageToDisplay = "chaton.jpg";
 		}
 
+		commentService.getCommentByEvent(vm.event.EventId)
+		.then(function successCallback(response) {
+			vm.ListComment = response;
+			console.log(response);
+		}, function erroCallabck(response) {
+			console.log("Il y a eu des erreurs!")
+			console.log(response);
+		});
+
+		participantService.getAllParticipantById(vm.event.EventId)
+		.then(function successCallback(response) {
+			console.log(response);
+			vm.ListParticipant = response;
+			vm.nbParticipants = vm.ListParticipant.length;
+			if (personService.getConnectedUser() == null){
+				vm.isRegister = "null";
+			}else {
+				var isRegister = "false";
+				for(i=0;i<vm.ListParticipant.length;i++){
+					if(vm.ListParticipant[i].PersonId == personService.getConnectedUser().PersonId){
+						isRegister = "true";
+					}
+				}
+				if (isRegister == "true"){
+					vm.isRegister = "true";
+				}else{
+					vm.isRegister = "false";
+				}
+			}
+			console.log("isRegister");
+			console.log(vm.isRegister);
+		}, function erroCallabck(response) {
+			console.log("Participant: Il y a eu des erreurs!")
+			console.log(response);
+		});
 
 	}
 
@@ -85,53 +126,18 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		}
 	}
 
-	commentService.getCommentByEvent(vm.event.EventId)
-	.then(function successCallback(response) {
-		vm.ListComment = response;
-		console.log(response);
-	}, function erroCallabck(response) {
-		console.log("Il y a eu des erreurs!")
-		console.log(response);
-	});
 
-	participantService.getAllParticipantById(vm.event.EventId)
-	.then(function successCallback(response) {
-		console.log(response);
-		vm.ListParticipant = response;
-		vm.nbParticipants = vm.ListParticipant.length;
-		if (personService.getConnectedUser() == null){
-			vm.isRegister = "null";
-		}else {
-			var isRegister = "false";
-			for(i=0;i<vm.ListParticipant.length;i++){
-				if(vm.ListParticipant[i].PersonId == personService.getConnectedUser().PersonId){
-					isRegister = "true";
-				}
-			}
-			if (isRegister == "true"){
-				vm.isRegister = "true";
-			}else{
-				vm.isRegister = "false";
-			}
-		}
-		console.log("isRegister");
-		console.log(vm.isRegister);
-	}, function erroCallabck(response) {
-		console.log("Participant: Il y a eu des erreurs!")
-		console.log(response);
-	});
-
-	vm.displayRateForm = function() {
+	function displayRateForm() {
 		document.getElementById("ratingForm").style.display = "block";
 		document.getElementById("beforeRate").style.display = "none";
 	}
 
-	vm.hideRateForm = function() {
+	function hideRateForm() {
 		document.getElementById("ratingForm").style.display = "none";
 		document.getElementById("beforeRate").style.display = "block";
 	}
 
-	vm.noteEvent = function() {
+	function noteEvent() {
 		var note = document.getElementById("note").value;
 		var comment = document.getElementById("comment").value;
 		console.log(note);
@@ -153,6 +159,33 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		})
 	}
 
+	function registerComment(responseTo) {
+		if (responseTo == 'NULL'){
+			responseTo = null;
+		}
+		var commentToSend = {
+			"ResponseTo" : responseTo,
+			"Text" : document.getElementById("commentText").value,
+			"DatePost" : $filter('date')(new Date(), 'yyyy-MM-dd HH:mm'),
+			"EventId" : vm.event.EventId,
+			"PersonId" : personService.getConnectedUser().PersonId,
+			"Person" : personService.getConnectedUser()
+		};
+
+		commentService.registerComment(personService.getResponseGoogle().idToken, commentToSend )
+		.then(function(result){
+			alert(JSON.stringify(result));
+			commentService.getCommentByEvent(vm.event.EventId)
+			.then(function successCallback(response) {
+				vm.ListComment = response;
+				console.log(response);
+			}, function erroCallabck(response) {
+				console.log("Il y a eu des erreurs!")
+				console.log(response);
+			});
+		})
+	}
+
 	function swipeOnImage() {
 		var audio = new Audio('img/986.mp3');
 		audio.play();
@@ -163,11 +196,11 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
     return dateOut;
   }
 
-	function openPopup() {
+	function openPopup(responseTo) {
 		var myPopup = $ionicPopup.show({
          template: '<textarea id="commentText" rows="6" cols="150" maxlength="300" ng-model="data.model" ng-model="vm.data.comment" ></textarea>',
          title: 'Commentaire',
-         subTitle: 'Les commentaires que vous rentrez doivent être assumer, ils ne pourront pas être effacés!',
+         subTitle: 'Les commentaires que vous rentrez doivent être assumés, ils ne pourront pas être effacés!',
 
          buttons: [
             { text: 'Annuler' }, {
@@ -186,7 +219,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 
       myPopup.then(function(res) {
 				if (res){
-					console.log('Tapped!', res);
+					registerComment(responseTo);
 				}
 
       });
