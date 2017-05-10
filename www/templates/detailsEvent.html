@@ -50,8 +50,9 @@
       <ion-list ng-repeat="comment in vm.ListComment">
           <div ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}">
             <ion-item class="item-avatar">
-              <img src="img/defaultUser.jpg">
-              <button  ng-click="vm.openPopup({{comment.CommentId}})" style="text-align:left;border-radius:5px 5px 5px 5px;float:right;" class="button button-positive">Répondre</button>
+              <img ng-src="">
+              <button ng-click="vm.getGooglePicture('puerrepierre@gmail.com')" style="text-align:left;border-radius:5px 5px 5px 5px;float:right;" class="button button-positive">Répondre</button>
+              <button ng-click="vm.openPopup({{comment.CommentId}})" style="text-align:left;border-radius:5px 5px 5px 5px;float:right;" class="button button-positive">Répondre</button>
               <h2>{{comment.Person.Pseudo}}</h2>
               <p style="overflow:initial;white-space:initial;">{{comment.Text}}</p>
               <p style="text-align:right;font-style:italic;padding-right:1%;">{{comment.DatePost | date:'dd/MM/yyyy HH:mm:ss'}}</p>

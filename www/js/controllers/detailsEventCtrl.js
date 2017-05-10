@@ -24,6 +24,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.openPopup = openPopup;
 	vm.registerComment = registerComment;
 	vm.imageToDisplay = "";
+	vm.getGooglePicture = getGooglePicture;
 
 
 	activate();
@@ -195,6 +196,10 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
     var dateOut = new Date(date);
     return dateOut;
   }
+
+	function getGooglePicture (email){
+		return personService.getGooglePicture(email);
+	}
 
 	function openPopup(responseTo) {
 		var myPopup = $ionicPopup.show({

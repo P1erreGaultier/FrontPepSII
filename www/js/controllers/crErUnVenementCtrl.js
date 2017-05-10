@@ -64,7 +64,7 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 			var type = vm.eventTypes[document.getElementById("type").value - 1];
 			var eventToSend = {
 				"EventTypeId": type.EventTypeId,
-				"Type": type.Type;
+				"Type": type.Type
 			}
 			var ownerToSend = personService.getConnectedUser();
 			var responseGoogle = personService.getResponseGoogle();
