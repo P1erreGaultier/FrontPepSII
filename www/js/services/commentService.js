@@ -46,6 +46,9 @@ function commentService($http) {
       };
 
       function registerComment(idToken, commentToSend ){
+        alert('ok')
+        alert(idToken);
+        alert(JSON.stringify(commentToSend));
         return $http({
           method: 'POST',
           url: 'http://webapp8.nantes.sii.fr/saveComment',
@@ -65,11 +68,6 @@ function commentService($http) {
           console.log("message send");
           console.log(response);
           alert(JSON.stringify(response));
-          $ionicHistory.nextViewOptions({
-            disableBack: true
-          });
-          $state.go('menu.accueil', {}, {location: 'replace', reload: true})
-          return response;
         }
         function registerCommentFailed(response){
           console.log(response);

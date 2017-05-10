@@ -11,7 +11,7 @@
     <div id="footEnSalle-markdown1" class="show-list-numbers-and-dots">
       <p style="color:#000000;">{{vm.event.Description}}</p>
 
-      <p style="color:#000000;">Le {{vm.event.DateStart | date:'dd/MM/yyyy'}} à {{vm.event.DateStart | date:'HH:mm'}}</p>
+      <p style="color:#000000;">Le {{vm.formatDate(vm.event.DateStart) | date:'dd/MM/yyyy'}} à {{vm.formatDate(vm.event.DateStart) | date:'HH:mm'}}</p>
     </div>
     <div id="footEnSalle-button-bar3" class="button-bar"></div>
     <div ng-if="vm.event.Owner.PersonId == vm.connectedUser">
@@ -43,13 +43,17 @@
           </ion-list>
         </div>
       </p>
+
+      <button  ng-click="vm.openPopup('NULL')" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Commenter</button>
+
       </div>
       <ion-list ng-repeat="comment in vm.ListComment">
           <div ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}">
             <ion-item class="item-avatar">
               <img src="img/defaultUser.jpg">
+              <button  ng-click="vm.openPopup({{comment.CommentId}})" style="text-align:left;border-radius:5px 5px 5px 5px;float:right;" class="button button-positive">Répondre</button>
               <h2>{{comment.Person.Pseudo}}</h2>
-              <p>{{comment.Text}}</p>
+              <p style="overflow:initial;white-space:initial;">{{comment.Text}}</p>
               <p style="text-align:right;font-style:italic;padding-right:1%;">{{comment.DatePost | date:'dd/MM/yyyy HH:mm:ss'}}</p>
             </ion-item>
           </div>
