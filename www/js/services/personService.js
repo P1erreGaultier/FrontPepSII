@@ -75,6 +75,7 @@ function personService($http, $window, $ionicHistory, $state) {
   };
 
   function getGooglePicture(email){
+    console.log(email);
     return $http({
     method: 'GET',
     url: 'http://picasaweb.google.com/data/entry/api/user/' + email +'?alt=json'})
