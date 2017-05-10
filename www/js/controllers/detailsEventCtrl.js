@@ -11,6 +11,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.dateOfDay;
 	vm.connectedUser;
 	vm.isLogged;
+	vm.ListCommentResponse = [];
 	vm.registerUserToEvent = registerUserToEvent;
 	vm.unregisterUserToEvent = unregisterUserToEvent;
 	vm.getCommentMargin = getCommentMargin;
@@ -23,6 +24,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.noteEvent = noteEvent;
 	vm.openPopup = openPopup;
 	vm.registerComment = registerComment;
+	vm.showResponse = showResponse;
 	vm.imageToDisplay = "";
 
 
@@ -196,7 +198,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
     return dateOut;
   }
 
-	function openPopup(responseTo) {
+	function openPopup(responseTo, $event) {
+
 		var myPopup = $ionicPopup.show({
          template: '<textarea id="commentText" rows="6" cols="150" maxlength="300" ng-model="data.model" ng-model="vm.data.comment" ></textarea>',
          title: 'Commentaire',
@@ -207,7 +210,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
                text: '<b>Commenter</b>',
                type: 'button-positive',
                   onTap: function(e) {
-										if (!document.getElementById("commentText").value) {
+										if (!document.getElementById("commentText").value.trim()) {
+											console.log("coucou");
 					             e.preventDefault();
 					           } else {
 					             return document.getElementById("commentText").value;
@@ -223,6 +227,21 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 				}
 
       });
+			$event.stopPropagation();
 	}
+
+	function showResponse(commentId, $event) {
+		if (vm.ListCommentResponse[commentId] == undefined || vm.ListCommentResponse[commentId].length == 0){
+			commentService.getResponseList(commentId)
+			.then(function(result){
+				vm.ListCommentResponse[commentId] = result;
+			})
+			console.log(vm.ListCommentResponse[commentId]);
+			$event.stopPropagation();
+		} else {
+			vm.ListCommentResponse[commentId] = [];
+		}
+	}
+
 
 }])
