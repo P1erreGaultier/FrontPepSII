@@ -19,18 +19,17 @@
         <div class="createEventLabel">Horaire fin<p style="color:red"> {{vm.erreurHoraireFin}}</p></div>
         <input id="horaireFin" border-radiustype="text" placeholder="00:00">
         <div class="createEventLabel">Lieu <p style="color:red"> {{vm.erreurLieu}}</p></div>
-        <input id="lieu" border-radiustype="text" placeholder="" ng-value="vm.placeid">
+        <input id="lieuName" border-radiustype="text" placeholder="" ng-value="vm.placename" ng-click="vm.selectPlaceId();">
+        <input id="lieu" border-radiustype="text" placeholder="" ng-value="vm.placeid" type="hidden">
         <div class="createEventLabel">Image</div>
         <input id="image" border-radiustype="text" placeholder="">
         <ion-list radio-group [(ngModel)]="categorie">
-          <div class="createEventLabel">Type d'évenement</div>
-        <select id="type" >
+        <div class="createEventLabel">Type d'évenement</div>
+        <select id="type">
           <option ng-repeat="type in vm.eventTypes" value="{{type.EventTypeId}}">{{type.Type}}</option>
         </select>
         <input value="Valider" type="submit" class="button button-positive  button-block" ng-click="vm.saveEvent()" />
       </div>
     </form>
-
   </ion-content>
-
 </ion-view>
