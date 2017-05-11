@@ -28,10 +28,10 @@ function commentService($http) {
       }
     };
 
-    function getResponseList(eventId){
+    function getResponseList(eventId, commentId){
       return 	$http({
       		method: 'GET',
-      		url: 'http://webapp8.nantes.sii.fr/' + 'getResponseList?id=' + eventId
+      		url: 'http://webapp8.nantes.sii.fr/' + 'getResponseList?eventId=' + eventId + '&commentId=' + commentId
       	})
         .then(getResponseListComplete)
         .catch(getResponseListFailed);
