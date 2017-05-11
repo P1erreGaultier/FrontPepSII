@@ -201,10 +201,13 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 
 	function getGoogleImage(email){
 		var res = personService.getGooglePicture(email)
-		.then(function(result){console.log(result);vm.images[email]=result;return result;})
+		.then(function(result){
+			if (!(email in vm.images)){
+				vm.images[email]=result;
+			}
+			return result;
+		})
 		.catch(function(error){console.log(error)});
-		console.log(res);
-
 		return res;
 	}
 
