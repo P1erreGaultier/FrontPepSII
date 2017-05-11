@@ -211,7 +211,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
                type: 'button-positive',
                   onTap: function(e) {
 										if (!document.getElementById("commentText").value.trim()) {
-											console.log("coucou");
 					             e.preventDefault();
 					           } else {
 					             return document.getElementById("commentText").value;
