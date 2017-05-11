@@ -37,20 +37,20 @@
         <div id="participantDiv" style="display:none;">
           <ion-list ng-repeat="participant in vm.ListParticipant">
             <ion-item class="item-avatar">
-              <img src="img/defaultUser.jpg">
+              <img ng-init="vm.getGoogleImage(participant.PersonEmail)" ng-src="{{vm.images[participant.PersonEmail]}}">
               <h2>{{participant.Pseudo}}</h2>
             </ion-item>
           </ion-list>
         </div>
       </p>
-      
+
       <button  ng-if="vm.isLogged == 'true'" ng-click="vm.openPopup('NULL')" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Commenter</button>
 
       </div>
       <ion-list ng-repeat="comment in vm.ListComment">
-          <div ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}" ng-click="vm.showResponse({{comment.CommentId}}, $event)">
+          <div ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}" ng-click="vm.showResponse(vm.event.EventId, {{comment.CommentId}}, $event)">
             <ion-item class="item-avatar">
-              <img ng-init="vm.getGoogleImage('puerrepierre@gmail.com')" ng-src="{{vm.images['puerrepierre@gmail.com']}}">
+              <img ng-init="vm.getGoogleImage(comment.Person.PersonEmail)" ng-src="{{vm.images[comment.Person.PersonEmail]}}">
               <button  ng-if="vm.isLogged == 'true'" ng-click="vm.openPopup({{comment.CommentId}}, $event)" style="text-align:left;border-radius:5px 5px 5px 5px;float:right;min-height:43px;height:43px;" class="button button-positive">Répondre</button>
               <h2>{{comment.Person.Pseudo}}</h2>
               <p style="overflow:initial;white-space:initial;">{{comment.Text}}</p>
@@ -60,7 +60,7 @@
           <ion-list ng-repeat="commentResponse in vm.ListCommentResponse[comment.CommentId]">
             <div style="margin-left:5%;">
               <ion-item class="item-avatar">
-                <img src="img/defaultUser.jpg">
+                <img ng-init="vm.getGoogleImage(commentResponse.Person.PersonEmail)" ng-src="{{vm.images[commentResponse.Person.PersonEmail]}}">
                 <h2>{{commentResponse.Person.Pseudo}}</h2>
                 <p style="overflow:initial;white-space:initial;">{{commentResponse.Text}}</p>
                 <p style="text-align:right;font-style:italic;padding-right:1%;">{{commentResponse.DatePost | date:'dd/MM/yyyy HH:mm:ss'}}</p>

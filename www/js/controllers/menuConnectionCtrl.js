@@ -3,6 +3,7 @@ angular.module('app.controllers')
 .controller('menuConnectionCtrl', ['$stateParams', '$window', '$state', '$ionicHistory','personService',
 function ($stateParams, $window, $state, $ionicHistory, personService) {
 	var vm = this;
+	vm.loading = false;
 	vm.showNavMenu = showNavMenu;
 	vm.googlePlus = googlePlus;
 	vm.logOut = logOut;
@@ -23,7 +24,13 @@ function ($stateParams, $window, $state, $ionicHistory, personService) {
 		}
 
 		function googlePlus() {
-			personService.connect();
+			vm.loading = true;
+			personService.connect().then(function(response){
+				console.log("Logged in:");
+				console.log(response);
+			}).finally(function() {
+				vm.loading = false;
+			});
 		}
 
 		function logOut(){

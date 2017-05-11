@@ -42,15 +42,20 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		}
 		vm.event = eventService.getEvent();
 
-		if(Math.random() > 0.5){
+		var rng = Math.random();
+		if(rng < 0.4){
 			vm.imageToDisplay = "grosChat.jpg";
-		} else {
+		} else if(rng < 0.8) {
 			vm.imageToDisplay = "chaton.jpg";
+		} else if (rng < 0.98){
+			vm.imageToDisplay = "defaultUser2.jpg";
+		} else {
+			vm.imageToDisplay = "d74c8cec9490f925a191d4f677fb37ae.jpg"
 		}
 
 		commentService.getCommentByEvent(vm.event.EventId)
 		.then(function successCallback(response) {
-			vm.ListComment = response;
+			vm.ListComment = response.reverse();
 			console.log(response);
 		}, function erroCallabck(response) {
 			console.log("Il y a eu des erreurs!")
@@ -180,7 +185,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			alert(JSON.stringify(result));
 			commentService.getCommentByEvent(vm.event.EventId)
 			.then(function successCallback(response) {
-				vm.ListComment = response;
+				vm.ListComment = response.reverse();
 				console.log(response);
 			}, function erroCallabck(response) {
 				console.log("Il y a eu des erreurs!")
@@ -242,11 +247,11 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			$event.stopPropagation();
 	}
 
-	function showResponse(commentId, $event) {
+	function showResponse(commentId, eventId, $event) {
 		if (vm.ListCommentResponse[commentId] == undefined || vm.ListCommentResponse[commentId].length == 0){
-			commentService.getResponseList(commentId)
+			commentService.getResponseList(eventId, commentId)
 			.then(function(result){
-				vm.ListCommentResponse[commentId] = result;
+				vm.ListCommentResponse[commentId] = result.reverse();
 			})
 			console.log(vm.ListCommentResponse[commentId]);
 			$event.stopPropagation();

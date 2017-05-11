@@ -4,7 +4,7 @@
   <ion-content padding="true" class="has-header">
 
     <div ng-switch on="vm.canModify" >
-      <img src="img/defaultUser2.jpg" style="height:500px;width:auto;">
+      <img ng-init="vm.getGoogleImage(vm.user.PersonEmail)" ng-src="{{vm.images[vm.user.PersonEmail]}}" >
   <div ng-switch-when="true" >
     <label id="pseudo">Pseudo:</label> <input id="pseudoInput" value="{{vm.pseudo}}" style="margin-bottom:15px;"></br>
     <label id="lastName">Nom:</label> <input id="lastNameInput" value="{{vm.lastName}}" style="margin-bottom:15px;"></br>

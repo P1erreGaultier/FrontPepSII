@@ -14,6 +14,8 @@ function ($scope, $stateParams, personService) {
 	vm.saveProfil = saveProfil;
 	vm.modify = modify;
 	vm.modifyBack = modifyBack;
+	vm.images = {};
+	vm.getGoogleImage = getGoogleImage;
 	console.log(personService.getResponseGoogle());
 
 	function saveProfil() {
@@ -74,6 +76,18 @@ function ($scope, $stateParams, personService) {
 
 	function modifyBack() {
 		vm.canModify = "false";
+	}
+
+	function getGoogleImage(email){
+		var res = personService.getGooglePicture(email)
+		.then(function(result){
+			if (!(email in vm.images)){
+				vm.images[email]=result;
+			}
+			return result;
+		})
+		.catch(function(error){console.log(error)});
+		return res;
 	}
 
 }])
