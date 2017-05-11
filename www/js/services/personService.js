@@ -21,7 +21,8 @@ function personService($http, $window, $ionicHistory, $state) {
     getResponseGoogle : getResponseGoogle,
     setResponseGoogle : setResponseGoogle,
     getGoogleId : getGoogleId,
-    setGoogleId : setGoogleId
+    setGoogleId : setGoogleId,
+    getGooglePicture : getGooglePicture
 
   };
 
@@ -69,6 +70,23 @@ function personService($http, $window, $ionicHistory, $state) {
     }
     function getPersonByIdFailed(response){
       console.log("Error: getAllEvent");
+      console.log(response);
+    }
+  };
+
+  function getGooglePicture(email){
+    console.log(email);
+    return $http({
+    method: 'GET',
+    url: 'http://picasaweb.google.com/data/entry/api/user/' + email +'?alt=json'})
+      .then(getGooglePictureComplete)
+      .catch(getGooglePictureFailed);
+    function getGooglePictureComplete(response) {
+      console.log(response.data.entry.gphoto$thumbnail.$t);
+      return response.data.entry.gphoto$thumbnail.$t;
+    }
+    function getGooglePictureFailed(response){
+      console.log("Error: getGooglePicture");
       console.log(response);
     }
   };

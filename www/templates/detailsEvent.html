@@ -43,14 +43,14 @@
           </ion-list>
         </div>
       </p>
-
+      
       <button  ng-if="vm.isLogged == 'true'" ng-click="vm.openPopup('NULL')" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Commenter</button>
 
       </div>
       <ion-list ng-repeat="comment in vm.ListComment">
           <div ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}" ng-click="vm.showResponse({{comment.CommentId}}, $event)">
             <ion-item class="item-avatar">
-              <img src="img/defaultUser.jpg">
+              <img ng-init="vm.getGoogleImage('puerrepierre@gmail.com')" ng-src="{{vm.images['puerrepierre@gmail.com']}}">
               <button  ng-if="vm.isLogged == 'true'" ng-click="vm.openPopup({{comment.CommentId}}, $event)" style="text-align:left;border-radius:5px 5px 5px 5px;float:right;min-height:43px;height:43px;" class="button button-positive">Répondre</button>
               <h2>{{comment.Person.Pseudo}}</h2>
               <p style="overflow:initial;white-space:initial;">{{comment.Text}}</p>

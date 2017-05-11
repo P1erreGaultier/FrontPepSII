@@ -26,7 +26,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	vm.registerComment = registerComment;
 	vm.showResponse = showResponse;
 	vm.imageToDisplay = "";
-
+	vm.getGoogleImage = getGoogleImage;
+	vm.images = {};
 
 	activate();
 
@@ -197,6 +198,18 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
     var dateOut = new Date(date);
     return dateOut;
   }
+
+	function getGoogleImage(email){
+		var res = personService.getGooglePicture(email)
+		.then(function(result){
+			if (!(email in vm.images)){
+				vm.images[email]=result;
+			}
+			return result;
+		})
+		.catch(function(error){console.log(error)});
+		return res;
+	}
 
 	function openPopup(responseTo, $event) {
 
