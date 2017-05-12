@@ -154,6 +154,7 @@ function registerPerson(idToken, personToSend ){
       $state.reload();
     return response;
   }
+
   function connectFailed(response){
     console.log("Envoi token: Il y a eu des erreurs!");
     alert(JSON.stringify(response));
