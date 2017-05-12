@@ -22,6 +22,7 @@ function commentService($http) {
       function getCommentByEventComplete(response) {
         return response.data;
       }
+
       function getCommentByEventFailed(response){
         console.log("Error: getCommentByEventFailed");
         console.log(response);
