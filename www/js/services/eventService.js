@@ -97,11 +97,6 @@ function eventService($http, $state, $ionicHistory) {
       console.log("message send");
       console.log(response);
       alert(JSON.stringify(response));
-      $ionicHistory.nextViewOptions({
-        disableBack: true
-      });
-      $state.go('menu.accueil', {}, {location: 'replace', reload: true})
-      return response;
     }
     function registerEventFailed(response){
       console.log(response);
