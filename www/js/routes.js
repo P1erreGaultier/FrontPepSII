@@ -26,7 +26,8 @@ angular.module('app.routes', [])
     views: {
       'side-menu21': {
         templateUrl: 'templates/recherche.html',
-        controller: 'rechercheCtrl'
+        controller: 'rechercheCtrl',
+        controllerAs: 'vm'
       }
     }
   })

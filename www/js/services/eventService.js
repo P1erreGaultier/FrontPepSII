@@ -10,6 +10,7 @@ function eventService($http, $state, $ionicHistory) {
 
   return {
     getAllEvent: getAllEvent,
+    getUpcommingEvents: getUpcommingEvents,
     getMyEvents: getMyEvents,
     getAllEventType: getAllEventType,
     saveEvent: saveEvent,
@@ -36,6 +37,22 @@ function eventService($http, $state, $ionicHistory) {
       console.log(response);
     }
   };
+
+  function getUpcommingEvents(nbEvents) {
+    return $http({
+      method:'GET',
+      url: 'http://webapp8.nantes.sii.fr/getUpcommingEvents?id=' + nbEvents})
+      .then(getUpcommingEventsComplete)
+      .catch(getUpcommingEventsFailed);
+
+      function getUpcommingEventsComplete(response) {
+        return response.data;
+      }
+      function getUpcommingEventsFailed(response) {
+        console.log("Error: getUpcommingEvents");
+        console.log(response);
+      }
+    }
 
   function getMyEvents(idPerson) {
     return $http({

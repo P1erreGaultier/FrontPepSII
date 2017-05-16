@@ -38,10 +38,11 @@ function commentService($http) {
         .catch(getResponseListFailed);
 
         function getResponseListComplete(response) {
+          console.log(response);
           return response.data;
         }
         function getResponseListFailed(response){
-          console.log("Error: getCommentByEventFailed");
+          console.log("Error: getResponseList");
           console.log(response);
         }
       };

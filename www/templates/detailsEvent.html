@@ -54,7 +54,10 @@
               <button  ng-if="vm.isLogged == 'true'" ng-click="vm.openPopup({{comment.CommentId}}, $event)" style="text-align:left;border-radius:5px 5px 5px 5px;float:right;min-height:43px;height:43px;" class="button button-positive">Répondre</button>
               <h2>{{comment.Person.Pseudo}}</h2>
               <p style="overflow:initial;white-space:initial;">{{comment.Text}}</p>
-              <p style="text-align:right;font-style:italic;padding-right:1%;">{{comment.DatePost | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+              <div style="display:flex;">
+                <p style="width:50%;color:blue;">{{comment.NbResponses}} réponse(s)</p>
+                <p style="text-align:right;font-style:italic;padding-right:1%;width:50%;">{{comment.DatePost | date:'dd/MM/yyyy HH:mm'}}</p>
+              </div>
             </ion-item>
           </div>
           <ion-list ng-repeat="commentResponse in vm.ListCommentResponse[comment.CommentId]">
@@ -63,7 +66,7 @@
                 <img ng-init="vm.getGoogleImage(commentResponse.Person.PersonEmail)" ng-src="{{vm.images[commentResponse.Person.PersonEmail]}}">
                 <h2>{{commentResponse.Person.Pseudo}}</h2>
                 <p style="overflow:initial;white-space:initial;">{{commentResponse.Text}}</p>
-                <p style="text-align:right;font-style:italic;padding-right:1%;">{{commentResponse.DatePost | date:'dd/MM/yyyy HH:mm:ss'}}</p>
+                <p style="text-align:right;font-style:italic;padding-right:1%;">{{commentResponse.DatePost | date:'dd/MM/yyyy HH:mm'}}</p>
               </ion-item>
             </div>
           </ion-list>
