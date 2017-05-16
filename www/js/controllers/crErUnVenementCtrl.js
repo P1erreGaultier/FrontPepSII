@@ -80,7 +80,15 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 				"EventType" : eventToSend
 			};
 			alert(JSON.stringify(eventToSend));
-			eventService.registerEvent(responseGoogle.idToken,eventToSend);
+			eventService.registerEvent(responseGoogle.idToken,eventToSend)
+			.then(function(data){
+
+				$ionicHistory.nextViewOptions({
+					disableBack: true
+				});
+				$state.go('menu.accueil', {}, {location: 'replace', reload: true})
+
+			});
 		}
 	}
 }])

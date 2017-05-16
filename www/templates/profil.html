@@ -3,26 +3,26 @@
   </ion-nav-buttons>
   <ion-content padding="true" class="has-header">
 
-    <div ng-switch on="vm.canModify" >
-      <img ng-init="vm.getGoogleImage(vm.user.PersonEmail)" ng-src="{{vm.images[vm.user.PersonEmail]}}" >
-  <div ng-switch-when="true" >
-    <label id="pseudo">Pseudo:</label> <input id="pseudoInput" value="{{vm.pseudo}}" style="margin-bottom:15px;"></br>
-    <label id="lastName">Nom:</label> <input id="lastNameInput" value="{{vm.lastName}}" style="margin-bottom:15px;"></br>
-    <label id="firstName">Prenom:</label> <input id="firstNameInput" value="{{vm.firstName}}" style="margin-bottom:15px;"></br>
-    <label>Poste:</label> <input id="jobInput" value="{{vm.job}}" style="margin-bottom:15px;">
-    <div style="display:flex;">
-      <a href="javascript:void(0)" ng-click="vm.saveProfil()" class="button button-positive  button-block" style="width:45%;margin-right:10%;">Sauvegarder</a>
-      <a href="javascript:void(0)" ng-click="vm.modifyBack()" class="button button-positive  button-block" style="width:45%;">Retour</a>
+  <div ng-switch on="vm.canModify" >
+    <img ng-init="vm.getGoogleImage(vm.user.PersonEmail)" ng-src="{{vm.images[vm.user.PersonEmail]}}" >
+    <div ng-switch-when="true" >
+      <label id="pseudo">Pseudo:</label> <input id="pseudoInput" value="{{vm.pseudo}}" style="margin-bottom:15px;"></br>
+      <label id="lastName">Nom:</label> <input id="lastNameInput" value="{{vm.lastName}}" style="margin-bottom:15px;"></br>
+      <label id="firstName">Prenom:</label> <input id="firstNameInput" value="{{vm.firstName}}" style="margin-bottom:15px;"></br>
+      <label>Poste:</label> <input id="jobInput" value="{{vm.job}}" style="margin-bottom:15px;">
+      <div style="display:flex;">
+        <a href="javascript:void(0)" ng-click="vm.saveProfil()" class="button button-positive  button-block" style="width:45%;margin-right:10%;">Sauvegarder</a>
+        <a href="javascript:void(0)" ng-click="vm.modifyBack()" class="button button-positive  button-block" style="width:45%;">Retour</a>
+      </div>
+    </div>
+    <div ng-switch-when="false">
+      <p >Pseudo: {{vm.pseudo}}</p>
+      <p>Nom: {{vm.lastName}}</p>
+      <p>Prenom: {{vm.firstName}}</p>
+      <p>Poste: {{vm.job}}</p>
+      <a href="javascript:void(0)" ng-click="vm.modify()" class="button button-positive  button-block">Modifier</a>
     </div>
   </div>
-  <div ng-switch-when="false">
-    <p >Pseudo: {{vm.pseudo}}</p>
-    <p>Nom: {{vm.lastName}}</p>
-    <p>Prenom: {{vm.firstName}}</p>
-    <p>Poste: {{vm.job}}</p>
-    <a href="javascript:void(0)" ng-click="vm.modify()" class="button button-positive  button-block">Modifier</a>
-  </div>
-</div>
 
   </ion-content>
 </ion-view>

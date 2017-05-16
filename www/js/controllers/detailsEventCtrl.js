@@ -247,13 +247,12 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			$event.stopPropagation();
 	}
 
-	function showResponse(commentId, eventId, $event) {
+	function showResponse(eventId, commentId, $event) {
 		if (vm.ListCommentResponse[commentId] == undefined || vm.ListCommentResponse[commentId].length == 0){
 			commentService.getResponseList(eventId, commentId)
 			.then(function(result){
 				vm.ListCommentResponse[commentId] = result.reverse();
 			})
-			console.log(vm.ListCommentResponse[commentId]);
 			$event.stopPropagation();
 		} else {
 			vm.ListCommentResponse[commentId] = [];

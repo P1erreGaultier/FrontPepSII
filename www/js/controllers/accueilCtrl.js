@@ -18,7 +18,7 @@ function (eventService) {
 	}
 
 	function getAllEvent() {
-		return eventService.getAllEvent()
+		return eventService.getUpcommingEvents(10)
 			.then(function(data) {
 				vm.listEvent = data;
 				return vm.listEvent;
