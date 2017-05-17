@@ -28,7 +28,6 @@ function suggestion($http, $ionicHistory, personService, $filter, $state) {
       .catch(saveSuggestionFailed);
 
     function saveSuggestionComplete(response) {
-      alert(JSON.stringify(response));
       $ionicHistory.nextViewOptions({
         disableBack: true
       });
@@ -37,7 +36,6 @@ function suggestion($http, $ionicHistory, personService, $filter, $state) {
     }
     function getAllEventFailed(response){
   		console.log("Envoi token: Il y a eu des erreurs!");
-  		alert(JSON.stringify(response));
       return response;
     }
   };

@@ -46,12 +46,10 @@ function saveParticipant(idToken, personId, eventId ){
     function saveParticipantComplete(response) {
       console.log("message send");
 			console.log(response);
-			alert(JSON.stringify(response));
       return response;
     }
     function saveParticipantFailed(response){
       console.log("Envoi token: Il y a eu des erreurs!");
-      alert(JSON.stringify(response));
       return response;
     }
   };
@@ -75,14 +73,12 @@ function saveParticipant(idToken, personId, eventId ){
       function cancelParticipationComplete(response) {
         console.log("message send");
   			console.log(response);
-  			alert(JSON.stringify(response));
   			$window.location.reload();
         return response;
       }
 
       function cancelParticipationFailed(response){
         console.log("Envoi token: Il y a eu des erreurs!");
-        alert(JSON.stringify(response));
         return response;
       }
     }

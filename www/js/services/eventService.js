@@ -113,12 +113,10 @@ function eventService($http, $state, $ionicHistory) {
     function registerEventComplete(response) {
       console.log("message send");
       console.log(response);
-      alert(JSON.stringify(response));
     }
     function registerEventFailed(response){
       console.log(response);
       console.log("Envoi token: Il y a eu des erreurs!");
-      alert(JSON.stringify(response));
       return response;
     }
   };
