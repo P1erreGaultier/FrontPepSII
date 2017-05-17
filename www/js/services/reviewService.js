@@ -28,13 +28,11 @@ function reviewService($http) {
     function updateReviewComplete(response) {
       console.log("message send");
       console.log(response);
-      alert(JSON.stringify(response));
       return response;
     }
     function updateReviewFailed(response){
       console.log(response);
       console.log("Envoi token: Il y a eu des erreurs!");
-      alert(JSON.stringify(response));
       return response;
     }
   };

@@ -117,7 +117,6 @@ function registerPerson(idToken, personToSend ){
     }
     function registerPersonFailed(response){
       console.log("Envoi token: Il y a eu des erreurs!");
-      alert(JSON.stringify(response));
       return response;
     }
   };
@@ -150,14 +149,12 @@ function registerPerson(idToken, personToSend ){
     }else{
       connectedUser =response.data;
       connected = "true";
-      //$window.history.back();
       $state.reload();
     return response;
   }
 
   function connectFailed(response){
     console.log("Envoi token: Il y a eu des erreurs!");
-    alert(JSON.stringify(response));
     return response;
   }
 
