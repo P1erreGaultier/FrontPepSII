@@ -15,6 +15,7 @@
           <ion-label>{{type.Type}}</ion-label>
           <ion-checkbox style="border:none;" id="{{type.Type}}" ng-model="vm.types[type.EventTypeId]" ng-change="vm.filterEvents()" ng-checked="true"></ion-checkbox>
       </span>
+      <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.showAllEvents()">Tout les évènements</button>
     </div>
     <ul>
       <li ng-repeat="event in vm.listEventsToDisplay">

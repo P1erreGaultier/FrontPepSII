@@ -11,6 +11,7 @@ function (eventService, searchService) {
   vm.listEvents = [];
   vm.listEventsToDisplay = [];
   vm.getEventTypes = getEventTypes;
+  vm.showAllEvents = showAllEvents;
   vm.filterEvents = filterEvents;
   vm.passEvent = passEvent;
   vm.submit = submit;
@@ -31,6 +32,14 @@ function (eventService, searchService) {
           vm.types[vm.listTypes[i].EventTypeId] = true;
         }
       })
+  }
+
+  function showAllEvents() {
+    return eventService.getAllEvent()
+    .then(function(response){
+      vm.listEvents = response;
+      filterEvents();
+    })
   }
 
   function filterEvents() {
