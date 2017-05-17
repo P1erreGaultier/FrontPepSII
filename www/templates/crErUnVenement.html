@@ -9,7 +9,7 @@
         <div class="createEventLabel">Nom de l'évènement<p style="color:red"> {{vm.erreurNom}}</p></div>
         <input id="nomEvenement" border-radiustype="text" placeholder="">
         <div class="createEventLabel">Description</div>
-        <textarea id="description" style="width:15%;height:100px;background-color:aliceblue;" placeholder=""></textarea>
+        <textarea id="description" style="width:100%;height:100px;background-color:aliceblue;" placeholder=""></textarea>
         <div class="createEventLabel">Date <p style="color:red"> {{vm.erreurDate}}</p></div>
         <datepicker style="height:auto;" date-min-limit="{{vm.minDate}}" date-format="yyyy-MM-dd" button-prev="<" button-next=">" class="ng-isolate-scope" date-set="true">
           <input id="selectedDate" ng-model="date" type="text" placeholder="Selectionnez une date" />
@@ -22,7 +22,8 @@
         <input id="lieuName" border-radiustype="text" placeholder="" ng-value="vm.placename" ng-click="vm.selectPlaceId();">
         <input id="lieu" border-radiustype="text" placeholder="" ng-value="vm.placeid" type="hidden">
         <div class="createEventLabel">Image</div>
-        <input id="image" border-radiustype="text" placeholder="">
+        <img id="{{vm.selectedImage.id}}" src="img/{{vm.selectedImage.name}}" ng-click="vm.openPopupSelectImage()" >
+        <input type="hidden" id="image" value="{{vm.selectedImage.id}}">
         <ion-list radio-group [(ngModel)]="categorie">
         <div class="createEventLabel">Type d'évenement</div>
         <select id="type">
