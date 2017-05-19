@@ -5,11 +5,6 @@ function ($scope, $stateParams, personService) {
 
 	var vm = this;
 	vm.user = personService.getConnectedUser();
-	vm.personID = vm.user.PersonID;
-	vm.pseudo = vm.user.Pseudo;
-	vm.lastName = vm.user.LastName;
-	vm.firstName = vm.user.FirstName;
-	vm.job = vm.user.Job;
 	vm.canModify = "false";
 	vm.saveProfil = saveProfil;
 	vm.modify = modify;
@@ -50,21 +45,14 @@ function ($scope, $stateParams, personService) {
 			personService.registerPerson(personService.getResponseGoogle().idToken, personToSend)
 			.then(function successCallback(response) {
 				console.log("message send");
-				console.log(vm.user.personID);
 				console.log(response);
 				var userResponse = response.data;
-				vm.personID = userResponse.PersonID;
-				vm.pseudo = userResponse.Pseudo;
-				vm.lastName = userResponse.LastName;
-				vm.firstName = userResponse.FirstName;
-				vm.job = userResponse.Job;
 				personService.setConnectedUser(userResponse);
 				vm.canModify = "false";
-				alert("Modification enregistrées");
-				alert(JSON.stringify(response));
 			}, function erroCallabck(response) {
+				alert('erreur');
 				console.log(response);
-				console.log("Envoi formulaire creation d'evenement: Il y a eu des erreurs!");
+				console.log("Envoi formulaire modification personne: Il y a eu des erreurs!");
 				alert(JSON.stringify(response));
 			});
 		}

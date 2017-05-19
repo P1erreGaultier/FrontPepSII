@@ -15,14 +15,14 @@
           <input id="selectedDate" ng-model="date" type="text" placeholder="Selectionnez une date" />
         </datepicker>
         <div class="createEventLabel">Horaire début<p style="color:red"> {{vm.erreurHoraireDebut}}</p></div>
-        <input id="horaireDebut" border-radiustype="text" placeholder="00:00">
+        <input ng-click="vm.openPopupSelectTime('start')" id="horaireDebut" border-radiustype="text" value="{{vm.timeStart.hours}}:{{vm.timeStart.minutes}}" readonly>
         <div class="createEventLabel">Horaire fin<p style="color:red"> {{vm.erreurHoraireFin}}</p></div>
-        <input id="horaireFin" border-radiustype="text" placeholder="00:00">
+        <input ng-click="vm.openPopupSelectTime('end')" id="horaireFin" border-radiustype="text" value="{{vm.timeEnd.hours}}:{{vm.timeEnd.minutes}}" readonly>
         <div class="createEventLabel">Lieu <p style="color:red"> {{vm.erreurLieu}}</p></div>
         <input id="lieuName" border-radiustype="text" placeholder="" ng-value="vm.placename" ng-click="vm.selectPlaceId();">
         <input id="lieu" border-radiustype="text" placeholder="" ng-value="vm.placeid" type="hidden">
         <div class="createEventLabel">Image</div>
-        <img id="{{vm.selectedImage.id}}" src="img/{{vm.selectedImage.name}}" ng-click="vm.openPopupSelectImage()" >
+        <img style="width:230px;heigth:230px;" id="{{vm.selectedImage.id}}" src="img/{{vm.selectedImage.name}}" ng-click="vm.openPopupSelectImage()" >
         <input type="hidden" id="image" value="{{vm.selectedImage.id}}">
         <ion-list radio-group [(ngModel)]="categorie">
         <div class="createEventLabel">Type d'évenement</div>

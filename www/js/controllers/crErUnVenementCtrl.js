@@ -9,12 +9,20 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 	vm.minDate;
 	vm.eventTypes;
 	vm.imageList = [];
+	vm.hours = [];
+	vm.minutes = [];
 	vm.selectedImage;
+	vm.timeDisplayPopup = {hours:"00", minutes: "00"};
+	vm.timeStart = {hours:"00", minutes: "00"};
+	vm.timeEnd = {hours:"23", minutes: "59"};
 	vm.getAllEventType = getAllEventType;
 	vm.saveEvent = saveEvent;
 	vm.selectPlaceId = selectPlaceId;
 	vm.openPopupSelectImage= openPopupSelectImage;
+	vm.openPopupSelectTime = openPopupSelectTime;
 	vm.selectImage = selectImage;
+	vm.selectHour = selectHour;
+	vm.selectMinute = selectMinute;
 
 	activate();
 
@@ -33,6 +41,21 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 			}
 		}
 		vm.selectedImage = {name:"event1.jpg", id:1}
+		for(i=0;i<24;i++){
+			if (i<10){
+				vm.hours[i] = "0" + i;
+			} else {
+				vm.hours[i] = i;
+			}
+		}
+
+		for(i=0;i<60;i++){
+			if (i<10){
+				vm.minutes[i] = "0" + i;
+			} else {
+				vm.minutes[i] = i;
+			}
+		}
 	}
 
 	function getAllEventType() {
@@ -107,9 +130,9 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 	}
 
 	function openPopupSelectImage() {
-
+		vm.time = time
 		var myPopup = $ionicPopup.show({
-				 template: '<img src="img/{{vm.selectedImage.name}}"><div style="overflow-x:scroll;white-space:nowrap;" scrollbar-y-auto><img ng-repeat="image in vm.imageList" style="width:50px;heigth:50px;" src="img/{{image.name}}" ng-click="vm.selectImage({{image}})"></div>',
+				 template: '<img style="width:230px;heigth:230px;" src="img/{{vm.selectedImage.name}}"><div style="overflow-x:scroll;white-space:nowrap;" scrollbar-y-auto><img ng-repeat="image in vm.imageList" style="width:75px;heigth:75px;" src="img/{{image.name}}" ng-click="vm.selectImage({{image}})"></div>',
 				 title: 'Images',
 				 subTitle: 'Choisissez votre image.',
 				 scope: $scope,
@@ -117,7 +140,39 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 				 buttons: [
 					 {
 							 text: '<b>Ok</b>',
-							 type: 'button-positive'
+							 type: 'button-positive',
+						}
+				 ]
+			});
+
+			myPopup.then(function(res) {
+				if (res){
+					console.log(res);
+				}
+
+			});
+	}
+
+	function openPopupSelectTime(time) {
+
+		var myPopup = $ionicPopup.show({
+				 templateUrl: 'templates/popup/selectTime.html',
+				 title: 'Horaire',
+				 scope: $scope,
+
+				 buttons: [
+					 {
+							 text: '<b>Ok</b>',
+							 type: 'button-positive',
+							 onTap: function(e) {
+								 if (time == "start") {
+										vm.timeStart = vm.timeDisplayPopup;
+										document.getElementById("horaireDebut").value = vm.timeDisplayPopup.hours + ":" + vm.timeDisplayPopup.minutes
+									} else if(time == "end") {
+										vm.timeEnd = vm.timeDisplayPopup;
+										document.getElementById("horaireFin").value = vm.timeDisplayPopup.hours + ":" + vm.timeDisplayPopup.minutes
+									}
+							 }
 						}
 				 ]
 			});
@@ -136,6 +191,14 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 			var audio = new Audio('img/' + image.feature);
 			audio.play();
 		}
+	}
+
+	function selectHour(hour){
+		vm.timeDisplayPopup.hours = hour;
+	}
+
+	function selectMinute(minute){
+		vm.timeDisplayPopup.minutes = minute;
 	}
 
 }])
