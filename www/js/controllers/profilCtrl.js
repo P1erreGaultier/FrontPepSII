@@ -4,7 +4,7 @@ angular.module('app.controllers')
 function ($scope, $stateParams, personService) {
 
 	var vm = this;
-	vm.user = personService.getConnectedUser();
+	vm.user =
 	vm.canModify = "false";
 	vm.saveProfil = saveProfil;
 	vm.modify = modify;
@@ -48,12 +48,12 @@ function ($scope, $stateParams, personService) {
 				console.log(response);
 				var userResponse = response.data;
 				personService.setConnectedUser(userResponse);
+				vm.user = userResponse;
 				vm.canModify = "false";
 			}, function erroCallabck(response) {
 				alert('erreur');
 				console.log(response);
 				console.log("Envoi formulaire modification personne: Il y a eu des erreurs!");
-				alert(JSON.stringify(response));
 			});
 		}
 	}

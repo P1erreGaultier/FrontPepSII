@@ -6,6 +6,9 @@
   <ion-content padding="true" class="has-header">
     <form id="crErUnVenement-form6" class="list">
       <div style="display:inline-block;width:100%">
+        <div class="createEventLabel">Lieu <p style="color:red"> {{vm.erreurLieu}}</p></div>
+        <input id="lieuName" border-radiustype="text" placeholder="" ng-value="vm.placename" ng-click="vm.selectPlaceId();">
+        <input id="lieu" border-radiustype="text" placeholder="" ng-value="vm.placeid" type="hidden">
         <div class="createEventLabel">Nom de l'évènement<p style="color:red"> {{vm.erreurNom}}</p></div>
         <input id="nomEvenement" border-radiustype="text" placeholder="">
         <div class="createEventLabel">Description</div>
@@ -18,9 +21,6 @@
         <input ng-click="vm.openPopupSelectTime('start')" id="horaireDebut" border-radiustype="text" value="{{vm.timeStart.hours}}:{{vm.timeStart.minutes}}" readonly>
         <div class="createEventLabel">Horaire fin<p style="color:red"> {{vm.erreurHoraireFin}}</p></div>
         <input ng-click="vm.openPopupSelectTime('end')" id="horaireFin" border-radiustype="text" value="{{vm.timeEnd.hours}}:{{vm.timeEnd.minutes}}" readonly>
-        <div class="createEventLabel">Lieu <p style="color:red"> {{vm.erreurLieu}}</p></div>
-        <input id="lieuName" border-radiustype="text" placeholder="" ng-value="vm.placename" ng-click="vm.selectPlaceId();">
-        <input id="lieu" border-radiustype="text" placeholder="" ng-value="vm.placeid" type="hidden">
         <div class="createEventLabel">Image</div>
         <img style="width:230px;heigth:230px;" id="{{vm.selectedImage.id}}" src="img/{{vm.selectedImage.name}}" ng-click="vm.openPopupSelectImage()" >
         <input type="hidden" id="image" value="{{vm.selectedImage.id}}">

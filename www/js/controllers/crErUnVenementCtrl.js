@@ -130,7 +130,6 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 	}
 
 	function openPopupSelectImage() {
-		vm.time = time
 		var myPopup = $ionicPopup.show({
 				 template: '<img style="width:230px;heigth:230px;" src="img/{{vm.selectedImage.name}}"><div style="overflow-x:scroll;white-space:nowrap;" scrollbar-y-auto><img ng-repeat="image in vm.imageList" style="width:75px;heigth:75px;" src="img/{{image.name}}" ng-click="vm.selectImage({{image}})"></div>',
 				 title: 'Images',
