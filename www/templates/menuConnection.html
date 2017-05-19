@@ -4,10 +4,10 @@
     <div ng-switch-when="true" style="height:100%">
       <ul id="menuList">
         <li>
-          <a style="width:inherit;">{{vm.connected}}</a>
+          <a style="min-width:150px !important">{{vm.connected}}</a>
           <ul id="menuList" style="width:inherit;">
-            <li style="width:98%;"><a ui-sref="menu.profil()">Profil</a></li>
-            <li style="width:98%;"><a ng-click="vm.logOut()">Deconnexion</a></li>
+            <li><a ui-sref="menu.profil()">Profil</a></li>
+            <li><a ng-click="vm.logOut()">Deconnexion</a></li>
           </ul>
         </li>
       </ul>

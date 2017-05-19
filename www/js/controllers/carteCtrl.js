@@ -7,7 +7,7 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 
 	var vm = this;
 	vm.listEvent = [];
-	vm.getAllEvent = getAllEvent;
+	vm.getEvents = getEvents;
 	vm.addMarker = addMarker;
 	vm.redirectEvent = redirectEvent;
 	vm.redirectCreate = redirectCreate;
@@ -18,7 +18,7 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 	activate();
 
 	function activate() {
-		getAllEvent();
+		getEvents();
 	}
 
 	function redirectCreate() {
@@ -32,8 +32,8 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 		$state.go('menu.detailsEvent', {}, {location: 'replace', reload: false})
 	}
 
-	function getAllEvent() {
-		return eventService.getAllEvent()
+	function getEvents() {
+		return eventService.getUpcommingEvents(40)
 			.then(function(data) {
 				vm.listEvent = data;
 				for (vm.i=0; vm.i<vm.listEvent.length; vm.i++){
