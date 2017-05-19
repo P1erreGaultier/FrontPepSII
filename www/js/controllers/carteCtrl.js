@@ -24,7 +24,7 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 	function redirectCreate() {
 		eventService.saveEventId(vm.pid);
 		eventService.saveEventName(vm.pname);
-		$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: false})
+		$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: true})
 	}
 
 	function redirectEvent() {
