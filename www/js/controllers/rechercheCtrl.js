@@ -9,6 +9,7 @@ function (eventService, searchService) {
   vm.listTypes = [];
   vm.types = [];
   vm.listEvents = [];
+  vm.loading = false;
   vm.listEventsToDisplay = [];
   vm.getEventTypes = getEventTypes;
   vm.showAllEvents = showAllEvents;
@@ -39,6 +40,7 @@ function (eventService, searchService) {
     .then(function(response){
       vm.listEvents = response;
       filterEvents();
+      document.getElementById("noResultFound").style.display = "none";
     })
   }
 
@@ -62,12 +64,18 @@ function (eventService, searchService) {
   }
 
   function submit($event) {
+    document.getElementById("noResultFound").style.display = "none";
+    vm.listEventsToDisplay = [];
     if ($event.keyCode == 13) {
-      console.log(document.getElementById("search").value);
+      vm.loading = true;
       searchService.searchEvent(document.getElementById("search").value)
       .then(function(response){
         vm.listEvents = response;
+        if (vm.listEvents.length == 0) {
+          document.getElementById("noResultFound").style.display = "block";
+        }
         filterEvents();
+        vm.loading = false
         console.log(vm.listEvents);
         console.log(vm.listEventsToDisplay);
       }).catch(function(error){

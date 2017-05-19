@@ -24,3 +24,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 [scrollbar-y-auto] .scroll-content {
   overflow-y: auto !important;
 }
+
+[scrollbar-x-auto] .scroll-content {
+  overflow-x: auto !important;
+}

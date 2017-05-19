@@ -1,0 +1,13 @@
+<div style="display:flex;font-size:16px;">
+  <div style="overflow-y:scroll;white-space:nowrap;width:50%;height:250px;" scrollbar-x-auto>
+    <ul ng-repeat="hour in vm.hours">
+      <li ng-click="vm.selectHour(hour)" style="margin-top:4px;margin-bottom:4px;">{{hour}}</li>
+    </ul>
+  </div>
+  <div style="overflow-y:scroll;white-space:nowrap;width:50%;height:250px;" scrollbar-x-auto>
+    <ul ng-repeat="minute in vm.minutes">
+      <li ng-click="vm.selectMinute(minute)" style="margin-top:4px;margin-bottom:4px;">{{minute}}</li>
+    </ul>
+  </div>
+</div>
+<p>{{vm.timeDisplayPopup.hours}}:{{vm.timeDisplayPopup.minutes}}<p>
