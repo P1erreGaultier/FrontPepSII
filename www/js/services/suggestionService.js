@@ -11,8 +11,9 @@ function suggestion($http, $ionicHistory, personService, $filter, $state) {
 
 
   function saveSuggestion(tokenidToSend, suggestionToSend){
-
-    return $http({
+    console.log("Dans le saveSuggestion");
+    return "ok";
+    /*return $http({
   		method: 'POST',
   		url: 'http://webapp8.nantes.sii.fr/saveSuggestion',
   		headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -28,16 +29,14 @@ function suggestion($http, $ionicHistory, personService, $filter, $state) {
       .catch(saveSuggestionFailed);
 
     function saveSuggestionComplete(response) {
-      $ionicHistory.nextViewOptions({
-        disableBack: true
-      });
-      $state.go('menu.accueil', {}, {location: 'replace', reload: true})
+      console.log("Suggestion sauvegardée.");
+      alert(JSON.stringify(response));
       return response;
     }
     function getAllEventFailed(response){
-  		console.log("Envoi token: Il y a eu des erreurs!");
+  		console.log("Envoi suggestion: Il y a eu des erreurs!");
       return response;
-    }
+    }*/
   };
 
 }
