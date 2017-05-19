@@ -17,5 +17,8 @@ function ($stateParams,$http,personService) {
 			"PersonEmail" : responseGoogle.email
 		};
  		personService.registerPerson(responseGoogle.idToken, personToSend )
+		.then(function(response){
+			$state.go('menu.accueil', {}, {location: 'replace', reload: true})
+		})
 }
 }])

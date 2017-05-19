@@ -15,8 +15,12 @@
           <ion-label>{{type.Type}}</ion-label>
           <ion-checkbox style="border:none;" id="{{type.Type}}" ng-model="vm.types[type.EventTypeId]" ng-change="vm.filterEvents()" ng-checked="true"></ion-checkbox>
       </span>
-      <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.showAllEvents()">Tout les évènements</button>
     </div>
+    <div style="text-align:center;">
+      <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.showAllEvents()">Tous les évènements</button>
+    </div>
+    <div  ng-show="vm.loading"><p>Connexion en cours...</p></div>
+    <p id="noResultFound" style="display:none">Aucun résultat ne correspond à votre recherche</p>
     <ul>
       <li ng-repeat="event in vm.listEventsToDisplay">
           <ion-item class="ribbon" ng-class="vm.getRibbon(event.EventType.Type)" id="accueil-list-item{{event.id}}" ng-click="vm.passEvent({{event}})" ui-sref="menu.detailsEvent()">

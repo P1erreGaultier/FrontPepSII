@@ -112,7 +112,6 @@ function registerPerson(idToken, personToSend ){
 			console.log(response);
       connectedUser =response.data;
       connected = "true";
-      $state.go('menu.acceuil');
       return response;
     }
     function registerPersonFailed(response){
