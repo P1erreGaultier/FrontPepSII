@@ -57,14 +57,17 @@ function ($stateParams, eventService, personService, $filter) {
 
   function select(div) {
     document.getElementById(div).style.height = "50px";
+    document.getElementById(div).style.lineHeight = "50px";
     if (div == "nextEvents"){
       vm.listToDisplay = vm.listNextEvents;
       selectedDiv = "next";
       document.getElementById("pastEvents").style.height = "38px";
+      document.getElementById("pastEvents").style.lineHeight = "38px";
     } else {
       vm.listToDisplay = vm.listPastEvents;
       selectedDiv = "past";
       document.getElementById("nextEvents").style.height = "38px";
+        document.getElementById("nextEvents").style.lineHeight = "38px";
     }
   }
 

@@ -43,36 +43,6 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('menu.footEnSalle', {
-    url: '/page6',
-    views: {
-      'side-menu21': {
-        templateUrl: 'templates/footEnSalle.html',
-        controller: 'footEnSalleCtrl'
-      }
-    }
-  })
-
-  .state('menu.afterwork', {
-    url: '/page11',
-    views: {
-      'side-menu21': {
-        templateUrl: 'templates/afterwork.html',
-        controller: 'afterworkCtrl'
-      }
-    }
-  })
-
-  .state('menu.dejTech', {
-    url: '/page10',
-    views: {
-      'side-menu21': {
-        templateUrl: 'templates/dejTech.html',
-        controller: 'dejTechCtrl'
-      }
-    }
-  })
-
   .state('menu', {
     url: '/side-menu21',
     templateUrl: 'templates/menu.html',
@@ -113,16 +83,6 @@ angular.module('app.routes', [])
     }
   })
 
-  .state('menu.evaluerEvenement', {
-    url: '/page12',
-    views: {
-      'side-menu21': {
-        templateUrl: 'templates/evaluerEvenement.html',
-        controller: 'evaluerEvenementCtrl',
-        controllerAs: 'vm'
-      }
-    }
-  })
 
   .state('menu.detailsEvent', {
     url: '/page13',
