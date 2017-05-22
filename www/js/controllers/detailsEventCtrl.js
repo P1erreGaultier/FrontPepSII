@@ -92,11 +92,17 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	}
 
 	function registerUserToEvent () {
-		participantService.saveParticipant(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId);
+		participantService.saveParticipant(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId)
+		.then(function(result){
+			vm.isRegister = true;
+		});
 	}
 
 	function unregisterUserToEvent() {
-		participantService.cancelParticipation(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId);
+		participantService.cancelParticipation(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId)
+		.then(function(result){
+			vm.isRegister = false;
+		});
 	}
 
 	function getCommentMargin(owner){
@@ -134,7 +140,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 		}
 	}
 
-
 	function displayRateForm() {
 		document.getElementById("ratingForm").style.display = "block";
 		document.getElementById("beforeRate").style.display = "none";
@@ -160,9 +165,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 
 		reviewService.updateReview(personService.getResponseGoogle().idToken, reviewToSend )
 		.then(function(result){
-			alert("Vous avez donné la note de " + note + " à l'évènement!")
-			alert(comment);
-			alert(JSON.stringify(result));
 			vm.hideRateForm();
 		})
 	}
@@ -258,6 +260,5 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			vm.ListCommentResponse[commentId] = [];
 		}
 	}
-
 
 }])

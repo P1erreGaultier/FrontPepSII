@@ -4,7 +4,7 @@ angular.module('app.controllers')
 function ($scope, $stateParams, personService) {
 
 	var vm = this;
-	vm.user =
+	vm.user = personService.getConnectedUser();
 	vm.canModify = "false";
 	vm.saveProfil = saveProfil;
 	vm.modify = modify;

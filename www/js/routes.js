@@ -9,7 +9,6 @@ angular.module('app.routes', [])
   $stateProvider
 
 
-
       .state('menu.accueil', {
     url: '/page1',
     views: {

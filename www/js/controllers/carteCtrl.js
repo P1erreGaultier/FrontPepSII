@@ -69,7 +69,7 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 			 } else {
 				 ribbonColor = "ribbonGreen";
 			 }
-			 contentEvent = contentEvent + '<li class=\"list-group-item ribbon '+ribbonColor+'\"><span>'+ev.EventType.Type+'</span><div style=\'display:inline-block;margin-bottom:10px;\'><img src="\img/event'+ev.Image+'.jpg"\'style=\'display:inline;width:75px;height:75;\' class ="img-thumbnail"><div style=\'display:inline-block\'><h4>'+ ev.Name +'</h4> <p>'+ ev.Description.substring(0,30)+'... ' +'</p> <p>'+ 'Du ' + $filter('date')(ev.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + ev.DateEnd;
+			 contentEvent = contentEvent + '<li class=\"list-group-item ribbon '+ribbonColor+'\"><span>'+ev.EventType.Type+'</span><div style=\'display:inline-block;margin-bottom:10px;\'><img src="\img/event'+ev.Image+'.jpg" style=\'display:inline;width:150px;height:150px;\' class ="img-thumbnail"><div style=\'display:inline-block\'><h4>'+ ev.Name +'</h4> <p>'+ ev.Description.substring(0,30)+'... ' +'</p> <p>'+ 'Du ' + $filter('date')(ev.DateStart, "dd/MM/yyyy HH:mm") + ' au ' + ev.DateEnd;
 			 contentEvent = contentEvent +"<br/> <br/> <button class='btn btn-primary' onclick=\"document.getElementById('eventToSend').value = "+ i + ";document.getElementById('detailsEvent').click();\"> Voir l\'évenement </button> </p></div></div></li>";
 		 }
 		 }
