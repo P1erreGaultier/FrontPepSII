@@ -55,6 +55,7 @@ function saveParticipant(idToken, personId, eventId ){
   };
 
   function cancelParticipation(idToken, personId, eventId ){
+    alert("start");
     return $http({
       method: 'POST',
       url: 'http://webapp8.nantes.sii.fr/cancelParticipation',
@@ -71,13 +72,15 @@ function saveParticipant(idToken, personId, eventId ){
         .catch(cancelParticipationFailed);
 
       function cancelParticipationComplete(response) {
+        alert("cancelParticipationComplete");
         console.log("message send");
   			console.log(response);
-  			$window.location.reload();
         return response;
       }
 
       function cancelParticipationFailed(response){
+        alert("cancelParticipationFailed");
+        alert(JSON.stringify(response));
         console.log("Envoi token: Il y a eu des erreurs!");
         return response;
       }

@@ -19,24 +19,13 @@ function ($stateParams, $state, suggestion, personService, $filter, $ionicHistor
 
 		if (send) {
 			var date = $filter('date')(new Date(), 'yyyy-MM-dd HH:mm')
-			var tokenId = "kojo"//personService.getResponseGoogle().idToken;
+			var tokenId = personService.getResponseGoogle().idToken;
 			var suggestionToSend = {
 				"Text" : document.getElementById("text").value,
 				"Job" : personService.getConnectedUser().Job,
 				"Date" : date
 			};
-			alert("oui");
-			return suggestion.saveSuggestion(tokenId, suggestionToSend).then(function(response){
-				alert("coucou");
-				alert($ionicHistory);
-				alert(JSON.stringify($ionicHistory));
-				console.log("Logged in:");
-				console.log(response);
-			}).finally(function() {
-				alert("enfin");
-			});
-			alert("non");
-			/*suggestion.saveSuggestion(tokenId, suggestionToSend)
+			suggestion.saveSuggestion(tokenId, suggestionToSend)
 			.then(function(response){
 				alert("coucou");
 				alert($ionicHistory);
@@ -45,16 +34,7 @@ function ($stateParams, $state, suggestion, personService, $filter, $ionicHistor
 					disableBack: true
 				});
 	      $state.go('menu.accueil', {}, {location: 'replace', reload: true})
-	      alert("Votre suggestion à bien été enregistrée.");
 			})
-			.catch(function(error) {
-				alert("error");
-				alert($ionicHistory);
-				alert(JSON.stringify($ionicHistory));
-			})
-			.finnaly(function(){
-				alert("c'est la fin");
-			});*/
 		}
 	}
 
