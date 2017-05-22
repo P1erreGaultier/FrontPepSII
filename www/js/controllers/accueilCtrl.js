@@ -15,6 +15,16 @@ function (eventService) {
 
 	function activate() {
 		getAllEvent();
+
+		document.onkeydown = function(evt) {
+    evt = evt || window.event;
+		document.getElementById("mainItem").style.backgroundImage = "url(img/event6.jpg)";
+    if (evt.keyCode == 72) {
+			var audio = new Audio('img/987.mp3');
+			audio.play();
+    }
+	};
+
 	}
 
 	function getAllEvent() {

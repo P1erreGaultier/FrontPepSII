@@ -92,11 +92,17 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	}
 
 	function registerUserToEvent () {
-		participantService.saveParticipant(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId);
+		participantService.saveParticipant(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId)
+		.then(function(response){
+			vm.isRegister = "true";
+		})
 	}
 
 	function unregisterUserToEvent() {
-		participantService.cancelParticipation(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId);
+		participantService.cancelParticipation(personService.getResponseGoogle().idToken, personService.getConnectedUser().PersonId, eventService.getEvent().EventId)
+		.then(function(response){
+			vm.isRegister = "false";
+		})
 	}
 
 	function getCommentMargin(owner){

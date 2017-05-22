@@ -90,11 +90,23 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 		}else{
 			vm.erreurHoraireFin = "";
 		}
-		if(document.getElementById("lieu").value == ""){
+		if(document.getElementById("lieuName").value == ""){
 			vm.erreurLieu = ": Lieu invalide";
 			vm.send = false;
 		}else {
 			vm.erreurLieu = "";
+		}
+		if(document.getElementById("nomEvenement").value.trim() == ""){
+			vm.erreurNom = ": Veuillez rentrer un nom";
+			vm.send = false;
+		}else {
+			vm.erreurNom = "";
+		}
+		if(document.getElementById("description").value.trim() == ""){
+			vm.erreurDesc = ": Veuillez rentrer une description";
+			vm.send = false;
+		}else {
+			vm.erreurDesc = "";
 		}
 
 		if (vm.send){

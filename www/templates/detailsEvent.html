@@ -3,15 +3,17 @@
   <menu>
   </menu>
   </ion-nav-buttons>
-  <ion-content padding="true" class="has-header">
+  <ion-content padding="true" class="has-header" >
     <h1 id="heading1" style="color:#000000;"></h1>
-    <div>
-      <img id="imageEvent" ng-click="vm.swipeOnImage()"src="img/event{{vm.event.Image}}.jpg" style="display:block;width:40%;height:auto;">
+    <div ng-click="vm.swipeOnImage()" style="background-image:url(img/event{{vm.event.Image}}.jpg);background-size:cover;height:200px">
+      <!--<img id="imageEvent" ng-click="vm.swipeOnImage()"src="img/event{{vm.event.Image}}.jpg" style="display:block;width:40%;height:auto;">-->
     </div>
     <div id="footEnSalle-markdown1" class="show-list-numbers-and-dots">
-      <p style="color:#000000;">{{vm.event.Description}}</p>
+      <ion-item>
+        <p style="color:#000000;white-space: normal;text-align: justify;">{{vm.event.Description}}</p>
 
-      <p style="color:#000000;">Le {{vm.formatDate(vm.event.DateStart) | date:'dd/MM/yyyy'}} à {{vm.formatDate(vm.event.DateStart) | date:'HH:mm'}}</p>
+        <p style="color:#000000;">Le {{vm.formatDate(vm.event.DateStart) | date:'dd/MM/yyyy'}} à {{vm.formatDate(vm.event.DateStart) | date:'HH:mm'}}</p>
+    </ion-item>
     </div>
     <div id="footEnSalle-button-bar3" class="button-bar"></div>
     <div ng-if="vm.event.Owner.PersonId == vm.connectedUser">
@@ -30,10 +32,10 @@
       </div>
 
       <div class="spacer" style="width: 300px; height: 6px;"></div>
-      <div id="footEnSalle-markdown2" class="show-list-numbers-and-dots">
-        <p style="color:#000000;">
-          <strong>{{vm.nbParticipants}}</strong> personnes y participent
+      <ion-item>
+        <strong>{{vm.nbParticipants}}</strong> personnes y participent
         <button ng-click="vm.detailsParticipant()" id="detailParticipant" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Participant</button>
+
         <div id="participantDiv" style="display:none;">
           <ion-list ng-repeat="participant in vm.ListParticipant">
             <ion-item class="item-avatar">
@@ -42,11 +44,10 @@
             </ion-item>
           </ion-list>
         </div>
-      </p>
+      </ion-item>
+      <div class="spacer" style="width: 300px; height: 6px;"></div>
 
       <button  ng-if="vm.isLogged == 'true'" ng-click="vm.openPopup('NULL')" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Commenter</button>
-
-      </div>
       <ion-list ng-repeat="comment in vm.ListComment">
           <div ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}" ng-click="vm.showResponse(vm.event.EventId, {{comment.CommentId}}, $event)">
             <ion-item class="item-avatar">
