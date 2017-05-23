@@ -3,11 +3,21 @@
   <menu>
   </menu>
   </ion-nav-buttons>
-  <ion-content padding="true" class="has-header">
-    <form id="suggestion-form9" class="list">
-      <label class="item item-input" id="suggestion-textarea1">
-        <span class="input-label">Suggestions</span><textarea placeholder="" id ="text"></textarea></label>
-    </form>
-    <a id="suggestion-button26" class="button button-positive  button-block" ng-click="vm.saveSuggestion()">Valider</a>
+  <ion-content ng-controller="menuConnectionCtrl" ng-show="vm.isLogged" padding="true" class="has-header">
+    <ion-item>
+      <form id="suggestion-form9" class="list">
+        <p style="white-space:normal;text-align:justify;">Un avis, une suggestion d'évènement, des idées d'activitées: n'hésitez pas à nous le faire savoir nous les envoyants grâce à ce formulaire!</p>
+        <label class="item item-input" id="suggestion-textarea1">
+          <textarea placeholder="" id ="text"></textarea>
+        </label>
+        <p style="white-space:normal;text-align:justify;font-weight:bold;" ng-show="vm.errorSuggestion">Vous ne pouvez pas envoyer une suggestion vide<p>
+      </form>
+      <a id="suggestion-button26" class="button button-positive  button-block" ng-click="vm.saveSuggestion()">Valider</a>
+    </ion-item>
+  </ion-content>
+  <ion-content ng-controller="menuConnectionCtrl" ng-show="!vm.isLogged" padding="true" class="has-header">
+    <ion-item>
+      <p>Vous devez être connecté pour pouvoir faire des suggestion</p>
+    </ion-item>
   </ion-content>
 </ion-view>
