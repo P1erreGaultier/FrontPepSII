@@ -198,8 +198,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	}
 
 	function swipeOnImage() {
-		var audio = new Audio('img/986.mp3');
-		audio.play();
+		/*var audio = new Audio('img/986.mp3');
+		audio.play();*/
 	}
 
 	function formatDate(date){

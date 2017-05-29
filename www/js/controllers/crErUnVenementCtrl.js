@@ -202,10 +202,10 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 
 	function selectImage(image) {
 		vm.selectedImage = image;
-		if(image.feature != undefined){
+		/*if(image.feature != undefined){
 			var audio = new Audio('img/' + image.feature);
 			audio.play();
-		}
+		}*/
 	}
 
 	function selectHour(hour){
