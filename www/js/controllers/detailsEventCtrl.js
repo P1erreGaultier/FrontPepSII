@@ -1,9 +1,9 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','personService','commentService','participantService', '$state', '$filter', '$ionicPopup',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','personService','commentService','participantService', '$state', '$filter', '$ionicPopup', 'reviewService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $http, eventService,personService,commentService,participantService, $state, $filter, $ionicPopup) {
+function ($stateParams, $window, $http, eventService,personService,commentService,participantService, $state, $filter, $ionicPopup, reviewService) {
 	var vm = this;
 	vm.data = {};
 	vm.event;
@@ -162,6 +162,7 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			"rate" : note,
 			"text" : comment
 		};
+		alert(JSON.stringify(reviewToSend));
 
 		reviewService.updateReview(personService.getResponseGoogle().idToken, reviewToSend )
 		.then(function(result){

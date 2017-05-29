@@ -28,9 +28,25 @@ function ($stateParams, $window, $state, $ionicHistory, personService) {
 			personService.connect().then(function(response){
 				console.log("Logged in:");
 				console.log(response);
+				alert("coucou");
 			}).finally(function() {
 				vm.loading = false;
 			});
+			/*personService.getPersonById("4")
+			.then(function successCallback(response) {
+				personService.setConnectedUser(response);
+				personService.setConnected("true");
+				console.log("Connecté en tant que: ");
+				console.log(personService.getConnectedUser());
+				console.log(personService.getConnected());
+				$state.reload();
+			}).catch(function erroCallabck(response) {
+				alert('impossible de récupérer cette personne');
+				alert('status: ' + response.status + ' / statusText: ' + response.statusText);
+				console.log("Il y a eu des erreurs!");
+			}).finally(function() {
+				vm.loading = false;
+			});*/
 		}
 
 		function logOut(){

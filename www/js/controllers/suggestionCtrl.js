@@ -6,8 +6,18 @@ angular.module('app.controllers')
 function ($stateParams, $state, suggestion, personService, $filter, $ionicHistory) {
 
 	var vm = this;
+	vm.isLogged;
 	vm.saveSuggestion = saveSuggestion;
 	vm.errorSuggestion = false;
+	activate();
+
+	function activate() {
+		if (personService.getConnected() == "true"){
+			vm.isLogged = true;
+		}else{
+			vm.isLogged = false;
+		}
+	}
 
 	function saveSuggestion() {
 		var send = true;
@@ -27,9 +37,6 @@ function ($stateParams, $state, suggestion, personService, $filter, $ionicHistor
 			};
 			suggestion.saveSuggestion(tokenId, suggestionToSend)
 			.then(function(response){
-				alert("coucou");
-				alert($ionicHistory);
-				alert(JSON.stringify($ionicHistory));
 				$ionicHistory.nextViewOptions({
 					disableBack: true
 				});

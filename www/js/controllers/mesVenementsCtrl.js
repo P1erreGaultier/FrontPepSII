@@ -6,6 +6,8 @@ angular.module('app.controllers')
 function ($stateParams, eventService, personService, $filter) {
   var vm = this;
   var selectedDiv = "next";
+  vm.showPast = false;
+  vm.showFuture = true;
   vm.listMyEvents = [];
   vm.listToDisplay = [];
   vm.listPastEvents = [];
@@ -19,6 +21,7 @@ function ($stateParams, eventService, personService, $filter) {
   vm.owner = "";
   vm.formatDate = formatDate;
   vm.getRibbon = getRibbon;
+  vm.savePage = savePage;
 
   vm.types = [];
   vm.onlyMyEvents = false;
@@ -61,11 +64,15 @@ function ($stateParams, eventService, personService, $filter) {
     if (div == "nextEvents"){
       vm.listToDisplay = vm.listNextEvents;
       selectedDiv = "next";
+      vm.showPast = false;
+      vm.showFuture = true;
       document.getElementById("pastEvents").style.height = "38px";
       document.getElementById("pastEvents").style.lineHeight = "38px";
     } else {
       vm.listToDisplay = vm.listPastEvents;
       selectedDiv = "past";
+      vm.showPast = true;
+      vm.showFuture = false;
       document.getElementById("nextEvents").style.height = "38px";
         document.getElementById("nextEvents").style.lineHeight = "38px";
     }
@@ -128,6 +135,10 @@ function ($stateParams, eventService, personService, $filter) {
     } else {
       return "ribbonGreen";
     }
+  }
+
+  function savePage() {
+    personService.setPreviousPage("MyEvent");
   }
 
 }])

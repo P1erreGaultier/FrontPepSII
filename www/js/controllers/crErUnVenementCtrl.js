@@ -12,7 +12,7 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 	vm.hours = [];
 	vm.minutes = [];
 	vm.selectedImage;
-	vm.timeDisplayPopup = {hours:"00", minutes: "00"};
+	vm.timeDisplayPopup;
 	vm.timeStart = {hours:"00", minutes: "00"};
 	vm.timeEnd = {hours:"23", minutes: "59"};
 	vm.getAllEventType = getAllEventType;
@@ -128,7 +128,6 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 				"Owner" : ownerToSend,
 				"EventType" : eventToSend
 			};
-			alert(JSON.stringify(eventToSend));
 			eventService.registerEvent(responseGoogle.idToken,eventToSend)
 			.then(function(data){
 
@@ -165,6 +164,11 @@ function ($stateParams, $window, $cordovaDatePicker, $http, eventService, $ionic
 	}
 
 	function openPopupSelectTime(time) {
+		if(time == "start"){
+			vm.timeDisplayPopup = vm.timeStart;
+		} else {
+			vm.timeDisplayPopup = vm.timeEnd;
+		}
 
 		var myPopup = $ionicPopup.show({
 				 templateUrl: 'templates/popup/selectTime.html',
