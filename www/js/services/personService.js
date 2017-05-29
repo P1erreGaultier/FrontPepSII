@@ -26,7 +26,6 @@ function personService($http, $window, $ionicHistory, $state) {
     getGooglePicture : getGooglePicture,
     setPreviousPage: setPreviousPage,
     getPreviousPage: getPreviousPage
-
   };
 
   function getConnected (){

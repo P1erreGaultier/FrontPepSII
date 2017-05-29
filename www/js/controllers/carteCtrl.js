@@ -73,7 +73,6 @@ function ($stateParams ,$state, $compile, eventService, personService, $window, 
 		} else {
 			alert("Vous devez être connécté pour pouvoir créer un évènement.");
 		}
-
 	}
 
 	function redirectEvent() {
