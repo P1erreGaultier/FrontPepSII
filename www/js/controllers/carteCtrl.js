@@ -1,9 +1,9 @@
 angular.module('app.controllers')
 
-.controller('carteCtrl', ['$stateParams','$state','$compile','eventService','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('carteCtrl', ['$stateParams','$state','$compile','eventService','personService','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams ,$state, $compile, eventService, $window, $filter) {
+function ($stateParams ,$state, $compile, eventService, personService, $window, $filter) {
 
 	var vm = this;
 	vm.listEvent = [];
@@ -22,9 +22,14 @@ function ($stateParams ,$state, $compile, eventService, $window, $filter) {
 	}
 
 	function redirectCreate() {
-		eventService.saveEventId(vm.pid);
-		eventService.saveEventName(vm.pname);
-		$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: false})
+		if(personService.getConnected()=="true"){
+			eventService.saveEventId(vm.pid);
+			eventService.saveEventName(vm.pname);
+			$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: false})
+			}
+		else{
+			alert("report");
+		}
 	}
 
 	function redirectEvent() {

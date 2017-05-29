@@ -23,7 +23,6 @@ function personService($http, $window, $ionicHistory, $state) {
     getGoogleId : getGoogleId,
     setGoogleId : setGoogleId,
     getGooglePicture : getGooglePicture
-
   };
 
   function getConnected (){

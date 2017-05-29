@@ -244,7 +244,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 				if (res){
 					registerComment(responseTo);
 				}
-
       });
 			$event.stopPropagation();
 	}
