@@ -1,9 +1,9 @@
 angular.module('app.controllers')
 
-.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','personService','commentService','participantService', '$state', '$filter', '$ionicPopup',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('detailsEventCtrl', ['$stateParams', '$window', '$http','eventService','personService','commentService','participantService', '$state', '$filter', '$ionicPopup', 'reviewService',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
-function ($stateParams, $window, $http, eventService,personService,commentService,participantService, $state, $filter, $ionicPopup) {
+function ($stateParams, $window, $http, eventService,personService,commentService,participantService, $state, $filter, $ionicPopup, reviewService) {
 	var vm = this;
 	vm.data = {};
 	vm.event;
@@ -184,7 +184,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 
 		commentService.registerComment(personService.getResponseGoogle().idToken, commentToSend )
 		.then(function(result){
-			alert(JSON.stringify(result));
 			commentService.getCommentByEvent(vm.event.EventId)
 			.then(function successCallback(response) {
 				vm.ListComment = response.reverse();
@@ -197,8 +196,8 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 	}
 
 	function swipeOnImage() {
-		var audio = new Audio('img/986.mp3');
-		audio.play();
+		/*var audio = new Audio('img/986.mp3');
+		audio.play();*/
 	}
 
 	function formatDate(date){

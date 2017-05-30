@@ -19,7 +19,7 @@
     <div style="text-align:center;">
       <button style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive" ng-click="vm.showAllEvents()">Tous les évènements</button>
     </div>
-    <div  ng-show="vm.loading"><p>Connexion en cours...</p></div>
+    <div  ng-show="vm.loading"><p>Recherche en cours...</p></div>
     <p id="noResultFound" style="display:none">Aucun résultat ne correspond à votre recherche</p>
     <ul>
       <li ng-repeat="event in vm.listEventsToDisplay">

@@ -48,8 +48,8 @@
       <div class="spacer" style="width: 300px; height: 6px;"></div>
 
       <button  ng-if="vm.isLogged == 'true'" ng-click="vm.openPopup('NULL')" style="text-align:left;border-radius:5px 5px 5px 5px;" class="button button-positive">Commenter</button>
-      <ion-list ng-repeat="comment in vm.ListComment">
-          <div ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}" ng-click="vm.showResponse(vm.event.EventId, {{comment.CommentId}}, $event)">
+      <ion-list style="padding-bottom:25px;" ng-repeat="comment in vm.ListComment">
+          <div style="padding-top:15px;" ng-style="{'margin-left': vm.getCommentMargin({{comment.ResponseTo}})}" ng-click="vm.showResponse(vm.event.EventId, {{comment.CommentId}}, $event)">
             <ion-item class="item-avatar">
               <img ng-init="vm.getGoogleImage(comment.Person.PersonEmail)" ng-src="{{vm.images[comment.Person.PersonEmail]}}">
               <button  ng-if="vm.isLogged == 'true'" ng-click="vm.openPopup({{comment.CommentId}}, $event)" style="text-align:left;border-radius:5px 5px 5px 5px;float:right;min-height:43px;height:43px;" class="button button-positive">Répondre</button>

@@ -95,9 +95,7 @@ function eventService($http, $state, $ionicHistory) {
   }
 
   function registerEvent(idToken, eventToSend ){
-    alert("dans registerEvent");
-    return "coucou";
-    /*return $http({
+    return $http({
       method: 'POST',
       url: 'http://webapp8.nantes.sii.fr/saveEvent',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -120,7 +118,7 @@ function eventService($http, $state, $ionicHistory) {
       console.log(response);
       console.log("Envoi token: Il y a eu des erreurs!");
       return response;
-    }*/
+    }
   };
 
 

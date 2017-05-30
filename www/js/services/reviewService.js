@@ -10,6 +10,7 @@ function reviewService($http) {
   }
 
   function updateReview(idToken, reviewToSend){
+    alert("start");
     return $http({
 			method: 'POST',
 			url: 'http://webapp8.nantes.sii.fr/updateReview',
@@ -20,7 +21,7 @@ function reviewService($http) {
 				str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
 				return str.join("&");
 			},
-			data: {tokenid: idToken, review: reviewToSend}
+			data: {tokenid: idToken, review: JSON.stringify(reviewToSend)}
 		})
       .then(updateReviewComplete)
       .catch(updateReviewFailed);
@@ -28,11 +29,15 @@ function reviewService($http) {
     function updateReviewComplete(response) {
       console.log("message send");
       console.log(response);
+      alert("updateReviewComplete");
+      alert(JSON.stringify(response));
       return response;
     }
     function updateReviewFailed(response){
       console.log(response);
       console.log("Envoi token: Il y a eu des erreurs!");
+      alert("updateReviewFailed");
+      alert(JSON.stringify(response));
       return response;
     }
   };

@@ -1,11 +1,14 @@
 angular.module('app.controllers')
 
-.controller('carteCtrl', ['$stateParams','$state','$compile','eventService','personService','$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
+.controller('carteCtrl', ['$stateParams','$state','$compile','eventService', 'personService', '$window','$filter',// The following is the constructor function for this page's controller. See https://docs.angularjs.org/guide/controller
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($stateParams ,$state, $compile, eventService, personService, $window, $filter) {
 
 	var vm = this;
+	var service;
+	var infowindow;
+	vm.map;
 	vm.listEvent = [];
 	vm.getEvents = getEvents;
 	vm.addMarker = addMarker;
@@ -18,17 +21,57 @@ function ($stateParams ,$state, $compile, eventService, personService, $window, 
 	activate();
 
 	function activate() {
-		getEvents();
+		console.log("Dans activate");
+		var options = {timeout: 10000, enableHighAccuracy: true};
+		var latLng = new google.maps.LatLng(47.2112216, -1.5570168); // Nantes
+		var mapOptions = {
+				center: latLng,
+				zoom: 12,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+
+
+		vm.map = new google.maps.Map(document.getElementById("map"), mapOptions);
+		infowindow = new google.maps.InfoWindow();
+		service = new google.maps.places.PlacesService(vm.map);
+
+		google.maps.event.addListener(vm.map, 'click', function(evt) {
+			evt.stop();
+			if (evt.placeId != null){
+			service.getDetails({
+				 placeId: evt.placeId
+			 }, function(place, status) {
+				 	if (status === google.maps.places.PlacesServiceStatus.OK) {
+						vm.pid = place.place_id;
+						vm.pname = place.name;
+						console.log(place.name);
+						var bootstrap = '<link rel="stylesheet" type="text/css" href="lib/bootstrap.min.css"><link rel="stylesheet" href="lib/bootstrap-theme.min.css" >'
+						var contentPhoto = '<div style=\"display:inline-block\"><img class ="img-thumbnail" src=\"'+ place.photos[0].getUrl({'maxWidth': 150, 'maxHeight': 200}) +'\" alt="photo place"></div></br> <div style=\"display:inline-block\">';
+						var contentPlace = '<h4>'+ place.name + '</h4><p>'+ place.formatted_address +'</p><p>  <a type="button" class="btn btn-link" href="'+ place.website +'">Voir le site</a></p>' ;
+						var contentButton= "<p> <button class='btn btn-primary' onclick=\"document.getElementById('create').click();\"> Creer un évenement ici </button> </p></div>";
+						infowindow.setContent(bootstrap + contentPhoto + contentPlace + contentButton);
+						infowindow.setPosition(evt.latLng);
+						infowindow.open(vm.map);
+					}
+				});
+			}
+		});
+			getEvents();
+
+			if (personService.getPreviousPage() == "MyEvent"){
+				alert("Selectionnez le lieu où vous voulez créer l'évènement.");
+			}
+			personService.setPreviousPage("");
 	}
 
+
 	function redirectCreate() {
-		if(personService.getConnected()=="true"){
+		if(personService.getConnected() == "true"){
 			eventService.saveEventId(vm.pid);
 			eventService.saveEventName(vm.pname);
-			$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: false})
-			}
-		else{
-			alert("report");
+			$state.go('menu.crErUnVenement', {}, {location: 'replace', reload: false});
+		} else {
+			alert("Vous devez être connécté pour pouvoir créer un évènement.");
 		}
 	}
 
@@ -85,37 +128,4 @@ function ($stateParams ,$state, $compile, eventService, personService, $window, 
 	 });
  }
 
-		var options = {timeout: 10000, enableHighAccuracy: true};
-		var latLng = new google.maps.LatLng(47.2112216, -1.5570168); // Nantes
-		var mapOptions = {
-				center: latLng,
-				zoom: 12,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			};
-
-		vm.map = new google.maps.Map(document.getElementById("map"), mapOptions);
-		var infowindow = new google.maps.InfoWindow();
-		var service = new google.maps.places.PlacesService(vm.map);
-
-		google.maps.event.addListener(vm.map, 'click', function(evt) {
-	    evt.stop();
-			if (evt.placeId != null){
-			service.getDetails({
-				 placeId: evt.placeId
-			 }, function(place, status) {
-				 if (status === google.maps.places.PlacesServiceStatus.OK) {
-					vm.pid = place.place_id;
-					vm.pname = place.name;
-					console.log(place.name);
-					var bootstrap = '<link rel="stylesheet" type="text/css" href="lib/bootstrap.min.css"><link rel="stylesheet" href="lib/bootstrap-theme.min.css" >'
-					var contentPhoto = '<div style=\"display:inline-block\"><img class ="img-thumbnail" src=\"'+ place.photos[0].getUrl({'maxWidth': 150, 'maxHeight': 200}) +'\" alt="photo place"></div></br> <div style=\"display:inline-block\">';
-					var contentPlace = '<h4>'+ place.name + '</h4><p>'+ place.formatted_address +'</p><p>  <a type="button" class="btn btn-link" href="'+ place.website +'">Voir le site</a></p>' ;
-					var contentButton= "<p> <button class='btn btn-primary' onclick=\"document.getElementById('create').click();\"> Creer un évenement ici </button> </p></div>";
-					infowindow.setContent(bootstrap + contentPhoto + contentPlace + contentButton);
-	      	infowindow.setPosition(evt.latLng);
-	      	infowindow.open(vm.map);
-				}
-	   	});
-	 	}
-	});
 }])

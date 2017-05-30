@@ -16,9 +16,9 @@
       <ion-list id="menu-list1">
         <ion-item id="menu-list-item1" ui-sref="menu.accueil" menu-close="">Accueil</ion-item>
         <ion-item id="menu-list-item2" ui-sref="menu.recherche" menu-close="">Recherche</ion-item>
-        <ion-item id="menu-list-item4" menu-close="" ng-click="checkUser()">Mes évenements</ion-item>
+        <ion-item id="menu-list-item4" menu-close="" ng-click="vm.checkUserMyEvent()">Mes évenements</ion-item>
         <ion-item id="menu-list-item3" ui-sref="menu.carte" menu-close="">Carte</ion-item>
-        <ion-item id="menu-list-item5" ui-sref="menu.suggestion" menu-close="">Avis</ion-item>
+        <ion-item id="menu-list-item5" ng-click="vm.checkUserSuggestion()" menu-close="">Avis</ion-item>
       </ion-list>
     </ion-content>
   </ion-side-menu>

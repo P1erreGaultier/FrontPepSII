@@ -9,6 +9,7 @@ function personService($http, $window, $ionicHistory, $state) {
   var connected = "false";
   var googleId;
   var responseGoogle;
+  var previousPage;
 
   return {
     registerPerson : registerPerson,
@@ -22,7 +23,9 @@ function personService($http, $window, $ionicHistory, $state) {
     setResponseGoogle : setResponseGoogle,
     getGoogleId : getGoogleId,
     setGoogleId : setGoogleId,
-    getGooglePicture : getGooglePicture
+    getGooglePicture : getGooglePicture,
+    setPreviousPage: setPreviousPage,
+    getPreviousPage: getPreviousPage
   };
 
   function getConnected (){
@@ -147,15 +150,25 @@ function registerPerson(idToken, personToSend ){
     }else{
       connectedUser =response.data;
       connected = "true";
-      $state.reload();
-    return response;
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      $state.go('menu.accueil', {}, {location: 'replace', reload: true})
+      return response;
   }
 
   function connectFailed(response){
     console.log("Envoi token: Il y a eu des erreurs!");
     return response;
   }
+  }
 
-}
+  function setPreviousPage(page){
+    previousPage = page;
+  }
+
+  function getPreviousPage() {
+    return previousPage;
+  }
 
 }

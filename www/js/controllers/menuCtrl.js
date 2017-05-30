@@ -3,16 +3,26 @@ angular.module('app.controllers')
 // You can include any angular dependencies as parameters for this function
 // TIP: Access Route Parameters for your page via $stateParams.parameterName
 function ($scope, $stateParams, $ionicHistory, $state, personService) {
-	$scope.checkUser = function() {
+
+	var vm = this;
+	vm.checkUserMyEvent = checkUserMyEvent;
+	vm.checkUserSuggestion = checkUserSuggestion;
+
+	function checkUserMyEvent() {
 		if (personService.getConnected() != "true"){
-			$ionicHistory.nextViewOptions({
-				disableBack: true
-			});
-			$state.go('menu.connection', {}, {location: 'replace', reload: true});
+			alert("Vous devez être connécté pour pouvoir accéder à vos évènements.");
 		}else {
 			$ionicHistory.nextViewOptions({disableBack: true});
 			$state.transitionTo('menu.mesVenements', {}, { reload: true, inherit: true, notify: true });
-			//$state.go('menu.mesVenements', {}, {reload: true});
+		}
+	}
+
+	function checkUserSuggestion() {
+		if (personService.getConnected() != "true"){
+			alert("Vous devez être connécté afin de pouvoir faire des suggestions.");
+		}else {
+			$ionicHistory.nextViewOptions({disableBack: true});
+			$state.transitionTo('menu.suggestion', {}, { reload: true, inherit: true, notify: true });
 		}
 	}
 }])
