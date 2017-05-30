@@ -162,7 +162,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 			"rate" : note,
 			"text" : comment
 		};
-		alert(JSON.stringify(reviewToSend));
 
 		reviewService.updateReview(personService.getResponseGoogle().idToken, reviewToSend )
 		.then(function(result){
@@ -185,7 +184,6 @@ function ($stateParams, $window, $http, eventService,personService,commentServic
 
 		commentService.registerComment(personService.getResponseGoogle().idToken, commentToSend )
 		.then(function(result){
-			alert(JSON.stringify(result));
 			commentService.getCommentByEvent(vm.event.EventId)
 			.then(function successCallback(response) {
 				vm.ListComment = response.reverse();
